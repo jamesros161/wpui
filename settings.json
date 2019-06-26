@@ -1,0 +1,19 @@
+{
+    "logging" : {
+            "level" : "DEBUG",
+            "name" : "wpui.log",
+            "format" : "%(lineno)d:%(levelname)s :: %(module)s/%(funcName)s :: %(message)s"
+        },
+    "display" : {
+        "palette": [
+            ["header","black","light gray"],
+            ["footer",  "black",    "light gray"],
+            ["body",    "white",    "default"],
+            ["bold",    "dark green, bold" , "black"],
+            ["blue", "bold", "dark blue"],
+            ["highlight", "dark green", "default"],
+            ["alert", "dark red, bold", "default"]
+        ],
+        "title" : "WP-CLI Tool"
+    }
+}

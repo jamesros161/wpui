@@ -1,0 +1,9 @@
+{
+    "self.home" : [
+        ["Select WP Installation", "home"],
+        ["   Show All Plugins   ","home"],
+        ["   Show All Themes    ","home"],
+        ["    Show All Users    ","home"],
+        ["          Quit        ","home"]
+    ]
+}
