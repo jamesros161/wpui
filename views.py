@@ -42,6 +42,7 @@ class View():
         else:
             self.set_focus('body')
         if self.action_on_load:
+            self.app.L.debug('This View has an action to be run on load')
             action = getattr(Actions,self.action_on_load)
             self.action_thread = threading.Thread(target=action)
     def reload(self):
