@@ -20,7 +20,7 @@ class Call():
         popen_args = ['wp']
         for argument in arguments:
             popen_args.append(argument)
-        popen_args.extend(['--path='+path, '--format=json'])
+        popen_args.append('--path='+path)
 
         reqOutput, reqError = subprocess.Popen(popen_args, 
             stdout=subprocess.PIPE, 
