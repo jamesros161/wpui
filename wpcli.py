@@ -43,7 +43,7 @@ class Installations():
             self.app.loop.watch_file(installation['call_process'].stdout,self.show_installation_details)
     def show_installation_details(self):
         for installation in self.installations:
-            self.app.L.debug("call_process stdout: %s", installation['call_process'].stdout.read())
+            self.app.L.debug("call_process stdout: %s", installation['call_process'].communicate())
 class Call():
     def __init__(self,L):
         self.L = L
