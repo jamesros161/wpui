@@ -10,7 +10,7 @@
             ["footer",  "black",    "light gray"],
             ["body",    "white",    "default"],
             ["bold",    "light magenta, bold" , "black"],
-            ["blue", "bold", "gold"],
+            ["blue", "bold", "dark blue"],
             ["highlight", "light magenta", "default"],
             ["alert", "dark red, bold", "default"]
         ],
