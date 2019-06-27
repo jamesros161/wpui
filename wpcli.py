@@ -18,7 +18,7 @@ class Installations():
                 x['error'] = error
                 if data:
                     for line in data:
-                        L.debug('Line: %s, x: ',line, x)
+                        L.debug('Line: %s, x: %s',line, x)
                         if '_options' in line and 'OK' in line:
                             x['valid_wp_options'] = True
                         if 'Success: Database checked' in line:
