@@ -1,9 +1,58 @@
 {
-    "self.home" : [
-        ["Select WP Installation", "home"],
-        ["   Show All Plugins   ","home"],
-        ["   Show All Themes    ","home"],
-        ["    Show All Users    ","home"],
-        ["          Quit        ","home"]
+    "home" : [
+        ["Select WP Installation", "installs"],
+        ["     Theme Options    ","themes"],
+        ["    Plugin Options    ","plugins"],
+        ["     User Options     ","users"],
+        ["   WP Core Options    ", "core"],
+        ["          Quit        ","quit"]
+    ],
+    "installs" : [
+        ["      Home     ", "home"],
+        [" Theme Options ","themes"],
+        [" Plugin Options","plugins"],
+        [" User Options  ","users"],
+        ["WP Core Options", "core"],
+        ["      Quit     ","quit"]
+    ],
+    "themes" : [
+        ["Select WP Installation", "installs"],
+        ["          Home        ", "home"],
+        ["    Plugin Options    ","plugins"],
+        ["     User Options     ","users"],
+        ["   WP Core Options    ", "core"],
+        ["          Quit        ","quit"]
+    ],
+    "plugins" : [
+        ["Select WP Installation", "installs"],
+        ["     Theme Options    ","themes"],
+        ["          Home        ", "home"],
+        ["     User Options     ","users"],
+        ["   WP Core Options    ", "core"],
+        ["          Quit        ","quit"]
+    ],
+    "users" : [
+        ["Select WP Installation", "installs"],
+        ["     Theme Options    ","themes"],
+        ["    Plugin Options    ","plugins"],
+        ["          Home        ", "home"],
+        ["   WP Core Options    ", "core"],
+        ["          Quit        ","quit"]
+    ],
+    "core" : [
+        ["Select WP Installation", "installs"],
+        ["     Theme Options    ","themes"],
+        ["    Plugin Options    ","plugins"],
+        ["     User Options     ","users"],
+        ["          Home        ", "home"],
+        ["          Quit        ","quit"]
+    ],
+    "quit" : [
+        ["Select WP Installation", "installs"],
+        ["     Theme Options    ","themes"],
+        ["    Plugin Options    ","plugins"],
+        ["     User Options     ","users"],
+        ["   WP Core Options    ", "core"],
+        ["          Home        ", "home"]
     ]
 }

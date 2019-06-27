@@ -3,5 +3,35 @@
         "view_type" : "no_input",
         "title" : "",
         "sub_title" : ""
+    },
+    "installs" : {
+        "view_type" : "body_input",
+        "title" : "",
+        "sub_title" : ""
+    },
+    "plugins" : {
+        "view_type" : "body_input",
+        "title" : "",
+        "sub_title" : ""
+    },
+    "themes" : {
+        "view_type" : "body_input",
+        "title" : "",
+        "sub_title" : ""
+    },
+    "users" : {
+        "view_type" : "body_input",
+        "title" : "",
+        "sub_title" : ""
+    },
+    "core" : {
+        "view_type" : "body_input",
+        "title" : "",
+        "sub_title" : ""
+    },
+    "quit" : {
+        "view_type" : "body_input",
+        "title" : "",
+        "sub_title" : ""
     }
 }
