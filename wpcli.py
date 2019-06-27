@@ -8,21 +8,22 @@ class Installations():
         installations = []
         for root, dirs, files in os.walk(self.homedir, topdown=True):
             if 'wp-config.php' in files:
-                valid_wp_options = False
-                wp_db_check_success = False
+                x = {
+                    'directory' : root,
+                    'valid_wp_options' : False,
+                    'wp_db_check_success' : False,
+                    'wp_db_error' : ''
+                }
                 data,error = call.wpcli(root,['db','check'])
+                x['error'] = error
                 if data:
                     for line in data:
+                        L.debug('Line: %s, x: ',line, x)
                         if '_options' in line and 'OK' in line:
-                            valid_wp_options = True
+                            x['valid_wp_options'] = True
                         if 'Success: Database checked' in line:
-                            wp_db_check_success = True
-                installations.append({
-                    'directory' : root,
-                    'valid_wp_options' : valid_wp_options,
-                    'wp_db_check_success' : wp_db_check_success,
-                    'wp_db_error' : error
-                    })
+                            x['wp_db_check_success'] = True
+                installations.append(x)
                 #print(os.path.join(root, name))
         L.debug("WP Installation Directories for user %s: %s", self.username, installations)
 class Call():
