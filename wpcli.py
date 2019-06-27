@@ -26,7 +26,9 @@ class Call():
             stdout=subprocess.PIPE, 
             stderr=subprocess.PIPE
             ).communicate()
-        data = json.loads(reqOutput)
-        error = json.loads(reqError)
+        data = reqOutput
+        error = reqError
+        #data = json.loads(reqOutput)
+        #error = json.loads(reqError)
         self.L.debug("Data: %s \nError: %s", data,error)
 
