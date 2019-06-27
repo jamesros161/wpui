@@ -58,7 +58,7 @@ class installs(BodyWidget):
                 ])
             )
         installation_pile = U.Pile(installation_columns)
-        self.app.frame.set_contents('body',[installation_pile, None])
+        self.app.frame.contents.__setitem__('body',[installation_pile, None])
 class plugins(BodyWidget):
     def __init__(self,app,user_args=None,calling_view=None):
         BodyWidget.__init__(self,app)
