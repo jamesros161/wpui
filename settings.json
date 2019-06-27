@@ -9,9 +9,9 @@
             ["header","black","light gray"],
             ["footer",  "black",    "light gray"],
             ["body",    "white",    "default"],
-            ["bold",    "gold, bold" , "black"],
+            ["bold",    "light magenta, bold" , "black"],
             ["blue", "bold", "gold"],
-            ["highlight", "gold", "default"],
+            ["highlight", "light magenta", "default"],
             ["alert", "dark red, bold", "default"]
         ],
         "legend" : [
