@@ -5,18 +5,30 @@ class Installations():
         call = Call(L)
         self.username = getpass.getuser()
         self.homedir = os.path.expanduser('~%s' % self.username)
-        installation_dirs = []
+        installations = []
         for root, dirs, files in os.walk(self.homedir, topdown=True):
             if 'wp-config.php' in files:
-                call.wpcli(root,['db','check'])
-                installation_dirs.append(root)
+                valid_wp_options = False
+                wp_db_check_success = False
+                data,error = call.wpcli(root,['db','check'])
+                if data:
+                    for line in data:
+                        if '_options' in line and 'OK' in line:
+                            valid_wp_options = True
+                        if 'Success: Database checked' in line:
+                            wp_db_check_success = True
+                installations.append({
+                    'directory' : root,
+                    'valid_wp_options' : valid_wp_options,
+                    'wp_db_check_success' : wp_db_check_success,
+                    'wp_db_error' : error
+                    })
                 #print(os.path.join(root, name))
-        L.debug("WP Installation Directories for user %s: %s", self.username, installation_dirs)
+        L.debug("WP Installation Directories for user %s: %s", self.username, installations)
 class Call():
     def __init__(self,L):
         self.L = L
     def wpcli(self, path, arguments):
-
         popen_args = ['wp']
         for argument in arguments:
             popen_args.append(argument)
@@ -30,5 +42,6 @@ class Call():
         error = reqError
         #data = json.loads(reqOutput)
         #error = json.loads(reqError)
-        self.L.debug("Data: %s \nError: %s", data,error)
+        #self.L.debug("Data: %s \nError: %s", data,error)
+        return data,error
 
