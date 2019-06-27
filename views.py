@@ -26,6 +26,7 @@ class View():
         self.app = app
         self.app.L.debug("View %s Initialized", name)
         self.name = name
+        self.actions = Actions(app)
         self.view_type = view_json_data['view_type']
         self.title = view_json_data['title']
         self.sub_title = view_json_data['sub_title']
