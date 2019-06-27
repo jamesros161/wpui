@@ -41,7 +41,7 @@ class Installations():
         for installation in self.installations:
             db_check_data,db_check_error = self.call.wpcli(installation['directory'],['db','check'])
             if db_check_data:
-                data = data.splitlines()
+                data = db_check_data.splitlines()
                 for line in data:
                     if '_options' in line and 'OK' in line:
                         installation['valid_wp_options'] = True
@@ -52,9 +52,6 @@ class Installations():
                             installation['wp_db_check_success'] = True
             if db_check_error:
                 installation['wp_db_error'] = db_check_data
-    def show_installation_details(self):
-        for installation in self.installations:
-            self.app.L.debug("call_process stdout: %s", installation['call_process'].communicate())
 class Call():
     def __init__(self,L):
         self.L = L
