@@ -18,11 +18,14 @@ class Installations():
                 x['error'] = error
                 if data:
                     for line in data:
-                        L.debug('Line: %s, x: %s',line, x)
                         if '_options' in line and 'OK' in line:
+                            L.debug('Line: %s, x: %s',line, x)
                             x['valid_wp_options'] = True
+                            L.debug('Line: %s, x: %s',line, x)
                         if 'Success: Database checked' in line:
+                            L.debug('Line: %s, x: %s',line, x)
                             x['wp_db_check_success'] = True
+                            L.debug('Line: %s, x: %s',line, x)
                 installations.append(x)
                 #print(os.path.join(root, name))
         L.debug("WP Installation Directories for user %s: %s", self.username, installations)
