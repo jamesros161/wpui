@@ -44,7 +44,7 @@ class View():
             self.set_focus('body')
         if self.action_on_load:
             self.app.L.debug('This View has an action to be run on load')
-            action = getattr(Actions,self.action_on_load)
+            action = getattr(self.actions,self.action_on_load)
             action()
     def reload(self):
         self.show_header()
