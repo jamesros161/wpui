@@ -1,14 +1,16 @@
 import os, sys, getpass, subprocess, json
 from datetime import datetime
 class Installations():
-    def __init__(self,L):
-        L.debug('Installations Initialized')
-        call = Call(L)
+    def __init__(self,app):
+        self.app = app
+        self.app.L.debug('Installations Initialized')
+        call = Call(self.app.L)
         self.username = getpass.getuser()
         self.homedir = os.path.expanduser('~%s' % self.username)
         self.installations = self.get_installation_dirs()
         for installation in self.installations:
             installation['call_process'] = call.wpcli(installation['directory'],['db','check',])
+        self.get_installation_details()
                 #x['error'] = error
                 #if data:
                 #    data = data.splitlines()
@@ -36,6 +38,12 @@ class Installations():
                 }
                 installations.append(x)
         return installations
+    def get_installation_details(self):
+        for installation in self.installations:
+            self.app.loop.watch_file(installation['call_process'].stdout,self.show_installation_details)
+    def show_installation_details(self):
+        for installation in self.installations:
+            self.app.L.debug("call_process stdout: %s", os.read(installation['call_process'].stdout))
 class Call():
     def __init__(self,L):
         self.L = L

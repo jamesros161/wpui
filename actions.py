@@ -4,4 +4,4 @@ class Actions():
         self.app = app
     def get_installations(self):
         self.app.L.debug("get_installations Action Started")
-        installations = Installations(self.app.L)
+        installations = Installations(self.app)
