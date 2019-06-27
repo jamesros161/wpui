@@ -8,11 +8,9 @@ L = Log(S)
 from widgets import CustomWidgets
 W = CustomWidgets(S,L)
 from Application import App
-import wpcli
 def main():
     L.debug('Test Logging')
     app = App(S,L,W)
-    installations = wpcli.Installations(L)
     app.views.activate(app,'home')
     app.loop.run()
 

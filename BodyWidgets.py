@@ -6,6 +6,7 @@ from logmod import Log
 L = Log(S)
 from widgets import CustomWidgets, BoxButton
 W = CustomWidgets(S,L)
+import wpcli
 #PRIMARY BodyWidget Class#
 class BodyWidget():
     def __init__(self, app):
@@ -48,6 +49,7 @@ class plugins(BodyWidget):
     def define_widget(self, **kwargs): 
         self.app.L.debug(' kwargs : %s', kwargs)
         home_text = self.app.W.get_text('body', 'Installed Plugins for selected WP Installation','center')
+        installations = wpcli.Installations(L)
         return U.Filler(home_text, 'middle')
 
 class themes(BodyWidget):
