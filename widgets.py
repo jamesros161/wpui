@@ -182,7 +182,7 @@ class CustomWidgets():
             rline=rline,
             bline=bline,
             brcorner=brcorner)
-        return U.AttrMap(linebox, 'box_border')
+        return U.AttrMap(linebox, 'boxborder')
     def get_list_box(self,contents):
         """Creates a ListBox using a SimpleFocusListWalker, with the contents
            being a list of widgets
