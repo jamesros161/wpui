@@ -53,8 +53,8 @@ class installs(BodyWidget):
                 W.get_col_row([
                     W.get_text('body', installation['directory'], 'center'),
                     W.get_text('body', installation['home_url'], 'center'),
-                    W.get_text('body', installation['valid_wp_options'],'center'),
-                    W.get_text('body', installation['wp_db_check_success'],'center')
+                    W.get_text('body', str(installation['valid_wp_options']),'center'),
+                    W.get_text('body', str(installation['wp_db_check_success']),'center')
                 ])
             )
         installation_pile = U.Pile(installation_columns)
