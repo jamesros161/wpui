@@ -24,7 +24,7 @@ class Installations():
                 #            x['wp_db_check_success'] = True
                 #installations.append(x)
                 #print(os.path.join(root, name))
-        L.debug("WP Installation for user %s: %s", self.username, self.installations)
+        self.app.L.debug("WP Installation for user %s: %s", self.username, self.installations)
     def get_installation_dirs(self):
         installations = []
         for root,_,files in os.walk(self.homedir, topdown=True):
