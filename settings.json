@@ -12,7 +12,8 @@
             ["bold",    "light cyan, bold" , "black"],
             ["blue", "bold", "dark blue"],
             ["highlight", "light cyan", "default"],
-            ["alert", "dark red, bold", "default"]
+            ["alert", "dark red, bold", "default"],
+            ["boxborder", "light cyan", "default"]
         ],
         "legend" : [
             ["Prev. Screen", "Home"],

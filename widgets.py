@@ -171,7 +171,7 @@ class CustomWidgets():
             urwid.LineBox -- urwid.LineBox object
             FLOW / BOX WIDGET
         """
-        return U.LineBox(contents, 
+        linebox = U.LineBox(contents, 
             title=str(title),
             title_align='center',
             tlcorner=tlcorner,
@@ -182,6 +182,7 @@ class CustomWidgets():
             rline=rline,
             bline=bline,
             brcorner=brcorner)
+        return U.AttrMap(linebox, 'box_border')
     def get_list_box(self,contents):
         """Creates a ListBox using a SimpleFocusListWalker, with the contents
            being a list of widgets
