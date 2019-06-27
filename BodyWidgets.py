@@ -41,6 +41,8 @@ class installs(BodyWidget):
         self.app.L.debug(' kwargs : %s', kwargs)
         home_text = self.app.W.get_text('body', 'Obtaining List of available WordPress Installations','center')
         return U.Filler(home_text, 'middle')
+    def after_action(self,*args,**kwargs):
+        self.app.L.debug('args: %s, kwargs: %s', args,kwargs)
 
 class plugins(BodyWidget):
     def __init__(self,app,user_args=None,calling_view=None):
