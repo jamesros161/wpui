@@ -45,8 +45,7 @@ class View():
         if self.action_on_load:
             self.app.L.debug('This View has an action to be run on load')
             action = getattr(Actions,self.action_on_load)
-            self.action_thread = threading.Thread(target=action)
-            self.action_thread.start()
+            action()
     def reload(self):
         self.show_header()
         self.show_body()
