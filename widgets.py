@@ -20,7 +20,7 @@ class BoxButton(U.WidgetWrap):
             U.Text(self.bottom,align='center'),
         ])
 
-        self.widget = U.AttrMap(self.widget, '', 'highlight')
+        self.widget = U.AttrMap(self.widget, 'body', 'highlight')
 
         # self.widget = urwid.Padding(self.widget, 'center')
         # self.widget = urwid.Filler(self.widget)
