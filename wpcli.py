@@ -16,7 +16,7 @@ class Installations():
                     'wp_db_check_success' : False,
                     'wp_db_error' : ''
                 }
-                data,error = call.wpcli(root,['db','check','--skip-{plugin,theme}s'])
+                data,error = call.wpcli(root,['db','check',])
                 x['error'] = error
                 if data:
                     data = data.splitlines()
