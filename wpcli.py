@@ -1,6 +1,7 @@
 import os, sys, getpass, subprocess, json
 class Installations():
     def __init__(self,L):
+        L.debug('Installations Initialized')
         call = Call(L)
         self.username = getpass.getuser()
         self.homedir = os.path.expanduser('~%s' % self.username)
