@@ -51,6 +51,7 @@ class installs(BodyWidget):
         for installation in installations:
             installation_columns.append(
                 W.get_col_row([
+                    BoxButton(' + ', on_press=self.app.state.set_installation, user_data=installation),
                     W.get_text('body', installation['directory'], 'center'),
                     W.get_text('body', installation['home_url'], 'center'),
                     W.get_text('body', str(installation['valid_wp_options']),'center'),

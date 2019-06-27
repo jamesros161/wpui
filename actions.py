@@ -4,7 +4,8 @@ class Actions():
         self.app = app
     def get_installations(self):
         self.app.L.debug("get_installations Action Started")
-        installations = Installations(self.app)
+        if not hasattr(self,'installations'):
+            self.installations = Installations(self.app)
         active_view = self.app.state.active_view
         self.app.loop.event_loop.remove_enter_idle(active_view.action_handler)
-        self.app.views.installs.body.after_action(installations.installations)
+        self.app.views.installs.body.after_action(self.installations.installations)

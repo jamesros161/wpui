@@ -41,6 +41,7 @@ class State():
         self.view_count = -1
         self.view_chain = []
         self.view_chain_pos = -1
+        self.active_installation = None
     def update_state(self,state_prop,value):
         try:
             getattr(self,state_prop)
@@ -52,6 +53,8 @@ class State():
                 self.L.debug('App.State.%s updated to %s', state_prop, value.name)
             else:
                 self.L.debug('App.State.%s updated to %s', state_prop, value)
+    def set_installation(self,installation):
+        self.active_installation = installation
     def get_state(self,state_prop):
         try:
             getattr(self,state_prop)
