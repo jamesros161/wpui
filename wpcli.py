@@ -23,7 +23,7 @@ class Installations():
                     for line in data:
                         if '_options' in line and 'OK' in line:
                             x['valid_wp_options'] = True
-                            homedata,_ = call.wpcli(root,['option','get','home','--skip-{plugin,theme}s'])
+                            homedata,_ = call.wpcli(root,['option','get','home','--skip-plugins','--skip-themes'])
                             if homedata:
                                 x['home_url'] = homedata
                         if 'Success: Database checked' in line:
