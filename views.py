@@ -45,8 +45,7 @@ class View():
         if self.action_on_load:
             self.app.L.debug('This View has an action to be run on load')
             action = getattr(self.actions,self.action_on_load)
-            action_handler = self.app.loop.event_loop.enter_idle(action)
-            self.app.loop.event_loop.remove_enter_idle(action_handler)
+            self.action_handler = self.app.loop.event_loop.enter_idle(action)
     def reload(self):
         self.show_header()
         self.show_body()
