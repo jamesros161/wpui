@@ -7,8 +7,8 @@
     "display" : {
         "palette": [
             ["header","black","light gray"],
-            ["footer",  "cyan",    "light gray"],
-            ["body",    "cyan",    "default"],
+            ["footer",  "dark cyan",    "light gray"],
+            ["body",    "dark cyan",    "default"],
             ["bold",    "light cyan, bold" , "black"],
             ["blue", "bold", "dark blue"],
             ["highlight", "light cyan", "default"],
