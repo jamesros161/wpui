@@ -2,36 +2,44 @@
     "home" : {
         "view_type" : "no_input",
         "title" : "",
-        "sub_title" : ""
+        "sub_title" : "",
+        "action_on_load" : ""
     },
     "installs" : {
         "view_type" : "body_input",
         "title" : "",
-        "sub_title" : ""
+        "sub_title" : "",
+        "action_on_load" : "get_installations"
     },
     "plugins" : {
         "view_type" : "body_input",
         "title" : "",
-        "sub_title" : ""
+        "sub_title" : "",
+        "action_on_load" : ""
+
     },
     "themes" : {
         "view_type" : "body_input",
         "title" : "",
-        "sub_title" : ""
+        "sub_title" : "",
+        "action_on_load" : ""
     },
     "users" : {
         "view_type" : "body_input",
         "title" : "",
-        "sub_title" : ""
+        "sub_title" : "",
+        "action_on_load" : ""
     },
     "core" : {
         "view_type" : "body_input",
         "title" : "",
-        "sub_title" : ""
+        "sub_title" : "",
+        "action_on_load" : ""
     },
     "quit" : {
         "view_type" : "body_input",
         "title" : "",
-        "sub_title" : ""
+        "sub_title" : "",
+        "action_on_load" : ""
     }
 }

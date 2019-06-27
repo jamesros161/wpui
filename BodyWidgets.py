@@ -39,8 +39,7 @@ class installs(BodyWidget):
 
     def define_widget(self, **kwargs): 
         self.app.L.debug(' kwargs : %s', kwargs)
-        home_text = self.app.W.get_text('body', 'Select a WordPress Installation form the list Below','center')
-        installations = wpcli.Installations(self.app.L)
+        home_text = self.app.W.get_text('body', 'Obtaining List of available WordPress Installations','center')
         return U.Filler(home_text, 'middle')
 
 class plugins(BodyWidget):

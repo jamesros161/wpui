@@ -1,5 +1,6 @@
-import json, importlib, BodyWidgets
+import json, importlib, BodyWidgets, threading
 #BodyWidgets = importlib.import_module('BodyWidgets')
+from actions import Actions
 class Views():
     def __init__(self,app):
         self.app = app
@@ -28,6 +29,7 @@ class View():
         self.view_type = view_json_data['view_type']
         self.title = view_json_data['title']
         self.sub_title = view_json_data['sub_title']
+        self.action_on_load = view_json_data['action_on_load']
     def start(self):
         self.header = self.app.W.get_header(self.name,self.title,self.sub_title)
         self.footer = self.app.W.get_footer(self.name,self.app)
@@ -39,6 +41,9 @@ class View():
             self.set_focus('footer')
         else:
             self.set_focus('body')
+        if self.action_on_load:
+            action = getattr(Actions,self.action_on_load)
+            self.action_thread = threading.Thread(target=action)
     def reload(self):
         self.show_header()
         self.show_body()
