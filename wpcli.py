@@ -17,6 +17,7 @@ class Installations():
                 data,error = call.wpcli(root,['db','check'])
                 x['error'] = error
                 if data:
+                    data = data.splitlines()
                     for line in data:
                         if '_options' in line and 'OK' in line:
                             L.debug('Line: %s, x: %s',line, x)
