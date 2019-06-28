@@ -56,7 +56,7 @@ class Installations():
                         self.app.L.debug('Progress: %s', self.progress)
                         os.write(self.app.action_pipe,str(self.progress))
                         if homedata:
-                            installation['home_url'] = homedata
+                            installation['home_url'] = homedata.rstrip()
                         if 'Success: Database checked' in line:
                             installation['wp_db_check_success'] = True
             if db_check_error:
