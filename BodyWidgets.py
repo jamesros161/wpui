@@ -21,7 +21,12 @@ class BodyWidget(object):
         return U.Filler(home_text, 'middle')
     def update_progress_bar(self,progress):
         self.app.L.debug('Progress: %s', progress)
-        self.progress_bar.set_completion(int(progress))
+        if progress:
+            self.progress_bar.set_completion(int(progress))
+        else:
+            self.progress_bar.set_completion(100)
+            self.app.loop.draw_screen()
+
 
 """
 ADD SUBCLASSES HERE for each view's body
