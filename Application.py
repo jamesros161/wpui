@@ -53,8 +53,8 @@ class State():
                 self.L.debug('App.State.%s updated to %s', state_prop, value.name)
             else:
                 self.L.debug('App.State.%s updated to %s', state_prop, value)
-    def set_installation(self,installation):
-        self.active_installation = installation
+    def set_installation(self,obj,installation):
+        self.active_installation = installation        
     def get_state(self,state_prop):
         try:
             getattr(self,state_prop)
