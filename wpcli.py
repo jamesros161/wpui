@@ -114,7 +114,7 @@ class DatabaseInformation():
                                 'check_status': x[1]
                             }
                         )
-                self.db_info['check_tables']
+                self.db_info['check_tables'] = dbcheck_result_list
             if  dbcheck_error:
                 self.db_info['check_error'] = dbcheck_error.decode(encoding='UTF-8')
         self.app.L.debug('db_info: %s',self.db_info)
