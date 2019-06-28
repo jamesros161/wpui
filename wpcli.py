@@ -61,9 +61,9 @@ class Installations():
                             installation['home_url'] = homedata.rstrip()
                     if 'Success: Database checked' in line:
                         installation['wp_db_check_success'] = True
-                    if db_check_error:
-                        self.app.L.debug('Line: %s', line)
-                        installation['wp_db_error'] = db_check_error
+            if db_check_error:
+                self.app.L.debug('Line: %s', line)
+                installation['wp_db_error'] = db_check_error
 class Call():
     def __init__(self,L):
         self.L = L
