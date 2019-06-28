@@ -59,7 +59,10 @@ class State():
         if subtitle:
             self.app.S.display['subtitle'] = subtitle
             x = self.app.W.get_header('set_installation',None,subtitle)
-            self.app.frame.contents.__setitem__('header',[x,None])
+        else:
+            self.app.S.display['subtitle'] = None
+            x = self.app.W.get_header('set_installation',None,None)
+        self.app.frame.contents.__setitem__('header',[x,None])
     def get_state(self,state_prop):
         try:
             getattr(self,state_prop)
