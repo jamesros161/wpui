@@ -26,7 +26,6 @@ class BodyWidget(object):
         else:
             self.progress_bar.set_completion(100)
             self.app.loop.remove_watch_pipe(self.app.action_pipe)
-            self.app.loop.draw_screen()
 """
 ADD SUBCLASSES HERE for each view's body
 """
