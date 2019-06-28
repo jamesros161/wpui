@@ -157,6 +157,8 @@ class database(BodyWidget):
                     ('weight',2,W.get_blank_flow()),
                 ])
             )
+        db_info_pile = U.Pile(db_info_rows)
+        return U.Filler(db_info_pile,'middle')
 class plugins(BodyWidget):
     def __init__(self,app,user_args=None,calling_view=None):
         super(plugins,self).__init__(app)
