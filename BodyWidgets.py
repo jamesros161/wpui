@@ -106,6 +106,57 @@ class database(BodyWidget):
         main_pile = U.Pile([main_text,progress_row])
         self.app.action_pipe = self.app.loop.watch_pipe(self.update_progress_bar)
         return U.Filler(main_pile, 'middle')
+    def after_action(self,db_info):
+        db_info_rows = [
+            W.get_col_row([
+                ('weight',2,W.get_blank_flow()),
+                U.AttrMap(W.get_text('header','Database Information','center'),'header'),
+                ('weight',2,W.get_blank_flow()),
+            ]),
+            W.get_div()
+        ]
+        db_info_rows.append(
+            W.get_col_row([
+                ('weight',2,W.get_blank_flow()),
+                U.AttrMap(W.get_text('header','Database Name','center'),'header'),
+                U.AttrMap(W.get_text('header','Database Size','center'),'header'),
+                ('weight',2,W.get_blank_flow()),
+            ])
+        )
+        db_info_rows.append(
+            W.get_col_row([
+                ('weight',2,W.get_blank_flow()),
+                W.get_text('body',db_info['name'],'center'),
+                W.get_text('body',db_info['size'],'center'),
+                ('weight',2,W.get_blank_flow()),
+            ])
+        )
+        db_info_rows.append(W.get_div())
+        db_info_rows.append(
+            W.get_col_row([
+                ('weight',2,W.get_blank_flow()),
+                U.AttrMap(W.get_text('header','Database Table Check Results','center'),'header'),
+                ('weight',2,W.get_blank_flow()),
+            ])
+        )
+        db_info_rows.append(W.get_div())
+        db_info_rows.append(
+            W.get_col_row([
+                ('weight',2,W.get_blank_flow()),
+                U.AttrMap(W.get_text('header','Table Name','center'),'header'),
+                U.AttrMap(W.get_text('header','Check Satus','center'),'header'),
+                ('weight',2,W.get_blank_flow()),
+            ])
+        )
+        for table in db_info['check_tables']:
+            db_info_rows.append(
+                W.get_col_row([
+                    ('weight',2,W.get_blank_flow()),
+                    W.get_text('body',table['table_name'],'center'),
+                    W.get_text('body',db_info['check_status'],'center'),
+                    ('weight',2,W.get_blank_flow()),
+                ])
+            )
 class plugins(BodyWidget):
     def __init__(self,app,user_args=None,calling_view=None):
         super(plugins,self).__init__(app)
