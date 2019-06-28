@@ -17,7 +17,7 @@
         ["    WP Core    ", "core"],
         ["      Quit     ","quit"]
     ],
-    "databases" : [
+    "database" : [
         [" Installations ", "installs"],
         ["     Themes    ","themes"],
         ["      Home     ", "home"],
