@@ -43,19 +43,19 @@ class installs(BodyWidget):
         return U.Filler(home_text, 'middle')
     def after_action(self,installations):
         installation_columns = [W.get_col_row([
-            W.get_text('header', 'Location', 'center'),
-            W.get_text('header','Home URL', 'center'),
-            W.get_text('header','Valid wp_options Table','center'),
-            W.get_text('header','Passed wp_db_check','center')
+            (10,U.AttrMap(W.get_text('header', 'Location', 'center'),'header')),
+            U.AttrMap(W.get_text('header','Home URL', 'center'),'header'),
+            (18,U.AttrMap(W.get_text('header','Valid wp_options','center'),'header')),
+            (20,U.AttrMap(W.get_text('header','wp_db_check passed','center'),'header'))
         ])]
         for installation in installations:
             installation_columns.append(
                 W.get_col_row([
-                    BoxButton(' + ', on_press=self.app.state.set_installation, user_data=installation),
-                    W.get_text('body', installation['directory'], 'center'),
-                    W.get_text('body', installation['home_url'], 'center'),
-                    W.get_text('body', str(installation['valid_wp_options']),'center'),
-                    W.get_text('body', str(installation['wp_db_check_success']),'center')
+                    (10,BoxButton(' + ', on_press=self.app.state.set_installation, user_data=installation)),
+                    ('weight',2,W.get_text('body', installation['directory'], 'center')),
+                    ('weight',2,W.get_text('body', installation['home_url'], 'center')),
+                    (18,W.get_text('body', str(installation['valid_wp_options']),'center')),
+                    (20,W.get_text('body', str(installation['wp_db_check_success']),'center'))
                 ])
             )
         installation_pile = U.Pile(installation_columns)
