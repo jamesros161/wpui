@@ -52,7 +52,7 @@ class Installations():
                         installation['valid_wp_options'] = True
                         homedata,_ = self.call.wpcli(installation['directory'],['option','get','home','--skip-plugins','--skip-themes'])
                         progress = progress + progress_increments
-                        os.write(self.app.action_pipe,progress)
+                        os.write(self.app.action_pipe,str(progress))
                         if homedata:
                             installation['home_url'] = homedata
                         if 'Success: Database checked' in line:
