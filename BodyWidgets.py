@@ -162,7 +162,7 @@ class database(BodyWidget):
         ])
         filler = U.Filler(outer_pile,'middle')
         self.app.frame.contents.__setitem__('body',[filler, None])
-        #self.app.loop.draw_screen()
+        self.app.loop.draw_screen()
 class plugins(BodyWidget):
     def __init__(self,app,user_args=None,calling_view=None):
         super(plugins,self).__init__(app)
