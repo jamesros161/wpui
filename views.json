@@ -17,6 +17,36 @@
         "sub_title" : "",
         "action_on_load" : "get_database_information"
     },
+    "db_export" : {
+        "view_type" : "body_input",
+        "title" : "",
+        "sub_title" : "",
+        "action_on_load" : ""
+    },
+    "db_import" : {
+        "view_type" : "body_input",
+        "title" : "",
+        "sub_title" : "",
+        "action_on_load" : "db_import"
+    },
+    "db_optimize" : {
+        "view_type" : "no_display",
+        "title" : "",
+        "sub_title" : "",
+        "action_on_load" : "db_optimize"
+    },
+    "db_repair" : {
+        "view_type" : "no_display",
+        "title" : "",
+        "sub_title" : "",
+        "action_on_load" : "db_repair"
+    },
+    "db_search" : {
+        "view_type" : "body_input",
+        "title" : "",
+        "sub_title" : "",
+        "action_on_load" : ""
+    },
     "plugins" : {
         "view_type" : "body_input",
         "title" : "",

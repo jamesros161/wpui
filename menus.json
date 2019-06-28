@@ -18,12 +18,12 @@
         ["      Quit     ","quit"]
     ],
     "database" : [
-        [" Installations ", "installs"],
-        ["     Themes    ","themes"],
-        ["      Home     ", "home"],
-        ["    Plugins    ","plugins"],
-        ["     Users     ","users"],
-        ["    WP Core    ", "core"],
+        ["      Home     ","home"],
+        ["     Export    ","db_export"],
+        ["     Import    ","db_import"],
+        ["   Optimize    ","db_optimize"],
+        ["     Repair    ","db_repair"],
+        ["     Search    ","db_search"],
         ["      Quit     ","quit"]
     ],
     "themes" : [

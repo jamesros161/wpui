@@ -18,7 +18,7 @@ class BodyWidget(object):
         """Page displayed as Home Page for the application
         """
         self.app.L.debug(' kwargs : %s', kwargs)
-        home_text = self.app.W.get_text('body', 'Welcome to the best Exim Search Utility ever created.\nSelect an option below to begin.','center')
+        home_text = self.app.W.get_text('body', 'WP-CLI Like you have never WP-CLI\'d before!!!.\nSelect an option below to begin.','center')
         return U.Filler(home_text, 'middle')
     def update_progress_bar(self,progress):
         self.app.L.debug('Progress: %s', progress)
@@ -38,7 +38,7 @@ class home(BodyWidget):
 
     def define_widget(self, **kwargs): 
         self.app.L.debug(' kwargs : %s', kwargs)
-        home_text = self.app.W.get_text('body', 'Welcome to the best Exim Search Utility ever created.\nSelect an option below to begin.','center')
+        home_text = self.app.W.get_text('body', 'WP-CLI Like you have never WP-CLI\'d before!!!.\nSelect an option below to begin.','center')
         return U.Filler(home_text, 'middle')
 
 class installs(BodyWidget):
@@ -166,6 +166,46 @@ class database(BodyWidget):
         self.app.frame.contents.__setitem__('body',[filler, None])
         time.sleep(1)
         self.app.loop.draw_screen()
+class db_export(BodyWidget):
+    def __init__(self,app,user_args=None,calling_view=None):
+        super(db_export, self).__init__(app)
+
+    def define_widget(self, **kwargs): 
+        self.app.L.debug(' kwargs : %s', kwargs)
+        home_text = self.app.W.get_text('body', 'Welcome to the best Exim Search Utility ever created.\nSelect an option below to begin.','center')
+        return U.Filler(home_text, 'middle')
+class db_import(BodyWidget):
+    def __init__(self,app,user_args=None,calling_view=None):
+        super(db_import, self).__init__(app)
+
+    def define_widget(self, **kwargs): 
+        self.app.L.debug(' kwargs : %s', kwargs)
+        home_text = self.app.W.get_text('body', 'Welcome to the best Exim Search Utility ever created.\nSelect an option below to begin.','center')
+        return U.Filler(home_text, 'middle')
+class db_optimize(BodyWidget):
+    def __init__(self,app,user_args=None,calling_view=None):
+        super(db_optimize, self).__init__(app)
+
+    def define_widget(self, **kwargs): 
+        self.app.L.debug(' kwargs : %s', kwargs)
+        home_text = self.app.W.get_text('body', 'Welcome to the best Exim Search Utility ever created.\nSelect an option below to begin.','center')
+        return U.Filler(home_text, 'middle')
+class db_repair(BodyWidget):
+    def __init__(self,app,user_args=None,calling_view=None):
+        super(db_repair, self).__init__(app)
+
+    def define_widget(self, **kwargs): 
+        self.app.L.debug(' kwargs : %s', kwargs)
+        home_text = self.app.W.get_text('body', 'Welcome to the best Exim Search Utility ever created.\nSelect an option below to begin.','center')
+        return U.Filler(home_text, 'middle')
+class db_search(BodyWidget):
+    def __init__(self,app,user_args=None,calling_view=None):
+        super(db_search, self).__init__(app)
+
+    def define_widget(self, **kwargs): 
+        self.app.L.debug(' kwargs : %s', kwargs)
+        home_text = self.app.W.get_text('body', 'Welcome to the best Exim Search Utility ever created.\nSelect an option below to begin.','center')
+        return U.Filler(home_text, 'middle')
 class plugins(BodyWidget):
     def __init__(self,app,user_args=None,calling_view=None):
         super(plugins,self).__init__(app)
