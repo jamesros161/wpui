@@ -8,7 +8,7 @@ from widgets import CustomWidgets, BoxButton
 W = CustomWidgets(S,L)
 import wpcli
 #PRIMARY BodyWidget Class#
-class BodyWidget():
+class BodyWidget(object):
     def __init__(self, app):
         self.progress_bar = U.ProgressBar('body','progressbar',current=0,done=100)
         self.app = app
