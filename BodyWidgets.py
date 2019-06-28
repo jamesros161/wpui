@@ -78,7 +78,7 @@ class installs(BodyWidget):
                 ])
             else:
                 installation_rows.append(
-                    ('weight',4,W.get_text('body',str(installation['wp_db_error']),'center'))
+                    ('weight',5,W.get_text('body',str(installation['wp_db_error']),'center'))
                 )
             installation_columns.append(
                 W.get_col_row(installation_rows)
