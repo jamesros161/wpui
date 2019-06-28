@@ -60,7 +60,7 @@ class CustomWidgets():
     def get_div(self,div_char=' '):
         return U.Divider(div_char=div_char,top=0,bottom=0)
     def get_header(self,name,title,subtitle):
-        self.L.debug("Title: %s,  Subtitle: %s")
+        self.L.debug("Title: %s,  Subtitle: %s", title,subtitle)
         if title:
             self.title = self.get_text('bold',title,'center')
         else:
