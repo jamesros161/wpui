@@ -110,8 +110,7 @@ class database(BodyWidget):
         db_info_rows = [
             W.get_col_row([
                 U.AttrMap(W.get_text('header','Database Information','center'),'header')
-            ]),
-            W.get_div()
+            ])
         ]
         db_info_rows.append(
             W.get_col_row([
@@ -119,6 +118,7 @@ class database(BodyWidget):
                 U.AttrMap(W.get_text('header','Database Size','center'),'header')
             ])
         )
+        db_info_rows.append(W.get_div())
         db_info_rows.append(
             W.get_col_row([
                 W.get_text('body',db_info['name'],'center'),
@@ -131,11 +131,11 @@ class database(BodyWidget):
                 U.AttrMap(W.get_text('header','Database Table Check Results','center'),'header')
             ])
         )
-        db_info_rows.append(W.get_div())
+        
         db_info_rows.append(
             W.get_col_row([
-                U.AttrMap(W.get_text('header','Table Name','left'),'header'),
-                (16,U.AttrMap(W.get_text('header','Check Status','center'),'header'))
+                U.AttrMap(W.get_text('header','   Table Name','left'),'header'),
+                (18,U.AttrMap(W.get_text('header','Check Status   ','center'),'header'))
             ])
         )
         for table in db_info['check_tables']:
