@@ -71,7 +71,10 @@ class DatabaseInformation():
         self.app.L.debug('Installations Initialized')
         self.call = Call(self.app.L)
         self.installation = self.app.state.active_installation
-        self.db_size = None
+        self.db_info = {
+            'name': None,
+            'size': None
+        }
         self.get_db_size()
     def get_db_size(self):
         path = self.installation['directory']
@@ -80,15 +83,15 @@ class DatabaseInformation():
         self.progress = self.progress + progress_increments
         self.app.L.debug('Progress: %s', self.progress)
         os.write(self.app.action_pipe,str(self.progress))
-        result, error = self.call.wpcli(path,['db','size','--human-readable','--format=json'])
-        if result:
-            result_json = json.loads(result)
+        dbsize_result, dbsize_error = self.call.wpcli(path,['db','size','--human-readable','--format=json'])
+        if dbsize_result:
+            result_json = json.loads(dbsize_result)
             self.app.L.debug('wp_db_name: %s, wp_db_size:%s',result_json[0]['Name'],result_json[0]['Size'])
-        if error:
-            error_json = json.loads(error)
+        if dbsize_error:
+            error_json = json.loads(dbsize_error)
             self.app.L.debug('wp_db_size error:%s', error_json)
-        self.db_name = result_json[0]['Name']
-        self.db_size = result_json[0]['Size']
+        self.db_info['name'] = result_json[0]['Name']
+        self.db_info['size'] = result_json[0]['Size']
         os.close(self.app.action_pipe)
 class Call():
     def __init__(self,L):
