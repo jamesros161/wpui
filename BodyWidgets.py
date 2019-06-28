@@ -10,9 +10,9 @@ import wpcli
 #PRIMARY BodyWidget Class#
 class BodyWidget():
     def __init__(self, app):
+        self.progress_bar = U.ProgressBar('body','progressbar',current=0,done=100)
         self.app = app
         self.widget = self.define_widget()
-        self.progress_bar = U.ProgressBar('body','progressbar',current=0,done=100)
     def define_widget(self, **kwargs): 
         """Page displayed as Home Page for the application
         """
@@ -30,7 +30,7 @@ ADD SUBCLASSES HERE for each view's body
 
 class home(BodyWidget):
     def __init__(self,app,user_args=None,calling_view=None):
-        super().__init__()
+        super().__init__(app)
 
     def define_widget(self, **kwargs): 
         self.app.L.debug(' kwargs : %s', kwargs)
@@ -39,7 +39,7 @@ class home(BodyWidget):
 
 class installs(BodyWidget):
     def __init__(self,app,user_args=None,calling_view=None):
-        super().__init__()
+        super().__init__(app)
 
     def define_widget(self, **kwargs): 
         self.app.L.debug(' kwargs : %s', kwargs)
@@ -75,7 +75,7 @@ class installs(BodyWidget):
         self.app.frame.contents.__setitem__('body',[filler, None])
 class plugins(BodyWidget):
     def __init__(self,app,user_args=None,calling_view=None):
-        super().__init__()
+        super().__init__(app)
 
     def define_widget(self, **kwargs): 
         self.app.L.debug(' kwargs : %s', kwargs)
@@ -84,7 +84,7 @@ class plugins(BodyWidget):
 
 class themes(BodyWidget):
     def __init__(self,app,user_args=None,calling_view=None):
-        super().__init__()
+        super().__init__(app)
 
     def define_widget(self, **kwargs): 
         self.app.L.debug(' kwargs : %s', kwargs)
@@ -93,7 +93,7 @@ class themes(BodyWidget):
 
 class users(BodyWidget):
     def __init__(self,app,user_args=None,calling_view=None):
-        super().__init__()
+        super().__init__(app)
 
     def define_widget(self, **kwargs): 
         self.app.L.debug(' kwargs : %s', kwargs)
@@ -102,7 +102,7 @@ class users(BodyWidget):
 
 class core(BodyWidget):
     def __init__(self,app,user_args=None,calling_view=None):
-        super().__init__()
+        super().__init__(app)
 
     def define_widget(self, **kwargs): 
         self.app.L.debug(' kwargs : %s', kwargs)
@@ -111,7 +111,7 @@ class core(BodyWidget):
 
 class quit(BodyWidget):
     def __init__(self,app,user_args=None,calling_view=None):
-        super().__init__()
+        super().__init__(app)
 
     def define_widget(self): 
         self.app.L.debug(' Body Widget View Name: %s', self.app.state.active_view.name)
