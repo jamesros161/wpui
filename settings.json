@@ -6,7 +6,7 @@
         },
     "display" : {
         "palette": [
-            ["header","black","light gray"],
+            ["header","black","dark cyan"],
             ["footer",  "dark cyan",    "light gray"],
             ["body",    "dark cyan",    "default"],
             ["bold",    "light cyan, bold" , "black"],
@@ -14,7 +14,7 @@
             ["highlight", "light cyan", "default"],
             ["alert", "dark red, bold", "default"],
             ["boxborder", "light cyan", "default"],
-            ["progressbar", "black", "light cyan"]
+            ["progressbar", "black", "dark cyan"]
         ],
         "legend" : [
             ["Prev. Screen", "Home"],
