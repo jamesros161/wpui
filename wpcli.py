@@ -43,20 +43,20 @@ class Installations():
         progress_sections = 100 / len(self.installations)
         progress_increments = progress_sections / 2
         for installation in self.installations:
-            db_check_data,db_check_error = self.call.wpcli(installation['directory'],['db','check'])
             self.progress = self.progress + progress_increments
             self.app.L.debug('Progress: %s', self.progress)
             os.write(self.app.action_pipe,str(self.progress))
+            db_check_data,db_check_error = self.call.wpcli(installation['directory'],['db','check'])
             if db_check_data:
                 data = db_check_data.splitlines()
                 for line in data:
                     if '_options' in line and 'OK' in line:
                         self.app.L.debug('Line: %s', line)
                         installation['valid_wp_options'] = True
-                        homedata,_ = self.call.wpcli(installation['directory'],['option','get','home','--skip-plugins','--skip-themes'])
                         self.progress = self.progress + progress_increments
                         self.app.L.debug('Progress: %s', self.progress)
                         os.write(self.app.action_pipe,str(self.progress))
+                        homedata,_ = self.call.wpcli(installation['directory'],['option','get','home','--skip-plugins','--skip-themes'])
                         if homedata:
                             installation['home_url'] = homedata.rstrip()
                     if 'Success: Database checked' in line:
@@ -64,6 +64,7 @@ class Installations():
             if db_check_error:
                 self.app.L.debug('Line: %s', line)
                 installation['wp_db_error'] = db_check_error
+        os.close(self.app.action_pipe)
 class Call():
     def __init__(self,L):
         self.L = L
