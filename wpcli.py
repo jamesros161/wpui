@@ -81,8 +81,14 @@ class DatabaseInformation():
         self.app.L.debug('Progress: %s', self.progress)
         os.write(self.app.action_pipe,str(self.progress))
         result, error = self.call.wpcli(path,['db','size','--human-readable','--format=json'])
-        self.app.L.debug('wp_db_size result: %s, error:%s', result,error)
-        self.db_size =  result
+        if result:
+            result_json = json.loads(result)
+            self.app.L.debug('wp_db_name: %s, wp_db_size:%s',result_json[0]['Name'],result[0]['Size'])
+        if error:
+            error_json = json.loads(error)
+            self.app.L.debug('wp_db_size error:%s', error_json)
+        self.db_name = result_json[0]['Name']
+        self.db_size = result_json[0]['Size']
         os.close(self.app.action_pipe)
 class Call():
     def __init__(self,L):
