@@ -55,9 +55,11 @@ class State():
                 self.L.debug('App.State.%s updated to %s', state_prop, value)
     def set_installation(self,obj,installation):
         self.active_installation = installation
-        self.app.S.display['subtitle'] = self.active_installation
-        x = self.app.W.get_header('set_installation',None,self.active_installation['home_url'])
-        self.app.frame.contents.__setitem__('header',[x,None])
+        subtitle = self.active_installation['home_url']
+        if subtitle:
+            self.app.S.display['subtitle'] = subtitle
+            x = self.app.W.get_header('set_installation',None,subtitle)
+            self.app.frame.contents.__setitem__('header',[x,None])
     def get_state(self,state_prop):
         try:
             getattr(self,state_prop)
