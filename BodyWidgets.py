@@ -40,7 +40,12 @@ class installs(BodyWidget):
     def define_widget(self, **kwargs): 
         self.app.L.debug(' kwargs : %s', kwargs)
         main_text = self.app.W.get_text('body', 'Obtaining List of available WordPress Installations','center')
-        self.progress_bar = U.ProgressBar('body','progressbar',current=0,done=100)
+        self.progress_bar = U.ProgressBar('body','progressbar',current=0,done=100),
+        W.get_col_row([
+            ('weight',2,W.get_blank_flow()),
+            self.progress_bar,
+            ('weight',2,W.get_blank_flow())
+        ])
         main_pile = U.Pile([main_text,self.progress_bar])
         self.app.action_pipe = self.app.loop.watch_pipe(self.update_progress_bar)
         return U.Filler(main_pile, 'middle')
