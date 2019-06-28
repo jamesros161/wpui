@@ -43,8 +43,9 @@ class installs(BodyWidget):
         return U.Filler(home_text, 'middle')
     def after_action(self,installations):
         installation_columns = [W.get_col_row([
-            (10,U.AttrMap(W.get_text('header', 'Location', 'center'),'header')),
-            U.AttrMap(W.get_text('header','Home URL', 'center'),'header'),
+            (10,U.AttrMap(W.get_div(),'header')),
+            ('weight',2,U.AttrMap(W.get_text('header', 'Location', 'center'),'header')),
+            ('weight',2,U.AttrMap(W.get_text('header','Home URL', 'center'),'header')),
             (18,U.AttrMap(W.get_text('header','Valid wp_options','center'),'header')),
             (20,U.AttrMap(W.get_text('header','wp_db_check passed','center'),'header'))
         ])]
