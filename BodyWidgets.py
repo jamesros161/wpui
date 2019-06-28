@@ -134,15 +134,19 @@ class database(BodyWidget):
         
         db_info_rows.append(
             W.get_col_row([
-                U.AttrMap(W.get_text('header','   Table Name','left'),'header'),
-                (18,U.AttrMap(W.get_text('header','Check Status   ','center'),'header'))
+                (5,U.AttrMap(W.get_blank_flow(),'header')),
+                U.AttrMap(W.get_text('header','Table Name','left'),'header'),
+                (18,U.AttrMap(W.get_text('header','Check Status','center'),'header')),
+                (5,U.AttrMap(W.get_blank_flow(),'header'))
             ])
         )
         for table in db_info['check_tables']:
             db_info_rows.append(
                 W.get_col_row([
+                    (5,W.get_blank_flow()),
                     W.get_text('body',table['table_name'],'left'),
-                    (16,W.get_text('body',table['check_status'],'center'))
+                    (16,W.get_text('body',table['check_status'],'center')),
+                    (5,W.get_blank_flow())
                 ])
             )
         db_info_pile = U.Pile(db_info_rows)
