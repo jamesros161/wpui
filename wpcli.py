@@ -84,7 +84,7 @@ class DatabaseInformation():
         self.progress = self.progress + progress_increments
         self.app.L.debug('Progress: %s', self.progress)
         os.write(self.app.action_pipe,str(self.progress))
-        dbsize_result, dbsize_error = self.call.wpcli(path,['db','size','--human-readable','--format=json'])
+        dbsize_result, dbsize_error = self.call.wpcli(path,['db','size','--human-readable','--format=json','--no-color'])
         if dbsize_result:
             result_json = json.loads(dbsize_result)
             self.app.L.debug('wp_db_name: %s, wp_db_size:%s',result_json[0]['Name'],result_json[0]['Size'])
