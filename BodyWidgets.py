@@ -66,7 +66,7 @@ class installs(BodyWidget):
                 ('weight',2,W.get_text('body', installation['directory'], 'center'))
             ]
             L.debug('valid_wp_options: %s', installation['valid_wp_options'])
-            if installation['valid_wp_options'] == "True":
+            if installation['valid_wp_options'] == True:
                 installation_rows.extend([
                     ('weight',2,W.get_text('body', installation['home_url'], 'center')),
                     (18,W.get_text('body', str(installation['valid_wp_options']),'center')),
