@@ -9,7 +9,6 @@ class Installations():
         self.homedir = os.path.expanduser('~%s' % self.username)
         self.installations = self.get_installation_dirs()
         self.get_installation_details()
-        self.get_installation_details()
                 #x['error'] = error
                 #if data:
                 #    data = data.splitlines()
