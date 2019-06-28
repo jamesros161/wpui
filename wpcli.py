@@ -101,8 +101,17 @@ class DatabaseInformation():
         os.write(self.app.action_pipe,str(self.progress))
         if dbsize_result:
             dbcheck_result, dbcheck_error = self.call.wpcli(path,['db','check'])
-            self.app.L.debug('wp_db_check results: %s',dbcheck_result)
-
+            dbcheck_result_list  = []
+            for line in dbcheck_result.splitlines():
+                if self.db_info['name'] in line:
+                    x = line.split()
+                    dbcheck_result_list.append(
+                        {
+                            'table_name': x[0],
+                            'check_status': x[1]
+                        }
+                    )
+            self.app.L.debug('wp_db_check results: %s',dbcheck_result_list)
         os.close(self.app.action_pipe)
 class Call():
     def __init__(self,L):
