@@ -1,4 +1,5 @@
-import json, importlib, BodyWidgets, threading
+import json, importlib, BodyWidgets
+from threading import Thread
 #BodyWidgets = importlib.import_module('BodyWidgets')
 from actions import Actions
 class Views():
@@ -45,7 +46,8 @@ class View():
         if self.action_on_load:
             self.app.L.debug('This View has an action to be run on load')
             self.action = getattr(self.actions,self.action_on_load)
-            self.action_handler = self.app.loop.event_loop.enter_idle(self.action)
+            self.action_thread = Thread(target=self.action,name='action_thread')
+            self.action_thread.start()
     def reload(self):
         self.show_header()
         self.show_body()

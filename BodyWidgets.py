@@ -39,8 +39,11 @@ class installs(BodyWidget):
 
     def define_widget(self, **kwargs): 
         self.app.L.debug(' kwargs : %s', kwargs)
-        home_text = self.app.W.get_text('body', 'Obtaining List of available WordPress Installations','center')
-        return U.Filler(home_text, 'middle')
+        main_text = self.app.W.get_text('body', 'Obtaining List of available WordPress Installations','center')
+        self.progress_bar = U.ProgressBar('body','body',current=0,done=100)
+        main_pile = U.Pile([main_text,self.progress_bar])
+        self.app.action_pipe = self.app.loop.watch_pipe(self.update_progress_bar)
+        return U.Filler(main_pile, 'middle')
     def after_action(self,installations):
         installation_columns = [W.get_col_row([
             (10,U.AttrMap(W.get_div(),'header')),
@@ -63,6 +66,8 @@ class installs(BodyWidget):
         filler = U.Filler(installation_pile, 'middle')
         self.app.frame.contents.__setitem__('body',[filler, None])
         self.app.loop.draw_screen()
+    def update_progress_bar(self,progress):
+        self.progress_bar.set_completion(progress)
 class plugins(BodyWidget):
     def __init__(self,app,user_args=None,calling_view=None):
         BodyWidget.__init__(self,app)

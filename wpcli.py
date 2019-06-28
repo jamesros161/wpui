@@ -38,14 +38,21 @@ class Installations():
                 installations.append(x)
         return installations
     def get_installation_details(self):
+        progress = 0
+        progress_sections = 100 / len(self.installations)
+        progress_increments = progress_sections / 2
         for installation in self.installations:
             db_check_data,db_check_error = self.call.wpcli(installation['directory'],['db','check'])
+            progress = progress + progress_increments
+            os.write(self.app.action_pipe,progress)
             if db_check_data:
                 data = db_check_data.splitlines()
                 for line in data:
                     if '_options' in line and 'OK' in line:
                         installation['valid_wp_options'] = True
                         homedata,_ = self.call.wpcli(installation['directory'],['option','get','home','--skip-plugins','--skip-themes'])
+                        progress = progress + progress_increments
+                        os.write(self.app.action_pipe,progress)
                         if homedata:
                             installation['home_url'] = homedata
                         if 'Success: Database checked' in line:
