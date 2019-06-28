@@ -117,7 +117,7 @@ class DatabaseInformation():
                 self.db_info['check_tables'] = dbcheck_result_list
             if  dbcheck_error:
                 self.db_info['check_error'] = dbcheck_error.decode(encoding='UTF-8')
-        self.app.L.debug('db_info: %s',self.db_info)
+        #self.app.L.debug('db_info: %s',self.db_info)
         os.close(self.app.action_pipe)
 class Call():
     def __init__(self,L):

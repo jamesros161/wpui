@@ -13,5 +13,6 @@ class Actions():
         self.app.L.debug("get_database_information Action Started")
         if not hasattr(self,'database_information'):
             self.database_information = DatabaseInformation(self.app)
+        self.app.L.debug('db_info: %s', self.database_information.db_info)
         self.app.views.database.body.after_action(self.database_information.db_info)
         #active_view = self.app.state.active_view
