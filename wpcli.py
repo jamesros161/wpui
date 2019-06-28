@@ -44,7 +44,7 @@ class Installations():
         for installation in self.installations:
             db_check_data,db_check_error = self.call.wpcli(installation['directory'],['db','check'])
             progress = progress + progress_increments
-            os.write(self.app.action_pipe,progress)
+            os.write(self.app.action_pipe,str(progress))
             if db_check_data:
                 data = db_check_data.splitlines()
                 for line in data:
