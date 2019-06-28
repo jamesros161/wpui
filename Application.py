@@ -56,7 +56,7 @@ class State():
     def set_installation(self,obj,installation):
         self.active_installation = installation
         if self.active_installation['home_url']:
-            subtitle = self.active_installation['home_url']
+            subtitle = self.active_installation['directory'] + ' - ' + self.active_installation['home_url']
         else:
             subtitle = self.active_installation['directory']
         self.app.S.display['subtitle'] = subtitle
