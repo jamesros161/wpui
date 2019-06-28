@@ -7,6 +7,7 @@ L = Log(S)
 from widgets import CustomWidgets, BoxButton
 W = CustomWidgets(S,L)
 import wpcli
+import time
 #PRIMARY BodyWidget Class#
 class BodyWidget(object):
     def __init__(self, app):
@@ -90,6 +91,7 @@ class installs(BodyWidget):
         installation_pile = U.Pile(installation_columns)
         filler = U.Filler(installation_pile, 'middle')
         self.app.frame.contents.__setitem__('body',[filler, None])
+        time.sleep(1)
         self.app.loop.draw_screen()
 class database(BodyWidget):
     def __init__(self,app,user_args=None,calling_view=None):
@@ -162,6 +164,7 @@ class database(BodyWidget):
         ])
         filler = U.Filler(outer_pile,'middle')
         self.app.frame.contents.__setitem__('body',[filler, None])
+        time.sleep(1)
         self.app.loop.draw_screen()
 class plugins(BodyWidget):
     def __init__(self,app,user_args=None,calling_view=None):
