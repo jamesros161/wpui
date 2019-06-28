@@ -55,7 +55,7 @@ class installs(BodyWidget):
     def after_action(self,installations):
         location_list = []
         for installation in installations:
-            location_list.append(len(installation['location']))
+            location_list.append(len(installation['directory']))
         location_list.sort(reverse=True)
         location_width = location_list[0]
         installation_columns = [W.get_col_row([
