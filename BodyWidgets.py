@@ -65,13 +65,13 @@ class installs(BodyWidget):
                 (10,BoxButton(' + ', on_press=self.app.state.set_installation, user_data=installation)),
                 ('weight',2,W.get_text('body', installation['directory'], 'center'))
             ]
-            if installation['home_url'] and installation['valid_wp_options']:
+            if installation['home_url'] and installation['valid_wp_options'] == "True":
                 installation_rows.extend([
                     ('weight',2,W.get_text('body', installation['home_url'], 'center')),
                     (18,W.get_text('body', str(installation['valid_wp_options']),'center')),
                     (20,W.get_text('body', str(installation['wp_db_check_success']),'center'))
                 ])
-            if installation['home_url'] and not installation['valid_wp_options']:
+            if installation['home_url'] and not installation['valid_wp_options'] == "True":
                 installation_rows.extend([
                     ('weight',2,W.get_text('body', installation['home_url'], 'center')),
                     W.get_text('body',str(installation['wp_db_error']),'center')
