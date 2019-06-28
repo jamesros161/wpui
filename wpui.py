@@ -1,4 +1,4 @@
-#!/usr/bin/python3.6
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 PYTHONIOENCODING="utf-8"
 from settings import Settings
