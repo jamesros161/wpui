@@ -20,6 +20,12 @@ class Views():
         if not 'home' in activating_view.name and not 'installs' in activating_view.name and not 'quit' in activating_view.name:
             if not self.app.state.active_installation:
                 self.app.views.activate(app,'installs')
+            else:
+                if not "no_view_chain" in activating_view.view_type:
+                    self.state.view_chain_pos += 1
+                    self.state.set_view(activating_view)
+                #self.state.set_view(activating_view)
+                activating_view.start()
         else:
             if not "no_view_chain" in activating_view.view_type:
                 self.state.view_chain_pos += 1
