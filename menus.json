@@ -1,58 +1,74 @@
 {
     "home" : [
-        ["Select WP Installation", "installs"],
-        ["     Theme Options    ","themes"],
-        ["    Plugin Options    ","plugins"],
-        ["     User Options     ","users"],
-        ["   WP Core Options    ", "core"],
-        ["          Quit        ","quit"]
+        [" Installations ", "installs"],
+        ["     Themes    ","themes"],
+        ["   Databases   ","themes"],
+        ["    Plugins    ","plugins"],
+        ["     Users     ","users"],
+        ["    WP Core    ", "core"],
+        ["      Quit     ","quit"]
     ],
     "installs" : [
         ["      Home     ", "home"],
-        [" Theme Options ","themes"],
-        [" Plugin Options","plugins"],
-        [" User Options  ","users"],
-        ["WP Core Options", "core"],
+        ["     Themes    ","themes"],
+        ["   Databases   ","themes"],
+        ["    Plugins    ","plugins"],
+        ["     Users     ","users"],
+        ["    WP Core    ", "core"],
+        ["      Quit     ","quit"]
+    ],
+    "databases" : [
+        [" Installations ", "installs"],
+        ["     Themes    ","themes"],
+        ["      Home     ", "home"],
+        ["    Plugins    ","plugins"],
+        ["     Users     ","users"],
+        ["    WP Core    ", "core"],
         ["      Quit     ","quit"]
     ],
     "themes" : [
-        ["Select WP Installation", "installs"],
-        ["          Home        ", "home"],
-        ["    Plugin Options    ","plugins"],
-        ["     User Options     ","users"],
-        ["   WP Core Options    ", "core"],
-        ["          Quit        ","quit"]
+        [" Installations ", "installs"],
+        ["      Home     ", "home"],
+        ["   Databases   ","themes"],
+        ["    Plugins    ","plugins"],
+        ["     Users     ","users"],
+        ["    WP Core    ", "core"],
+        ["      Quit     ","quit"]
     ],
     "plugins" : [
-        ["Select WP Installation", "installs"],
-        ["     Theme Options    ","themes"],
-        ["          Home        ", "home"],
-        ["     User Options     ","users"],
-        ["   WP Core Options    ", "core"],
-        ["          Quit        ","quit"]
+        [" Installations ", "installs"],
+        ["     Themes    ","themes"],
+        ["   Databases   ","themes"],
+        ["      Home     ", "home"],
+        ["     Users     ","users"],
+        ["    WP Core    ", "core"],
+        ["      Quit     ","quit"]
     ],
     "users" : [
-        ["Select WP Installation", "installs"],
-        ["     Theme Options    ","themes"],
-        ["    Plugin Options    ","plugins"],
-        ["          Home        ", "home"],
-        ["   WP Core Options    ", "core"],
-        ["          Quit        ","quit"]
+        [" Installations ", "installs"],
+        ["     Themes    ","themes"],
+        ["   Databases   ","themes"],
+        ["    Plugins    ","plugins"],
+        ["      Home     ", "home"],
+        ["    WP Core    ", "core"],
+        ["      Quit     ","quit"]
     ],
     "core" : [
-        ["Select WP Installation", "installs"],
-        ["     Theme Options    ","themes"],
-        ["    Plugin Options    ","plugins"],
-        ["     User Options     ","users"],
-        ["          Home        ", "home"],
-        ["          Quit        ","quit"]
+        [" Installations ", "installs"],
+        ["     Themes    ","themes"],
+        ["   Databases   ","themes"],
+        ["    Plugins    ","plugins"],
+        ["     Users     ","users"],
+        ["      Home     ", "home"],
+        ["      Quit     ","quit"]
     ],
     "quit" : [
-        ["Select WP Installation", "installs"],
-        ["     Theme Options    ","themes"],
-        ["    Plugin Options    ","plugins"],
-        ["     User Options     ","users"],
-        ["   WP Core Options    ", "core"],
-        ["          Home        ", "home"]
+        [" Installations ", "installs"],
+        ["     Themes    ","themes"],
+        ["   Databases   ","themes"],
+        ["    Plugins    ","plugins"],
+        ["     Users     ","users"],
+        ["    WP Core    ", "core"],
+        ["      Home     ", "home"]
     ]
 }

@@ -1,4 +1,4 @@
-from wpcli import Installations
+from wpcli import Installations, DatabaseInformation
 class Actions():
     def __init__(self,app):
         self.app = app
@@ -9,3 +9,8 @@ class Actions():
         active_view = self.app.state.active_view
         #self.app.loop.event_loop.remove_enter_idle(active_view.action_handler)
         self.app.views.installs.body.after_action(self.installations.installations)
+    def get_database_information(self):
+        self.app.L.debug("get_database_information Action Started")
+        if not hasattr(self,'database_information'):
+            self.database_information = DatabaseInformation(self.app)
+        active_view = self.app.state.active_view

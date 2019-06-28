@@ -91,6 +91,21 @@ class installs(BodyWidget):
         filler = U.Filler(installation_pile, 'middle')
         self.app.frame.contents.__setitem__('body',[filler, None])
         self.app.loop.draw_screen()
+class database(BodyWidget):
+    def __init__(self,app,user_args=None,calling_view=None):
+        super(database,self).__init__(app)
+
+    def define_widget(self, **kwargs): 
+        self.app.L.debug(' kwargs : %s', kwargs)
+        main_text = self.app.W.get_text('body', 'Polling for Database Information','center')
+        progress_row = W.get_col_row([
+            ('weight',2,W.get_blank_flow()),
+            self.progress_bar,
+            ('weight',2,W.get_blank_flow())
+        ])
+        main_pile = U.Pile([main_text,progress_row])
+        self.app.action_pipe = self.app.loop.watch_pipe(self.update_progress_bar)
+        return U.Filler(main_pile, 'middle')
 class plugins(BodyWidget):
     def __init__(self,app,user_args=None,calling_view=None):
         super(plugins,self).__init__(app)

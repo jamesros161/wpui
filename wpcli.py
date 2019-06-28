@@ -65,6 +65,25 @@ class Installations():
                 self.app.L.debug('Line: %s', line)
                 installation['wp_db_error'] = db_check_error
         os.close(self.app.action_pipe)
+class DatabaseInformation():
+    def __init__(self,app):
+        self.app = app
+        self.app.L.debug('Installations Initialized')
+        self.call = Call(self.app.L)
+        self.installation = self.app.state.active_installation
+        self.db_size = None
+        self.get_db_size()
+    def get_db_size(self):
+        path = self.installation['directory']
+        self.progress = 0
+        progress_increments = 100 / 1
+        self.progress = self.progress + progress_increments
+        self.app.L.debug('Progress: %s', self.progress)
+        os.write(self.app.action_pipe,str(self.progress))
+        result, error = self.call.wpcli(path,['db','size'])
+        self.app.L.debug('wp_db_size result: %s, error:%s', result,error)
+        self.db_size =  result
+        os.close(self.app.action_pipe)
 class Call():
     def __init__(self,L):
         self.L = L

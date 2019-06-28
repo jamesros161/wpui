@@ -11,6 +11,12 @@
         "sub_title" : "",
         "action_on_load" : "get_installations"
     },
+    "database" : {
+        "view_type" : "body_input",
+        "title" : "",
+        "sub_title" : "",
+        "action_on_load" : "get_database_information"
+    },
     "plugins" : {
         "view_type" : "body_input",
         "title" : "",
