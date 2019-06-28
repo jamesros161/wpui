@@ -61,6 +61,25 @@ class installs(BodyWidget):
             (20,U.AttrMap(W.get_text('header','wp_db_check passed','center'),'header'))
         ])]
         for installation in installations:
+            installation_rows = [
+                (10,BoxButton(' + ', on_press=self.app.state.set_installation, user_data=installation)),
+                ('weight',2,W.get_text('body', installation['directory'], 'center'))
+            ]
+            if installation['home_url'] and installation['valid_wp_options']:
+                installation_rows.append(
+                    ('weight',2,W.get_text('body', installation['home_url'], 'center')),
+                    (18,W.get_text('body', str(installation['valid_wp_options']),'center')),
+                    (20,W.get_text('body', str(installation['wp_db_check_success']),'center'))
+                )
+            if installation['home_url'] and not installation['valid_wp_options']:
+                installation_rows.append(
+                    ('weight',2,W.get_text('body', installation['home_url'], 'center')),
+                    W.get_text('body',str(installation['wp_db_error']),'center')
+                )
+            else:
+                installation_rows.append(
+                    W.get_text('body',str(installation['wp_db_error']),'center')
+                )
             installation_columns.append(
                 W.get_col_row([
                     (10,BoxButton(' + ', on_press=self.app.state.set_installation, user_data=installation)),
