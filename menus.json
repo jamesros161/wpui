@@ -2,7 +2,7 @@
     "home" : [
         [" Installations ", "installs"],
         ["     Themes    ","themes"],
-        ["   Databases   ","themes"],
+        ["   Databases   ","database"],
         ["    Plugins    ","plugins"],
         ["     Users     ","users"],
         ["    WP Core    ", "core"],
@@ -11,7 +11,7 @@
     "installs" : [
         ["      Home     ", "home"],
         ["     Themes    ","themes"],
-        ["   Databases   ","themes"],
+        ["   Databases   ","database"],
         ["    Plugins    ","plugins"],
         ["     Users     ","users"],
         ["    WP Core    ", "core"],
@@ -29,7 +29,7 @@
     "themes" : [
         [" Installations ", "installs"],
         ["      Home     ", "home"],
-        ["   Databases   ","themes"],
+        ["   Databases   ","database"],
         ["    Plugins    ","plugins"],
         ["     Users     ","users"],
         ["    WP Core    ", "core"],
@@ -38,7 +38,7 @@
     "plugins" : [
         [" Installations ", "installs"],
         ["     Themes    ","themes"],
-        ["   Databases   ","themes"],
+        ["   Databases   ","database"],
         ["      Home     ", "home"],
         ["     Users     ","users"],
         ["    WP Core    ", "core"],
@@ -47,7 +47,7 @@
     "users" : [
         [" Installations ", "installs"],
         ["     Themes    ","themes"],
-        ["   Databases   ","themes"],
+        ["   Databases   ","database"],
         ["    Plugins    ","plugins"],
         ["      Home     ", "home"],
         ["    WP Core    ", "core"],
@@ -56,7 +56,7 @@
     "core" : [
         [" Installations ", "installs"],
         ["     Themes    ","themes"],
-        ["   Databases   ","themes"],
+        ["   Databases   ","database"],
         ["    Plugins    ","plugins"],
         ["     Users     ","users"],
         ["      Home     ", "home"],
@@ -65,7 +65,7 @@
     "quit" : [
         [" Installations ", "installs"],
         ["     Themes    ","themes"],
-        ["   Databases   ","themes"],
+        ["   Databases   ","database"],
         ["    Plugins    ","plugins"],
         ["     Users     ","users"],
         ["    WP Core    ", "core"],
