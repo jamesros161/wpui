@@ -82,7 +82,7 @@ class DatabaseInformation():
     def get_db_size(self):
         path = self.installation['directory']
         self.progress = 0
-        progress_increments = 100 / 1
+        progress_increments = 100 / 2
 
         #GET DATABASE NAME AND SIZE
         self.progress = self.progress + progress_increments
