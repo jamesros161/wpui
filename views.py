@@ -17,11 +17,17 @@ class Views():
         self.L.debug('views.activate args: %s', args)
         #current_view = self.state.get_state('active_view')
         activating_view = getattr(self,args[0])
-        if not "no_view_chain" in activating_view.view_type:
-            self.state.view_chain_pos += 1
-            self.state.set_view(activating_view)
-        #self.state.set_view(activating_view)
-        activating_view.start()
+        if not 'home' in activating_view.name:
+            if not 'installs' in activating_view.name:
+                if not 'quit' in activating_view.name:
+                    if not self.app.state.active_installation:
+                        self.app.views.activate(app,'installs')
+        else:
+            if not "no_view_chain" in activating_view.view_type:
+                self.state.view_chain_pos += 1
+                self.state.set_view(activating_view)
+            #self.state.set_view(activating_view)
+            activating_view.start()
 class View():
     def __init__(self,app,name,view_json_data):
         self.app = app

@@ -96,8 +96,6 @@ class installs(BodyWidget):
 class database(BodyWidget):
     def __init__(self,app,user_args=None,calling_view=None):
         super(database,self).__init__(app)
-        if not self.app.state.active_installation:
-            self.app.views.activate(app,'installs')
     def define_widget(self, **kwargs): 
         self.app.L.debug(' kwargs : %s', kwargs)
         main_text = self.app.W.get_text('body', 'Polling for Database Information','center')
