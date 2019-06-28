@@ -33,8 +33,6 @@ class View():
         self.sub_title = view_json_data['sub_title']
         self.action_on_load = view_json_data['action_on_load']
     def start(self):
-        self.header = self.app.W.get_header(self.name,self.title,self.sub_title)
-        self.footer = self.app.W.get_footer(self.name,self.app)
         self.set_view_body()
         self.show_header()
         self.show_body()
@@ -54,10 +52,12 @@ class View():
         self.show_body()
         self.show_footer()
     def show_header(self):
+        self.header = self.app.W.get_header(self.name,self.title,self.sub_title)
         self.app.frame.contents.__setitem__('header', [self.header, None])
     def show_body(self):
         self.app.frame.contents.__setitem__('body', [self.body.widget, None])
     def show_footer(self):
+        self.footer = self.app.W.get_footer(self.name,self.app)
         self.app.frame.contents.__setitem__('footer', [self.footer, None])
     def draw_screen(self):
         self.app.loop.draw_screen()
