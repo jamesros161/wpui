@@ -67,6 +67,7 @@ class installs(BodyWidget):
         self.app.frame.contents.__setitem__('body',[filler, None])
         self.app.loop.draw_screen()
     def update_progress_bar(self,progress):
+        self.app.L.debug('Progress: %s', progress)
         self.progress_bar.set_completion(int(progress))
 class plugins(BodyWidget):
     def __init__(self,app,user_args=None,calling_view=None):

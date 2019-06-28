@@ -44,6 +44,7 @@ class Installations():
         for installation in self.installations:
             db_check_data,db_check_error = self.call.wpcli(installation['directory'],['db','check'])
             self.progress = self.progress + progress_increments
+            self.app.L.debug('Progress: %s', self.progress)
             os.write(self.app.action_pipe,str(self.progress))
             if db_check_data:
                 data = db_check_data.splitlines()
@@ -52,6 +53,7 @@ class Installations():
                         installation['valid_wp_options'] = True
                         homedata,_ = self.call.wpcli(installation['directory'],['option','get','home','--skip-plugins','--skip-themes'])
                         self.progress = self.progress + progress_increments
+                        self.app.L.debug('Progress: %s', self.progress)
                         os.write(self.app.action_pipe,str(self.progress))
                         if homedata:
                             installation['home_url'] = homedata
