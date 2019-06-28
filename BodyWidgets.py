@@ -109,56 +109,54 @@ class database(BodyWidget):
     def after_action(self,db_info):
         db_info_rows = [
             W.get_col_row([
-                ('weight',2,W.get_blank_flow()),
-                U.AttrMap(W.get_text('header','Database Information','center'),'header'),
-                ('weight',2,W.get_blank_flow()),
+                U.AttrMap(W.get_text('header','Database Information','center'),'header')
             ]),
             W.get_div()
         ]
         db_info_rows.append(
             W.get_col_row([
-                ('weight',2,W.get_blank_flow()),
                 U.AttrMap(W.get_text('header','Database Name','center'),'header'),
-                U.AttrMap(W.get_text('header','Database Size','center'),'header'),
-                ('weight',2,W.get_blank_flow()),
+                U.AttrMap(W.get_text('header','Database Size','center'),'header')
             ])
         )
         db_info_rows.append(
             W.get_col_row([
-                ('weight',2,W.get_blank_flow()),
                 W.get_text('body',db_info['name'],'center'),
-                W.get_text('body',db_info['size'],'center'),
-                ('weight',2,W.get_blank_flow()),
+                W.get_text('body',db_info['size'],'center')
             ])
         )
         db_info_rows.append(W.get_div())
         db_info_rows.append(
             W.get_col_row([
-                ('weight',2,W.get_blank_flow()),
-                U.AttrMap(W.get_text('header','Database Table Check Results','center'),'header'),
-                ('weight',2,W.get_blank_flow()),
+                U.AttrMap(W.get_text('header','Database Table Check Results','center'),'header')
             ])
         )
         db_info_rows.append(W.get_div())
         db_info_rows.append(
             W.get_col_row([
-                ('weight',2,W.get_blank_flow()),
                 U.AttrMap(W.get_text('header','Table Name','left'),'header'),
-                (16,U.AttrMap(W.get_text('header','Check Status','center'),'header')),
-                ('weight',2,W.get_blank_flow()),
+                (16,U.AttrMap(W.get_text('header','Check Status','center'),'header'))
             ])
         )
         for table in db_info['check_tables']:
             db_info_rows.append(
                 W.get_col_row([
-                    ('weight',2,W.get_blank_flow()),
                     W.get_text('body',table['table_name'],'left'),
-                    (16,W.get_text('body',table['check_status'],'center')),
-                    ('weight',2,W.get_blank_flow()),
+                    (16,W.get_text('body',table['check_status'],'center'))
                 ])
             )
         db_info_pile = U.Pile(db_info_rows)
-        filler = U.Filler(db_info_pile,'middle')
+        db_info_wrapper = W.get_col_row([
+            W.get_blank_flow(),
+            db_info_pile,
+            W.get_blank_flow()
+        ])
+        outer_pile = U.Pile([
+            W.get_div(),
+            db_info_wrapper,
+            W.get_div()
+        ])
+        filler = U.Filler(outer_pile,'middle')
         self.app.frame.contents.__setitem__('body',[filler, None])
         #self.app.loop.draw_screen()
 class plugins(BodyWidget):
