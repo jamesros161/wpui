@@ -73,7 +73,8 @@ class DatabaseInformation():
         self.installation = self.app.state.active_installation
         self.db_info = {
             'name': None,
-            'size': None
+            'size': None,
+            'error':None
         }
         self.get_db_size()
     def get_db_size(self):
@@ -87,11 +88,11 @@ class DatabaseInformation():
         if dbsize_result:
             result_json = json.loads(dbsize_result)
             self.app.L.debug('wp_db_name: %s, wp_db_size:%s',result_json[0]['Name'],result_json[0]['Size'])
+            self.db_info['name'] = result_json[0]['Name']
+            self.db_info['size'] = result_json[0]['Size']
         if dbsize_error:
-            error_json = json.loads(dbsize_error)
-            self.app.L.debug('wp_db_size error:%s', error_json)
-        self.db_info['name'] = result_json[0]['Name']
-        self.db_info['size'] = result_json[0]['Size']
+            self.app.L.debug('wp_db_size error:%s', dbsize_error)
+            self.db_info['error']=  dbsize_error
         os.close(self.app.action_pipe)
 class Call():
     def __init__(self,L):
