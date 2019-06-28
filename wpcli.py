@@ -27,14 +27,15 @@ class Installations():
         installations = []
         for root,_,files in os.walk(self.homedir, topdown=True):
             if 'wp-config.php' in files:
-                x = {
-                    'directory' : root,
-                    'home_url' : '',
-                    'valid_wp_options' : False,
-                    'wp_db_check_success' : False,
-                    'wp_db_error' : ''
-                }
-                installations.append(x)
+                if not '/.' in root:
+                    x = {
+                        'directory' : root,
+                        'home_url' : '',
+                        'valid_wp_options' : False,
+                        'wp_db_check_success' : False,
+                        'wp_db_error' : ''
+                    }
+                    installations.append(x)
         return installations
     def get_installation_details(self):
         self.app.L.debug('Start get_installation_details')
