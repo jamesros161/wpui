@@ -57,7 +57,7 @@ class installs(BodyWidget):
         for installation in installations:
             location_list.append(len(installation['directory']))
         location_list.sort(reverse=True)
-        location_width = location_list[0]
+        location_width = location_list[0] + 4
         installation_columns = [W.get_col_row([
             (10,U.AttrMap(W.get_div(),'header')),
             (location_width,U.AttrMap(W.get_text('header', 'Location', 'center'),'header')),
