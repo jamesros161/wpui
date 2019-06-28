@@ -87,8 +87,8 @@ class DatabaseInformation():
         if error:
             error_json = json.loads(error)
             self.app.L.debug('wp_db_size error:%s', error_json)
-        self.db_name = result_json[0]
-        self.db_size = result_json[0]
+        self.db_name = result_json[0]['Name']
+        self.db_size = result_json[0]['Size']
         os.close(self.app.action_pipe)
 class Call():
     def __init__(self,L):
