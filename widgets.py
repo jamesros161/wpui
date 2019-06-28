@@ -68,6 +68,7 @@ class CustomWidgets():
         if subtitle:
             self.subtitle = self.get_text('bold',subtitle,'center')
         else:
+            self.L.debug("Passed Subtitle: %s, Settings Subtitle:%s", subtitle, self.S.display['subtitle'])
             self.subtitle = self.get_text('bold',self.S.display['subtitle'],'center')
         titleMap = U.AttrMap(self.title, 'bold')
         divMap = U.AttrMap(self.get_div(), 'body')
