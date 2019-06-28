@@ -13,7 +13,8 @@
             ["blue", "bold", "dark blue"],
             ["highlight", "light cyan", "default"],
             ["alert", "dark red, bold", "default"],
-            ["boxborder", "light cyan", "default"]
+            ["boxborder", "light cyan", "default"],
+            ["progressbar", "black", "light cyan"]
         ],
         "legend" : [
             ["Prev. Screen", "Home"],
