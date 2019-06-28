@@ -12,12 +12,16 @@ class BodyWidget():
     def __init__(self, app):
         self.app = app
         self.widget = self.define_widget()
+        self.progress_bar = U.ProgressBar('body','progressbar',current=0,done=100)
     def define_widget(self, **kwargs): 
         """Page displayed as Home Page for the application
         """
         self.app.L.debug(' kwargs : %s', kwargs)
         home_text = self.app.W.get_text('body', 'Welcome to the best Exim Search Utility ever created.\nSelect an option below to begin.','center')
         return U.Filler(home_text, 'middle')
+    def update_progress_bar(self,progress):
+        self.app.L.debug('Progress: %s', progress)
+        self.progress_bar.set_completion(int(progress))
 
 """
 ADD SUBCLASSES HERE for each view's body
@@ -40,7 +44,6 @@ class installs(BodyWidget):
     def define_widget(self, **kwargs): 
         self.app.L.debug(' kwargs : %s', kwargs)
         main_text = self.app.W.get_text('body', 'Obtaining List of available WordPress Installations','center')
-        self.progress_bar = U.ProgressBar('body','progressbar',current=0,done=100)
         progress_row = W.get_col_row([
             ('weight',2,W.get_blank_flow()),
             self.progress_bar,
@@ -70,10 +73,6 @@ class installs(BodyWidget):
         installation_pile = U.Pile(installation_columns)
         filler = U.Filler(installation_pile, 'middle')
         self.app.frame.contents.__setitem__('body',[filler, None])
-        #self.app.loop.draw_screen()
-    def update_progress_bar(self,progress):
-        self.app.L.debug('Progress: %s', progress)
-        self.progress_bar.set_completion(int(progress))
 class plugins(BodyWidget):
     def __init__(self,app,user_args=None,calling_view=None):
         BodyWidget.__init__(self,app)
