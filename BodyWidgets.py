@@ -80,7 +80,7 @@ class installs(BodyWidget):
                 installation_rows.append(
                     W.get_text('body',str(installation['wp_db_error']),'center')
                 )
-            installation_columns.extend(
+            installation_columns.append(
                 W.get_col_row(installation_rows)
             )
         installation_pile = U.Pile(installation_columns)
