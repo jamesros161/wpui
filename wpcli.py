@@ -81,6 +81,8 @@ class DatabaseInformation():
         path = self.installation['directory']
         self.progress = 0
         progress_increments = 100 / 1
+
+        #GET DATABASE NAME AND SIZE
         self.progress = self.progress + progress_increments
         self.app.L.debug('Progress: %s', self.progress)
         os.write(self.app.action_pipe,str(self.progress))
@@ -93,6 +95,14 @@ class DatabaseInformation():
         if dbsize_error:
             self.app.L.debug('wp_db_size error:%s', dbsize_error.decode(encoding='UTF-8'))
             self.db_info['error'] = dbsize_error.decode(encoding='UTF-8')
+        #RUN CHECK DB
+        self.progress = self.progress + progress_increments
+        self.app.L.debug('Progress: %s', self.progress)
+        os.write(self.app.action_pipe,str(self.progress))
+        if dbsize_result:
+            dbcheck_result, dbcheck_error = self.call.wpcli(path,['db','check'])
+            self.app.L.debug('wp_db_check results: %s',dbcheck_result)
+
         os.close(self.app.action_pipe)
 class Call():
     def __init__(self,L):
