@@ -153,7 +153,7 @@ class database(BodyWidget):
                 W.get_col_row([
                     ('weight',2,W.get_blank_flow()),
                     W.get_text('body',table['table_name'],'center'),
-                    W.get_text('body',db_info['check_status'],'center'),
+                    W.get_text('body',table['check_status'],'center'),
                     ('weight',2,W.get_blank_flow()),
                 ])
             )
