@@ -72,7 +72,7 @@ class CustomWidgets():
             self.subtitle = self.get_text('bold',self.S.display['subtitle'],'center')
         titleMap = U.AttrMap(self.title, 'bold')
         divMap = U.AttrMap(self.get_div(), 'body')
-        if subtitle:
+        if self.subtitle:
             subtitleMap = U.AttrMap(self.subtitle, 'bold')
             return U.Pile((titleMap, subtitleMap, divMap), focus_item=None)
         else:
