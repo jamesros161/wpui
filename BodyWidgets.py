@@ -53,9 +53,14 @@ class installs(BodyWidget):
         self.app.action_pipe = self.app.loop.watch_pipe(self.update_progress_bar)
         return U.Filler(main_pile, 'middle')
     def after_action(self,installations):
+        location_list = []
+        for installation in installations:
+            location_list.append(len(installation['location']))
+        location_list.sort(reverse=True)
+        location_width = location_list[0]
         installation_columns = [W.get_col_row([
             (10,U.AttrMap(W.get_div(),'header')),
-            ('weight',2,U.AttrMap(W.get_text('header', 'Location', 'center'),'header')),
+            (location_width,U.AttrMap(W.get_text('header', 'Location', 'center'),'header')),
             ('weight',2,U.AttrMap(W.get_text('header','Home URL', 'center'),'header')),
             (18,U.AttrMap(W.get_text('header','Valid wp_options','center'),'header')),
             (20,U.AttrMap(W.get_text('header','wp_db_check passed','center'),'header'))
@@ -63,7 +68,7 @@ class installs(BodyWidget):
         for installation in installations:
             installation_rows = [
                 (10,BoxButton(' + ', on_press=self.app.state.set_installation, user_data=installation)),
-                ('weight',2,W.get_text('body', installation['directory'], 'center'))
+                (location_width,W.get_text('body', installation['directory'], 'center'))
             ]
             L.debug('valid_wp_options: %s', installation['valid_wp_options'])
             if installation['valid_wp_options'] == True:
