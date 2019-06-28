@@ -38,6 +38,7 @@ class Installations():
                 installations.append(x)
         return installations
     def get_installation_details(self):
+        self.app.L.debug('Start get_installation_details')
         self.progress = 0
         progress_sections = 100 / len(self.installations)
         progress_increments = progress_sections / 2
