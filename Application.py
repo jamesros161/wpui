@@ -60,7 +60,7 @@ class State():
         else:
             subtitle = self.active_installation['directory']
         self.app.S.display['subtitle'] = subtitle
-        x = self.app.W.get_header('set_installation',None,subtitle)
+        x = self.app.W.get_header('set_installation',self.app.S.display['title'],subtitle)
         self.app.frame.contents.__setitem__('header',[x,None])
 
     def get_state(self,state_prop):
