@@ -74,7 +74,9 @@ class DatabaseInformation():
         self.db_info = {
             'name': None,
             'size': None,
-            'error':None
+            'size_error': None,
+            'check_tables': None,
+            'check_error': None
         }
         self.get_db_size()
     def get_db_size(self):
@@ -94,7 +96,7 @@ class DatabaseInformation():
             self.db_info['size'] = result_json[0]['Size']
         if dbsize_error:
             self.app.L.debug('wp_db_size error:%s', dbsize_error.decode(encoding='UTF-8'))
-            self.db_info['error'] = dbsize_error.decode(encoding='UTF-8')
+            self.db_info['size_error'] = dbsize_error.decode(encoding='UTF-8')
         #RUN CHECK DB
         self.progress = self.progress + progress_increments
         self.app.L.debug('Progress: %s', self.progress)
@@ -102,16 +104,20 @@ class DatabaseInformation():
         if dbsize_result:
             dbcheck_result, dbcheck_error = self.call.wpcli(path,['db','check'])
             dbcheck_result_list  = []
-            for line in dbcheck_result.splitlines():
-                if self.db_info['name'] in line:
-                    x = line.split()
-                    dbcheck_result_list.append(
-                        {
-                            'table_name': x[0],
-                            'check_status': x[1]
-                        }
-                    )
-            self.app.L.debug('wp_db_check results: %s',dbcheck_result_list)
+            if dbcheck_result:
+                for line in dbcheck_result.splitlines():
+                    if self.db_info['name'] in line:
+                        x = line.split()
+                        dbcheck_result_list.append(
+                            {
+                                'table_name': x[0],
+                                'check_status': x[1]
+                            }
+                        )
+                self.db_info['check_tables']
+            if  dbcheck_error:
+                self.db_info['check_error'] = dbcheck_error.decode(encoding='UTF-8')
+        self.app.L.debug('db_info: %s',self.db_info)
         os.close(self.app.action_pipe)
 class Call():
     def __init__(self,L):
