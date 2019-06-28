@@ -51,7 +51,7 @@ class Installations():
                 data = db_check_data.splitlines()
                 for line in data:
                     if '_options' in line and 'OK' in line:
-                        self.app.L.debu('Line: %s', line)
+                        self.app.L.debug('Line: %s', line)
                         installation['valid_wp_options'] = True
                         homedata,_ = self.call.wpcli(installation['directory'],['option','get','home','--skip-plugins','--skip-themes'])
                         self.progress = self.progress + progress_increments
