@@ -50,7 +50,6 @@ class View():
             self.action_thread = Thread(target=self.action,name='action_thread')
             self.action_thread.start()
             self.action_thread.join()
-            self.app.loop.draw_screen()
     def reload(self):
         self.show_header()
         self.show_body()
