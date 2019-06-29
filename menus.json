@@ -16,6 +16,38 @@
         ["    Re-Salt    ","resalt"],
         ["      Quit     ","quit"]
     ],
+    "getwpconfig" : [
+        ["      Home     ", "home"],
+        [" Get WP Config ","getwpconfig"],
+        ["   Set Config  ","setwpconfig"],
+        [" Set DB Creds  ","setdbcreds"],
+        ["    Re-Salt    ","resalt"],
+        ["      Quit     ","quit"]
+    ],
+    "setwpconfig" : [
+        ["      Home     ", "home"],
+        [" Get WP Config ","getwpconfig"],
+        ["   Set Config  ","setwpconfig"],
+        [" Set DB Creds  ","setdbcreds"],
+        ["    Re-Salt    ","resalt"],
+        ["      Quit     ","quit"]
+    ],
+    "setdbcreds" : [
+        ["      Home     ", "home"],
+        [" Get WP Config ","getwpconfig"],
+        ["   Set Config  ","setwpconfig"],
+        [" Set DB Creds  ","setdbcreds"],
+        ["    Re-Salt    ","resalt"],
+        ["      Quit     ","quit"]
+    ],
+    "resalt" : [
+        ["      Home     ", "home"],
+        [" Get WP Config ","getwpconfig"],
+        ["   Set Config  ","setwpconfig"],
+        [" Set DB Creds  ","setdbcreds"],
+        ["    Re-Salt    ","resalt"],
+        ["      Quit     ","quit"]
+    ],
     "database" : [
         ["      Home     ","home"],
         ["     Export    ","db_export"],
