@@ -11,6 +11,30 @@
         "sub_title" : "",
         "action_on_load" : "get_installations"
     },
+    "getwpconfig" : {
+        "view_type" : "no_input",
+        "title" : "",
+        "sub_title" : "",
+        "action_on_load" : "get_wp_config"
+    },
+    "setwpconfig" : {
+        "view_type" : "body_input",
+        "title" : "",
+        "sub_title" : "",
+        "action_on_load" : ""
+    },
+    "setdbcreds" : {
+        "view_type" : "body_input",
+        "title" : "",
+        "sub_title" : "",
+        "action_on_load" : ""
+    },
+    "resalt" : {
+        "view_type" : "no_input",
+        "title" : "",
+        "sub_title" : "",
+        "action_on_load" : "resalt"
+    },
     "database" : {
         "view_type" : "body_input",
         "title" : "",

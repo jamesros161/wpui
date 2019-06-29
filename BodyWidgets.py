@@ -93,6 +93,21 @@ class installs(BodyWidget):
         self.app.frame.contents.__setitem__('body',[filler, None])
         time.sleep(1)
         self.app.loop.draw_screen()
+class getwpconfig(BodyWidget):
+    def __init__(self,app,user_args=None,calling_view=None):
+        super(getwpconfig, self).__init__(app)
+
+    def define_widget(self, **kwargs): 
+        self.app.L.debug(' kwargs : %s', kwargs)
+        main_text = self.app.W.get_text('body', 'Obtaining WP-Config  directives','center')
+        progress_row = W.get_col_row([
+            ('weight',2,W.get_blank_flow()),
+            self.progress_bar,
+            ('weight',2,W.get_blank_flow())
+        ])
+        main_pile = U.Pile([main_text,progress_row])
+        self.app.action_pipe = self.app.loop.watch_pipe(self.update_progress_bar)
+        return U.Filler(main_pile, 'middle')
 class database(BodyWidget):
     def __init__(self,app,user_args=None,calling_view=None):
         super(database,self).__init__(app)

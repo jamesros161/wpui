@@ -15,3 +15,8 @@ class Actions():
         self.app.L.debug('db_info: %s', self.database_information.db_info)
         self.app.views.database.body.after_action(self.database_information.db_info)
         #active_view = self.app.state.active_view
+    def get_wp_config(self):
+        self.app.L.debug("get_wp_config Action Started")
+        self.wp_config = WpConfig(self.app)
+        self.app.L.debug('wp_config: %s', self.wp_config)
+        self.app.views.getwpconfig.body.after_action(self.wp_config)

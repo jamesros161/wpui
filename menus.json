@@ -10,11 +10,10 @@
     ],
     "installs" : [
         ["      Home     ", "home"],
-        ["     Themes    ","themes"],
-        ["   Databases   ","database"],
-        ["    Plugins    ","plugins"],
-        ["     Users     ","users"],
-        ["    WP Core    ", "core"],
+        [" Get WP Config ","getwpconfig"],
+        ["   Set Config  ","setwpconfig"],
+        [" Set DB Creds  ","setdbcreds"],
+        ["    Re-Salt    ","resalt"],
         ["      Quit     ","quit"]
     ],
     "database" : [

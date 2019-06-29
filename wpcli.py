@@ -119,6 +119,24 @@ class DatabaseInformation():
                 self.db_info['check_error'] = dbcheck_error.decode(encoding='UTF-8')
         #self.app.L.debug('db_info: %s',self.db_info)
         os.close(self.app.action_pipe)
+class WpConfig():
+    def __init__(self,app):
+        self.app = app
+        self.app.L.debug('Installations Initialized')
+        self.call = Call(self.app.L)
+        self.installation = self.app.state.active_installation
+        self.wp_config_directive_list = []
+        self.get_wp_config()
+    def get_wp_config(self):
+        path = self.installation['directory']
+        self.progress = 0
+        progress_increments = 100
+        self.progress = self.progress + progress_increments
+        self.app.L.debug('Progress: %s', self.progress)
+        os.write(self.app.action_pipe,str(self.progress))
+        wp_config_result, wp_config_error = self.call.wpcli(path,['config','list','--format=json','--no-color'])
+        if wp_config_result:
+            self.app.L.debug('wp_config_result: %s', wp_config_result)
 class Call():
     def __init__(self,L):
         self.L = L
