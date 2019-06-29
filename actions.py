@@ -1,4 +1,4 @@
-from wpcli import Installations, DatabaseInformation
+from wpcli import Installations, DatabaseInformation, WpConfig
 class Actions():
     def __init__(self,app):
         self.app = app
