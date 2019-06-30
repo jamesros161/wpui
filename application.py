@@ -106,8 +106,8 @@ class State(object):
                 ' ( ' + self.active_installation['home_url'] + ' )'
         else:
             subtitle = self.active_installation['directory']
-        self.app.S.display['subtitle'] = subtitle
-        _x = self.app.W.get_header('set_installation', self.app.S.display['title'], subtitle)
+        S.display['subtitle'] = subtitle
+        _x = W.get_header('set_installation', S.display['title'], subtitle)
         self.app.frame.contents.__setitem__('header', [_x, None])
 
     def get_state(self, state_prop):
