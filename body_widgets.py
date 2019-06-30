@@ -52,9 +52,9 @@ class Home(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
     def __init__(self, app, user_args=None, calling_view=None):
         super(Home, self).__init__(app)
-        self.app.L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
+        L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
     def define_widget(self, **kwargs):
-        self.app.L.debug(' kwargs : %s', kwargs)
+        L.debug(' kwargs : %s', kwargs)
         home_text = self.app.W.get_text(
             'body',
             'WP-CLI Like you have never WP-CLI\'d before!!!.\
@@ -65,9 +65,9 @@ class Installs(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
     def __init__(self, app, user_args=None, calling_view=None):
         super(Installs, self).__init__(app)
-        self.app.L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
+        L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
     def define_widget(self, **kwargs):
-        self.app.L.debug(' kwargs : %s', kwargs)
+        L.debug(' kwargs : %s', kwargs)
         main_text = self.app.W.get_text(
             'body',
             'Obtaining List of available WordPress Installations',
