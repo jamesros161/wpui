@@ -148,9 +148,15 @@ class GetWpConfig(BodyWidget):
         """
 
         L.debug(' wp_config : %s', wp_config)
+        directives_list = []
         for directive in wp_config.wp_config_directive_list:
+            row_items = []
             for key, value in directive.items():
-                L.debug('%s :: %s', key, value)
+                row_items.append(W.get_text('body', key, value))
+            row = W.get_col_row(row_items)
+            directives_list.append(row)
+        wp_config_pile = U.Pile(directives_list)
+        return U.Filler(wp_config_pile)
 class Database(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
     def __init__(self, app, user_args=None, calling_view=None):
