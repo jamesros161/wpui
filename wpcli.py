@@ -69,7 +69,7 @@ class DatabaseInformation(object):
     def __init__(self, app):
         self.app = app
         L.debug('Installations Initialized')
-        self.call = Call(self.app.L)
+        self.call = Call()
         self.installation = self.app.state.active_installation
         self.db_info = {
             'name': None,
