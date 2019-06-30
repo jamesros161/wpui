@@ -20,7 +20,7 @@ L.info("\n****\nApplication Started at %s \n\n****\n",
 def main():
     """Starts main loop"""
     app = App()
-    app.views.activate(app, 'home')
+    app.views.activate(app, 'Home')
     app.loop.run()
     L.info(
         "\n****\nApplication Ended Normally at %s \n\n****\n",
