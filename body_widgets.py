@@ -23,7 +23,7 @@ class BodyWidget(object):
     def define_widget(self, **kwargs):
         """Page displayed as Home Page for the application
         """
-        self.app.L.debug(' kwargs : %s', kwargs)
+        L.debug(' kwargs : %s', kwargs)
         home_text = self.app.W.get_text(
             'body',
             'WP-CLI Like you have never WP-CLI\'d before!!!.\n \
@@ -38,7 +38,7 @@ class BodyWidget(object):
             progress {str} -- string representation of the current
                               progress
         """
-        self.app.L.debug('Progress: %s', progress)
+        L.debug('Progress: %s', progress)
         if progress:
             self.progress_bar.set_completion(int(progress))
         else:
@@ -130,9 +130,9 @@ class GetWpConfig(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
     def __init__(self, app, user_args=None, calling_view=None):
         super(GetWpConfig, self).__init__(app)
-        self.app.L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
+        L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
     def define_widget(self, **kwargs):
-        self.app.L.debug(' kwargs : %s', kwargs)
+        L.debug(' kwargs : %s', kwargs)
         main_text = self.app.W.get_text('body', 'Obtaining WP-Config  directives', 'center')
         progress_row = W.get_col_row([
             ('weight', 2, W.get_blank_flow()),
@@ -147,17 +147,17 @@ class GetWpConfig(BodyWidget):
         the views action_on_load function
         """
 
-        self.app.L.debug(' wp_config : %s', wp_config)
+        L.debug(' wp_config : %s', wp_config)
         for directive in wp_config.wp_config_directive_list:
             for key, value in directive.items():
-                self.app.L.debug('%s :: %s', key, value)
+                L.debug('%s :: %s', key, value)
 class Database(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
     def __init__(self, app, user_args=None, calling_view=None):
         super(Database, self).__init__(app)
-        self.app.L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
+        L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
     def define_widget(self, **kwargs):
-        self.app.L.debug(' kwargs : %s', kwargs)
+        L.debug(' kwargs : %s', kwargs)
         main_text = self.app.W.get_text(
             'body',
             'Polling for Database Information',
@@ -248,9 +248,9 @@ class DbExport(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
     def __init__(self, app, user_args=None, calling_view=None):
         super(DbExport, self).__init__(app)
-        self.app.L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
+        L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
     def define_widget(self, **kwargs):
-        self.app.L.debug(' kwargs : %s', kwargs)
+        L.debug(' kwargs : %s', kwargs)
         home_text = self.app.W.get_text(
             'body',
             'Welcome to the best Exim Search Utility ever created.\
@@ -261,9 +261,9 @@ class DbImport(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
     def __init__(self, app, user_args=None, calling_view=None):
         super(DbImport, self).__init__(app)
-        self.app.L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
+        L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
     def define_widget(self, **kwargs):
-        self.app.L.debug(' kwargs : %s', kwargs)
+        L.debug(' kwargs : %s', kwargs)
         home_text = self.app.W.get_text(
             'body',
             'Welcome to the best Exim Search Utility ever created.\
@@ -274,9 +274,9 @@ class DbOptimize(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
     def __init__(self, app, user_args=None, calling_view=None):
         super(DbOptimize, self).__init__(app)
-        self.app.L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
+        L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
     def define_widget(self, **kwargs):
-        self.app.L.debug(' kwargs : %s', kwargs)
+        L.debug(' kwargs : %s', kwargs)
         home_text = self.app.W.get_text(
             'body',
             'Welcome to the best Exim Search Utility ever created.\
@@ -287,9 +287,9 @@ class DbRepair(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
     def __init__(self, app, user_args=None, calling_view=None):
         super(DbRepair, self).__init__(app)
-        self.app.L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
+        L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
     def define_widget(self, **kwargs):
-        self.app.L.debug(' kwargs : %s', kwargs)
+        L.debug(' kwargs : %s', kwargs)
         home_text = self.app.W.get_text(
             'body',
             'Welcome to the best Exim Search Utility ever created.\
@@ -300,9 +300,9 @@ class DbSearch(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
     def __init__(self, app, user_args=None, calling_view=None):
         super(DbSearch, self).__init__(app)
-        self.app.L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
+        L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
     def define_widget(self, **kwargs):
-        self.app.L.debug(' kwargs : %s', kwargs)
+        L.debug(' kwargs : %s', kwargs)
         home_text = self.app.W.get_text(
             'body',
             'Welcome to the best Exim Search Utility ever created.\
@@ -313,9 +313,9 @@ class Plugins(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
     def __init__(self, app, user_args=None, calling_view=None):
         super(Plugins, self).__init__(app)
-        self.app.L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
+        L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
     def define_widget(self, **kwargs):
-        self.app.L.debug(' kwargs : %s', kwargs)
+        L.debug(' kwargs : %s', kwargs)
         home_text = self.app.W.get_text(
             'body',
             'Installed Plugins for selected WP Installation',
@@ -325,9 +325,9 @@ class Themes(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
     def __init__(self, app, user_args=None, calling_view=None):
         super(Themes, self).__init__(app)
-        self.app.L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
+        L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
     def define_widget(self, **kwargs):
-        self.app.L.debug(' kwargs : %s', kwargs)
+        L.debug(' kwargs : %s', kwargs)
         home_text = self.app.W.get_text(
             'body',
             'Installed Themes for selected WP Installation',
@@ -338,9 +338,9 @@ class Users(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
     def __init__(self, app, user_args=None, calling_view=None):
         super(Users, self).__init__(app)
-        self.app.L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
+        L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
     def define_widget(self, **kwargs):
-        self.app.L.debug(' kwargs : %s', kwargs)
+        L.debug(' kwargs : %s', kwargs)
         home_text = self.app.W.get_text(
             'body',
             'Registered Users for selected WP Installation',
@@ -351,9 +351,9 @@ class Core(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
     def __init__(self, app, user_args=None, calling_view=None):
         super(Core, self).__init__(app)
-        self.app.L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
+        L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
     def define_widget(self, **kwargs):
-        self.app.L.debug(' kwargs : %s', kwargs)
+        L.debug(' kwargs : %s', kwargs)
         home_text = self.app.W.get_text(
             'body',
             'WordPress Core Information for selected WP Installation',
@@ -364,10 +364,10 @@ class Quit(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
     def __init__(self, app, user_args=None, calling_view=None):
         super(Quit, self).__init__(app)
-        self.app.L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
+        L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
     def define_widget(self, **kwargs):
-        self.app.L.debug(' Body Widget View Name: %s', self.app.state.active_view.name)
-        self.app.L.debug(' Previous View Name: %s', self.app.state.previous_view.name)
+        L.debug(' Body Widget View Name: %s', self.app.state.active_view.name)
+        L.debug(' Previous View Name: %s', self.app.state.previous_view.name)
         self.app.S.display['menu_enabled'] = True
         quit_list = [
             W.get_div(),
