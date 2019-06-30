@@ -368,7 +368,7 @@ class Quit(BodyWidget):
     def define_widget(self, **kwargs):
         L.debug(' Body Widget View Name: %s', self.app.state.active_view.name)
         L.debug(' Previous View Name: %s', self.app.state.previous_view.name)
-        self.app.S.display['menu_enabled'] = True
+        S.display['menu_enabled'] = True
         quit_list = [
             W.get_div(),
             W.get_col_row([
