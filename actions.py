@@ -3,8 +3,9 @@ if it has an "action_on_load" attribute set,
 then the cooresponding method of Actions will be called.
 
 Any views that have to load a separate thread or process"""
-
+from logmod import Log
 from wpcli import Installations, DatabaseInformation, WpConfig
+L = Log()
 class Actions(object):
     """This class contains all the action methods
         that are called after a view loads"""
@@ -19,7 +20,7 @@ class Actions(object):
         and calls wp-cli command to get general installation
         information
         """
-        self.app.L.debug("get_installations Action Started")
+        L.debug("get_installations Action Started")
         self.installations = Installations(self.app)
         #active_view = self.app.state.active_view
         #self.app.loop.event_loop.remove_enter_idle(active_view.action_handler)
@@ -27,15 +28,15 @@ class Actions(object):
     def get_database_information(self):
         """Obtains general database information and table status
         """
-        self.app.L.debug("get_database_information Action Started")
+        L.debug("get_database_information Action Started")
         self.database_information = DatabaseInformation(self.app)
-        self.app.L.debug('db_info: %s', self.database_information.db_info)
+        L.debug('db_info: %s', self.database_information.db_info)
         self.app.views.database.body.after_action(self.database_information.db_info)
         #active_view = self.app.state.active_view
     def get_wp_config(self):
         """Obtains wp_config information
         """
-        self.app.L.debug("get_wp_config Action Started")
+        L.debug("get_wp_config Action Started")
         self.wp_config = WpConfig(self.app)
-        self.app.L.debug('wp_config: %s', self.wp_config)
+        L.debug('wp_config: %s', self.wp_config)
         self.app.views.getwpconfig.body.after_action(self.wp_config)
