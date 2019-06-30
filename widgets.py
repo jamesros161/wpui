@@ -71,6 +71,9 @@ class CustomWidgets(object):
     def get_blank_flow(self):
         """returns a blank flow type widget"""
         return self.get_text('body', '', 'center')
+    def get_edit(self,edit_text, caption='', align=''):
+        """returns an edit widget"""
+        return U.Edit(caption=caption, edit_text=edit_text, align=align)
     def get_text(self, text_format, text_string, alignment, **kwargs):
         """returns a text flow type widget"""
         return U.Text((text_format, text_string), align=alignment, wrap='space', **kwargs)

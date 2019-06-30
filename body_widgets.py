@@ -152,7 +152,7 @@ class GetWpConfig(BodyWidget):
             W.get_col_row([
                 U.AttrMap(W.get_text('header', 'Type', 'center'), 'header'),
                 U.AttrMap(W.get_text('header', 'Name', 'center'), 'header'),
-                U.AttrMap(W.get_text('header', 'Value', 'center'), 'header')])]
+                U.AttrMap(W.get_text('header', 'Value', 'center'))])]
         for directive in wp_config.wp_config_directive_list:
             row_items = [
                 W.get_text('body', str(directive['type']), 'center'),
