@@ -123,12 +123,12 @@ class CustomWidgets(object):
         else:
             menu_grid = app.W.get_div()
         legend_items = []
-        for legend in app.S.display['legend']:
+        for legend in S.display['legend']:
             legend_items.append(app.W.get_text('bold', legend[0], 'center'))
         legend_grid = U.GridFlow(legend_items, 21, 0, 0, 'center')
         legend_grid_map = U.AttrMap(legend_grid, 'bold')
         legend_items = []
-        for legend in app.S.display['legend']:
+        for legend in S.display['legend']:
             legend_items.append(app.W.get_text('highlight', legend[1], 'center'))
         legend_items_grid = U.GridFlow(legend_items, 21, 0, 0, 'center')
         legend_items_map = U.AttrMap(legend_items_grid, 'highlight')
