@@ -104,8 +104,7 @@ class CustomWidgets(object):
         for item in menu_items:
             if len(item) == 3:
                 menu_grid_items.append(
-                    
-    W.BoxButton(
+                    BoxButton(
                         item[0],
                         on_press=app.views.activate,
                         user_data=(item[1], item[2])))
@@ -122,17 +121,15 @@ class CustomWidgets(object):
         if item_widths:
             menu_grid = U.GridFlow(menu_grid_items, item_widths[-1], 0, 0, 'center')
         else:
-            menu_grid = W.get_div()
+            menu_grid = self.get_div()
         legend_items = []
         for legend in S.display['legend']:
-            legend_items.append(
-W.get_text('bold', legend[0], 'center'))
+            legend_items.append(self.get_text('bold', legend[0], 'center'))
         legend_grid = U.GridFlow(legend_items, 21, 0, 0, 'center')
         legend_grid_map = U.AttrMap(legend_grid, 'bold')
         legend_items = []
         for legend in S.display['legend']:
-            legend_items.append(
-W.get_text('highlight', legend[1], 'center'))
+            legend_items.append(self.get_text('highlight', legend[1], 'center'))
         legend_items_grid = U.GridFlow(legend_items, 21, 0, 0, 'center')
         legend_items_map = U.AttrMap(legend_items_grid, 'highlight')
         return U.Pile([menu_grid, legend_grid_map, legend_items_map])
