@@ -24,7 +24,7 @@ class BodyWidget(object):
         """Page displayed as Home Page for the application
         """
         L.debug(' kwargs : %s', kwargs)
-        home_text = self.app.W.get_text(
+        home_text = W.get_text(
             'body',
             'WP-CLI Like you have never WP-CLI\'d before!!!.\n \
             Select an option below to begin.',
@@ -55,7 +55,7 @@ class Home(BodyWidget):
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
     def define_widget(self, **kwargs):
         L.debug(' kwargs : %s', kwargs)
-        home_text = self.app.W.get_text(
+        home_text = W.get_text(
             'body',
             'WP-CLI Like you have never WP-CLI\'d before!!!.\
             \nSelect an option below to begin.', 'center')
@@ -68,7 +68,7 @@ class Installs(BodyWidget):
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
     def define_widget(self, **kwargs):
         L.debug(' kwargs : %s', kwargs)
-        main_text = self.app.W.get_text(
+        main_text = W.get_text(
             'body',
             'Obtaining List of available WordPress Installations',
             'center')
@@ -133,7 +133,7 @@ class GetWpConfig(BodyWidget):
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
     def define_widget(self, **kwargs):
         L.debug(' kwargs : %s', kwargs)
-        main_text = self.app.W.get_text('body', 'Obtaining WP-Config  directives', 'center')
+        main_text = W.get_text('body', 'Obtaining WP-Config  directives', 'center')
         progress_row = W.get_col_row([
             ('weight', 2, W.get_blank_flow()),
             self.progress_bar,
@@ -158,7 +158,7 @@ class Database(BodyWidget):
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
     def define_widget(self, **kwargs):
         L.debug(' kwargs : %s', kwargs)
-        main_text = self.app.W.get_text(
+        main_text = W.get_text(
             'body',
             'Polling for Database Information',
             'center')
@@ -251,7 +251,7 @@ class DbExport(BodyWidget):
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
     def define_widget(self, **kwargs):
         L.debug(' kwargs : %s', kwargs)
-        home_text = self.app.W.get_text(
+        home_text = W.get_text(
             'body',
             'Welcome to the best Exim Search Utility ever created.\
             \nSelect an option below to begin.',
@@ -264,7 +264,7 @@ class DbImport(BodyWidget):
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
     def define_widget(self, **kwargs):
         L.debug(' kwargs : %s', kwargs)
-        home_text = self.app.W.get_text(
+        home_text = W.get_text(
             'body',
             'Welcome to the best Exim Search Utility ever created.\
             \nSelect an option below to begin.',
@@ -277,7 +277,7 @@ class DbOptimize(BodyWidget):
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
     def define_widget(self, **kwargs):
         L.debug(' kwargs : %s', kwargs)
-        home_text = self.app.W.get_text(
+        home_text = W.get_text(
             'body',
             'Welcome to the best Exim Search Utility ever created.\
             \nSelect an option below to begin.',
@@ -290,7 +290,7 @@ class DbRepair(BodyWidget):
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
     def define_widget(self, **kwargs):
         L.debug(' kwargs : %s', kwargs)
-        home_text = self.app.W.get_text(
+        home_text = W.get_text(
             'body',
             'Welcome to the best Exim Search Utility ever created.\
             \nSelect an option below to begin.',
@@ -303,7 +303,7 @@ class DbSearch(BodyWidget):
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
     def define_widget(self, **kwargs):
         L.debug(' kwargs : %s', kwargs)
-        home_text = self.app.W.get_text(
+        home_text = W.get_text(
             'body',
             'Welcome to the best Exim Search Utility ever created.\
             \nSelect an option below to begin.',
@@ -316,7 +316,7 @@ class Plugins(BodyWidget):
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
     def define_widget(self, **kwargs):
         L.debug(' kwargs : %s', kwargs)
-        home_text = self.app.W.get_text(
+        home_text = W.get_text(
             'body',
             'Installed Plugins for selected WP Installation',
             'center')
@@ -328,7 +328,7 @@ class Themes(BodyWidget):
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
     def define_widget(self, **kwargs):
         L.debug(' kwargs : %s', kwargs)
-        home_text = self.app.W.get_text(
+        home_text = W.get_text(
             'body',
             'Installed Themes for selected WP Installation',
             'center')
@@ -341,7 +341,7 @@ class Users(BodyWidget):
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
     def define_widget(self, **kwargs):
         L.debug(' kwargs : %s', kwargs)
-        home_text = self.app.W.get_text(
+        home_text = W.get_text(
             'body',
             'Registered Users for selected WP Installation',
             'center')
@@ -354,7 +354,7 @@ class Core(BodyWidget):
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
     def define_widget(self, **kwargs):
         L.debug(' kwargs : %s', kwargs)
-        home_text = self.app.W.get_text(
+        home_text = W.get_text(
             'body',
             'WordPress Core Information for selected WP Installation',
             'center')
