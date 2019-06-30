@@ -29,6 +29,7 @@ class Log(object):
 
         logger = logging.getLogger(__name__)
         handler = logging.FileHandler(filename=logpath, mode='a')
+        handler.setLevel(logging.ERROR)
         logger.addHandler(handler)
 
         self.logger = logger
