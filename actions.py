@@ -31,7 +31,7 @@ class Actions(object):
         L.debug("get_database_information Action Started")
         self.database_information = DatabaseInformation(self.app)
         L.debug('db_info: %s', self.database_information.db_info)
-        self.app.views.database.body.after_action(self.database_information.db_info)
+        self.app.views.Database.body.after_action(self.database_information.db_info)
         #active_view = self.app.state.active_view
     def get_wp_config(self):
         """Obtains wp_config information
