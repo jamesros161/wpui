@@ -157,7 +157,10 @@ class GetWpConfig(BodyWidget):
             row = W.get_col_row(row_items)
             directives_list.append(row)
         wp_config_pile = U.Pile(directives_list)
-        return U.Filler(wp_config_pile)
+        filler = U.Filler(wp_config_pile)
+        self.app.frame.contents.__setitem__('body', [filler, None])
+        time.sleep(1)
+        self.app.loop.draw_screen()
 class Database(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
     def __init__(self, app, user_args=None, calling_view=None):
