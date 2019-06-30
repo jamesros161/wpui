@@ -148,7 +148,11 @@ class GetWpConfig(BodyWidget):
         """
 
         L.debug(' wp_config : %s', wp_config)
-        directives_list = []
+        directives_list = [
+            W.get_col_row([
+                W.get_text('body', 'Type', 'center'),
+                W.get_text('body', 'Name', 'center'),
+                W.get_text('body', 'Value', 'center')])]
         for directive in wp_config.wp_config_directive_list:
             row_items = [
                 W.get_text('body', str(directive['type']), 'center'),
