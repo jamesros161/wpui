@@ -1,23 +1,23 @@
 """Contains methods and classes for activing and composing views"""
-from threading import Thread
 import json
+from threading import Thread
+from logmod import Log
 import body_widgets
 from actions import Actions
+L = Log()
 class Views(object):
     """Stores individual View objects, and activates them"""
     def __init__(self, app):
         self.app = app
-        self.log = app.L
         self.state = app.state
         with open('views.json', 'r') as views:
             views_json = json.load(views)
-        self.log.debug('views_json: %s', views_json)
+        L.debug('views_json: %s', views_json)
         for key, value in views_json.items():
             setattr(self, key, View(app, key, value))
     def activate(self, app, *args, **kwargs):
         """Activates the selected view"""
-        self.log.debug('views.activate args: %s, kwargs: %s', args, kwargs)
-        #current_view = self.state.get_state('active_view')
+        L.debug('views.activate args: %s, kwargs: %s', args, kwargs)
         activating_view = getattr(self, args[0])
         if (not 'home' in activating_view.name and
                 not 'installs' in activating_view.name and
@@ -28,20 +28,18 @@ class Views(object):
                 if not "no_view_chain" in activating_view.view_type:
                     self.state.view_chain_pos += 1
                     self.state.set_view(activating_view)
-                #self.state.set_view(activating_view)
                 activating_view.start()
         else:
             if not "no_view_chain" in activating_view.view_type:
                 self.state.view_chain_pos += 1
                 self.state.set_view(activating_view)
-            #self.state.set_view(activating_view)
             activating_view.start()
 class View(object):
     """View Objects old the various parts of a given view
     such as the header, footer, body, etc"""
     def __init__(self, app, name, view_json_data):
         self.app = app
-        self.app.L.debug("View %s Initialized", name)
+        L.debug("View %s Initialized", name)
         self.name = name
         self.footer = None
         self.body = None
@@ -67,7 +65,7 @@ class View(object):
             self.set_focus('body')
         if self.action_on_load:
             self.app.loop.draw_screen()
-            self.app.L.debug('This View has an action to be run on load')
+            L.debug('This View has an action to be run on load')
             self.action = getattr(self.actions, self.action_on_load)
             self.action_thread = Thread(target=self.action, name='action_thread')
             self.action_thread.start()
@@ -99,6 +97,5 @@ class View(object):
         self.app.frame.set_focus(focus_position)
     def set_view_body(self, *args):
         """sets the frame's body section to the specified body"""
-        #debug('BodyWidgets.get_body_widget:: view_name: %s :: args: %s', view_name, args)
         body_class = getattr(body_widgets, self.name)
         self.body = body_class(self.app, user_args=args, calling_view=self)
