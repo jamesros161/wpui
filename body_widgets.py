@@ -152,7 +152,8 @@ class GetWpConfig(BodyWidget):
         for directive in wp_config.wp_config_directive_list:
             row_items = []
             for key, value in directive.items():
-                row_items.append(W.get_text('body', key, value))
+                row_items.append(W.get_text('body', key, 'center'))
+                row_items.append(W.get_text('body', value, 'center'))
             row = W.get_col_row(row_items)
             directives_list.append(row)
         wp_config_pile = U.Pile(directives_list)
