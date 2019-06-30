@@ -1,105 +1,105 @@
 {
-    "home" : [
-        [" Installations ", "installs"],
-        ["     Themes    ","themes"],
-        ["   Databases   ","database"],
-        ["    Plugins    ","plugins"],
-        ["     Users     ","users"],
-        ["    WP Core    ", "core"],
-        ["      Quit     ","quit"]
+    "Home" : [
+        [" Installations ", "Installs"],
+        ["     Themes    ","Themes"],
+        ["   Databases   ","Database"],
+        ["    Plugins    ","Plugins"],
+        ["     Users     ","Users"],
+        ["    WP Core    ", "Core"],
+        ["      Quit     ","Quit"]
     ],
-    "installs" : [
-        ["      Home     ", "home"],
-        [" Get WP Config ","getwpconfig"],
-        ["   Set Config  ","setwpconfig"],
-        [" Set DB Creds  ","setdbcreds"],
-        ["    Re-Salt    ","resalt"],
-        ["      Quit     ","quit"]
+    "Installs" : [
+        ["      Home     ", "Home"],
+        [" Get WP Config ","GetWpConfig"],
+        ["   Set Config  ","SetWpConfig"],
+        [" Set DB Creds  ","SetDbCreds"],
+        ["    Re-Salt    ","ReSalt"],
+        ["      Quit     ","Quit"]
     ],
-    "getwpconfig" : [
-        ["      Home     ", "home"],
-        [" Get WP Config ","getwpconfig"],
-        ["   Set Config  ","setwpconfig"],
-        [" Set DB Creds  ","setdbcreds"],
-        ["    Re-Salt    ","resalt"],
-        ["      Quit     ","quit"]
+    "GetWpConfig" : [
+        ["      Home     ", "Home"],
+        [" Get WP Config ","GetWpConfig"],
+        ["   Set Config  ","SetWpConfig"],
+        [" Set DB Creds  ","SetDbCreds"],
+        ["    Re-Salt    ","ReSalt"],
+        ["      Quit     ","Quit"]
     ],
-    "setwpconfig" : [
-        ["      Home     ", "home"],
-        [" Get WP Config ","getwpconfig"],
-        ["   Set Config  ","setwpconfig"],
-        [" Set DB Creds  ","setdbcreds"],
-        ["    Re-Salt    ","resalt"],
-        ["      Quit     ","quit"]
+    "SetWpConfig" : [
+        ["      Home     ", "Home"],
+        [" Get WP Config ","GetWpConfig"],
+        ["   Set Config  ","SetWpConfig"],
+        [" Set DB Creds  ","SetDbCreds"],
+        ["    Re-Salt    ","ReSalt"],
+        ["      Quit     ","Quit"]
     ],
-    "setdbcreds" : [
-        ["      Home     ", "home"],
-        [" Get WP Config ","getwpconfig"],
-        ["   Set Config  ","setwpconfig"],
-        [" Set DB Creds  ","setdbcreds"],
-        ["    Re-Salt    ","resalt"],
-        ["      Quit     ","quit"]
+    "SetDbCreds" : [
+        ["      Home     ", "Home"],
+        [" Get WP Config ","GetWpConfig"],
+        ["   Set Config  ","SetWpConfig"],
+        [" Set DB Creds  ","SetDbCreds"],
+        ["    Re-Salt    ","ReSalt"],
+        ["      Quit     ","Quit"]
     ],
-    "resalt" : [
-        ["      Home     ", "home"],
-        [" Get WP Config ","getwpconfig"],
-        ["   Set Config  ","setwpconfig"],
-        [" Set DB Creds  ","setdbcreds"],
-        ["    Re-Salt    ","resalt"],
-        ["      Quit     ","quit"]
+    "ReSalt" : [
+        ["      Home     ", "Home"],
+        [" Get WP Config ","GetWpConfig"],
+        ["   Set Config  ","SetWpConfig"],
+        [" Set DB Creds  ","SetDbCreds"],
+        ["    Re-Salt    ","ReSalt"],
+        ["      Quit     ","Quit"]
     ],
-    "database" : [
-        ["      Home     ","home"],
-        ["     Export    ","db_export"],
-        ["     Import    ","db_import"],
-        ["   Optimize    ","db_optimize"],
-        ["     Repair    ","db_repair"],
-        ["     Search    ","db_search"],
-        ["      Quit     ","quit"]
+    "Database" : [
+        ["      Home     ","Home"],
+        ["     Export    ","DbExport"],
+        ["     Import    ","DbImport"],
+        ["   Optimize    ","DbOptimize"],
+        ["     Repair    ","DbRepair"],
+        ["     Search    ","DbSearch"],
+        ["      Quit     ","Quit"]
     ],
-    "themes" : [
-        [" Installations ", "installs"],
-        ["      Home     ", "home"],
-        ["   Databases   ","database"],
-        ["    Plugins    ","plugins"],
-        ["     Users     ","users"],
-        ["    WP Core    ", "core"],
-        ["      Quit     ","quit"]
+    "Themes" : [
+        [" Installations ", "Installs"],
+        ["      Home     ", "Home"],
+        ["   Databases   ","Database"],
+        ["    Plugins    ","Plugins"],
+        ["     Users     ","Users"],
+        ["    WP Core    ", "Core"],
+        ["      Quit     ","Quit"]
     ],
-    "plugins" : [
-        [" Installations ", "installs"],
-        ["     Themes    ","themes"],
-        ["   Databases   ","database"],
-        ["      Home     ", "home"],
-        ["     Users     ","users"],
-        ["    WP Core    ", "core"],
-        ["      Quit     ","quit"]
+    "Plugins" : [
+        [" Installations ", "Installs"],
+        ["     Themes    ","Themes"],
+        ["   Databases   ","Database"],
+        ["      Home     ", "Home"],
+        ["     Users     ","Users"],
+        ["    WP Core    ", "Core"],
+        ["      Quit     ","Quit"]
     ],
-    "users" : [
-        [" Installations ", "installs"],
-        ["     Themes    ","themes"],
-        ["   Databases   ","database"],
-        ["    Plugins    ","plugins"],
-        ["      Home     ", "home"],
-        ["    WP Core    ", "core"],
-        ["      Quit     ","quit"]
+    "Users" : [
+        [" Installations ", "Installs"],
+        ["     Themes    ","Themes"],
+        ["   Databases   ","Database"],
+        ["    Plugins    ","Plugins"],
+        ["      Home     ", "Home"],
+        ["    WP Core    ", "Core"],
+        ["      Quit     ","Quit"]
     ],
-    "core" : [
-        [" Installations ", "installs"],
-        ["     Themes    ","themes"],
-        ["   Databases   ","database"],
-        ["    Plugins    ","plugins"],
-        ["     Users     ","users"],
-        ["      Home     ", "home"],
-        ["      Quit     ","quit"]
+    "Core" : [
+        [" Installations ", "Installs"],
+        ["     Themes    ","Themes"],
+        ["   Databases   ","Database"],
+        ["    Plugins    ","Plugins"],
+        ["     Users     ","Users"],
+        ["      Home     ", "Home"],
+        ["      Quit     ","Quit"]
     ],
-    "quit" : [
-        [" Installations ", "installs"],
-        ["     Themes    ","themes"],
-        ["   Databases   ","database"],
-        ["    Plugins    ","plugins"],
-        ["     Users     ","users"],
-        ["    WP Core    ", "core"],
-        ["      Home     ", "home"]
+    "Quit" : [
+        [" Installations ", "Installs"],
+        ["     Themes    ","Themes"],
+        ["   Databases   ","Database"],
+        ["    Plugins    ","Plugins"],
+        ["     Users     ","Users"],
+        ["    WP Core    ", "Core"],
+        ["      Home     ", "Home"]
     ]
 }
