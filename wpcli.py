@@ -10,7 +10,7 @@ class Installations(object):
     def __init__(self, app):
         self.app = app
         L.debug('Installations Initialized')
-        self.call = Call(self.app.L)
+        self.call = Call()
         self.username = getpass.getuser()
         self.homedir = os.path.expanduser('~%s' % self.username)
         self.installations = self.get_installation_dirs()
