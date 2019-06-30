@@ -49,7 +49,7 @@ class App(object):
             #raw = loop.screen.get_input(raw_keys=True)
             #debug('raw: %s', raw)
             if key in 'ctrl e':
-                self.views.activate(self, 'quit')
+                self.views.activate(self, 'Quit')
             if key in 'tab':
                 if self.frame.focus_position == 'footer':
                     self.frame.focus_position = 'body'
