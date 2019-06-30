@@ -39,4 +39,4 @@ class Actions(object):
         L.debug("get_wp_config Action Started")
         self.wp_config = WpConfig(self.app)
         L.debug('wp_config: %s', self.wp_config)
-        self.app.views.getwpconfig.body.after_action(self.wp_config)
+        self.app.views.GetWpConfig.body.after_action(self.wp_config)
