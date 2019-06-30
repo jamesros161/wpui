@@ -28,7 +28,7 @@ class Log(object):
         logging.addLevelName(50, "**FATAL**")
 
         logger = logging.getLogger(__name__)
-        handler = logging.StreamHandler(stream=sys.stdout)
+        handler = logging.FileHandler(filename=logpath, mode='a')
         logger.addHandler(handler)
 
         self.logger = logger
