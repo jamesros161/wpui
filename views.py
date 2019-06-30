@@ -5,6 +5,7 @@ from logmod import Log
 import body_widgets
 from actions import Actions
 L = Log()
+W = body_widgets.CustomWidgets()
 class Views(object):
     """Stores individual View objects, and activates them"""
     def __init__(self, app):
@@ -78,7 +79,7 @@ class View(object):
     def show_header(self):
         """retrieves a header widget and sets the widget to the header section
         of App.frame"""
-        self.header = self.app.W.get_header(self.name, self.title, self.sub_title)
+        self.header = W.get_header(self.name, self.title, self.sub_title)
         self.app.frame.contents.__setitem__('header', [self.header, None])
     def show_body(self):
         """retrieves a body widget and sets the widget to the body section
@@ -87,7 +88,7 @@ class View(object):
     def show_footer(self):
         """retrieves a footer widget and sets the widget to the footer section
         of App.frame"""
-        self.footer = self.app.W.get_footer(self.name, self.app)
+        self.footer = W.get_footer(self.name, self.app)
         self.app.frame.contents.__setitem__('footer', [self.footer, None])
     def draw_screen(self):
         """Re-draws the screen"""
