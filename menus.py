@@ -1,6 +1,7 @@
 """Imports Menus from associated menus.json file"""
-
 import json
+from logmod import Log
+L = Log()
 class Menus(object):
     """Imports Menus from associated menus.json file"""
     def __init__(self, app):
@@ -8,7 +9,7 @@ class Menus(object):
         with open('menus.json', 'r') as menus:
             menus_json = json.load(menus)
         for key, value in menus_json.items():
-            setattr(self, key, Menu(app, key, value))
+            setattr(self, key, Menu(key, value))
     def get_menu(self, menu_name):
         """getter for view's menu
 
@@ -24,8 +25,8 @@ class Menus(object):
             return getattr(self, menu_name)
 class Menu(object):
     """Individual menu object for each view"""
-    def __init__(self, app, menu_name, menu_items):
-        #app.L.debug("Menu %s Initialized",menu_name)#pylint: disable=no-member
+    def __init__(self, menu_name, menu_items):
+        L.debug("Menu %s Initialized", menu_name)
         self.name = menu_name
         self.items = menu_items
-        app.L.debug("Menu Items: %s", self.items)
+        L.debug("Menu Items: %s", self.items)
