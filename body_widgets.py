@@ -181,7 +181,7 @@ class GetWpConfig(BodyWidget):
                 button
                 ]
                 #W.get_edit(str(directive['value']), align='center')]
-            U.connect_signal(button.original_widget,'postchange',button.set_attr_map({'body':'bold'}))
+            U.connect_signal(button.original_widget,'postchange',button.set_attr_map, user_arg={'body':'bold'})
             row = W.get_col_row(row_items)
             directives_list.append(row)
         wp_config_pile = U.Pile(directives_list)
