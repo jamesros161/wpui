@@ -200,14 +200,17 @@ class SetAddWpConfig(BodyWidget):
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
     def define_widget(self, **kwargs):
         L.debug(' kwargs : %s', kwargs)
-        directive_name_edit = W.get_edit('',caption='WP-Config Directive Name: ',align='center')
+        directive_name_edit = W.get_edit(
+            '',
+            caption='WP-Config Directive Name: ',
+            align='center')
         directive_value_edit = WpConfigValueMap(
-                self.app,
-                'default',
-                directive_name=directive_name_edit.get_edit_text(),
-                edit_text='',
-                caption='WP-Config Directive Value: ',
-                align='center')
+            self.app,
+            'default',
+            directive_name=directive_name_edit.get_edit_text(),
+            edit_text='',
+            caption='WP-Config Directive Value: ',
+            align='center')
         pile = U.Pile([
             directive_name_edit,
             directive_value_edit])
