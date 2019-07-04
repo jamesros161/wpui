@@ -13,7 +13,7 @@ class Views(object):
         self.state = app.state
         with open('views.json', 'r') as views:
             views_json = json.load(views)
-        L.debug('views_json: %s', views_json)
+        #L.debug('views_json: %s', views_json)
         for key, value in views_json.items():
             setattr(self, key, View(app, key, value))
     def activate(self, app, *args, **kwargs):
@@ -40,7 +40,7 @@ class View(object):
     such as the header, footer, body, etc"""
     def __init__(self, app, name, view_json_data):
         self.app = app
-        L.debug("View %s Initialized", name)
+        #L.debug("View %s Initialized", name)
         self.name = name
         self.footer = None
         self.body = None
