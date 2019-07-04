@@ -234,6 +234,50 @@ class SetAddWpConfig(BodyWidget):
     def debug(self, *args):
         """Prints debug for module"""
         L.debug('Args: %s', args)
+class SetDbCreds(BodyWidget):
+    """Easily set DB credentials for WP-Config"""
+    def __init__(self, app, user_args=None, calling_view=None):
+        super(SetDbCreds, self).__init__(app)
+        L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
+    def define_widget(self, **kwargs):
+        L.debug(' kwargs : %s', kwargs)
+        db_name_edit = WpConfigValueMap(
+            self.app,
+            'default',
+            directive_name='DB_NAME',
+            edit_text='',
+            align='left')
+        db_user_edit = WpConfigValueMap(
+            self.app,
+            'default',
+            directive_name='DB_USER',
+            edit_text='',
+            align='left')
+        db_pass_edit = WpConfigValueMap(
+            self.app,
+            'default',
+            directive_name='DB_PASS',
+            edit_text='',
+            align='left')
+        rows = [
+            W.get_col_row([
+                W.get_text('default', 'Database Name: ', 'right'),
+                db_name_edit
+            ]),
+            W.get_col_row([
+                W.get_text('default', 'Database User: ', 'right'),
+                db_user_edit
+            ]),
+            W.get_col_row([
+                W.get_text('default', 'Database Pass: ', 'right'),
+                db_pass_edit
+            ])
+        ]
+        self.pile = U.Pile(rows)
+        return U.Filler(self.pile, 'middle')
+    def debug(self, *args):
+        """Prints debug for module"""
+        L.debug('Args: %s', args)
 class Database(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
     def __init__(self, app, user_args=None, calling_view=None):
