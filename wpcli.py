@@ -36,7 +36,10 @@ class Installations(object):
         """Getter for installation details"""
         L.debug('Start get_installation_details')
         self.progress = 0
-        progress_sections = 100 / len(self.installations)
+        if len(self.installations) > 0:
+            progress_sections = 100 / len(self.installations)
+        else:
+            progress_sections = 100
         progress_increments = progress_sections / 2
         for installation in self.installations:
             self.progress = self.progress + progress_increments
