@@ -171,7 +171,7 @@ class GetWpConfig(BodyWidget):
         L.debug(' wp_config : %s', wp_config)
         directives_list = [
             W.get_col_row([
-                (8, U.AttrMap(W.get_text('header', 'Type', 'center'), 'header')),
+                (10, U.AttrMap(W.get_text('header', 'Type', 'center'), 'header')),
                 U.AttrMap(W.get_text('header', 'Name', 'center'), 'header'),
                 ('weight', 2, U.AttrMap(W.get_text('header', 'Value', 'center'), 'header'))])]
         for directive in wp_config.wp_config_directive_list:
@@ -182,9 +182,9 @@ class GetWpConfig(BodyWidget):
                 edit_text=str(directive['value']),
                 align='center')
             row_items = [
-                W.get_text('default', str(directive['type']), 'center'),
+                (10, U.W.get_text('default', str(directive['type']), 'center')),
                 W.get_text('default', str(directive['name']), 'center'),
-                button
+                ('weight', 2, button)
                 ]
             row = W.get_col_row(row_items)
             directives_list.append(row)
