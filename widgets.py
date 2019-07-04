@@ -43,7 +43,16 @@ class WpConfigValueEdit(U.Edit):
         """Sets the attribute mapping for the
         edit text in response to wp-cli result"""
         self.attr_map.set_attr_map({from_attr:to_attr})
-
+class WpConfigNameEdit(U.Edit):
+    """Class of Edit widgets for changing WpConfig Values"""
+    def __init__(self, body_instance, edit_text=u'', align='', caption=''):
+        self.body_instance = body_instance
+        super(WpConfigNameEdit, self).__init__(edit_text=edit_text, align=align, caption=caption)
+    def keypress(self, size, key):
+        if key != 'enter' or key != 'down':
+            return super(WpConfigNameEdit, self).keypress(size, key)
+        self.body_instance.directive_name = super(WpConfigNameEdit, self).get_edit_text()
+        return True
 class BoxButton(U.WidgetWrap):
     """Custom Button that appears with text and a line'd border"""
     _border_char = u'─'

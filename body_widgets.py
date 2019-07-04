@@ -4,7 +4,7 @@ import getpass
 import urwid as U
 from logmod import Log
 from settings import Settings
-from widgets import CustomWidgets, BoxButton, WpConfigValueMap
+from widgets import CustomWidgets, BoxButton, WpConfigValueMap, WpConfigNameEdit
 import widgets as W
 S = Settings()
 L = Log()
@@ -200,20 +200,22 @@ class SetAddWpConfig(BodyWidget):
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
     def define_widget(self, **kwargs):
         L.debug(' kwargs : %s', kwargs)
+        self.directive_name = ''
         rows = []
-        directive_name_edit = W.get_edit(
-            '',
-            align='center')
+        self.directive_name_edit = WpConfigNameEdit(
+            self,
+            align='left'
+        )
         rows.append(
             W.get_col_row([
                 W.get_text('default', 'WP-Config Directive Name: ', 'right'),
-                directive_name_edit
+                self.directive_name_edit
             ])
         )
         directive_value_edit = WpConfigValueMap(
             self.app,
             'default',
-            directive_name=directive_name_edit.get_edit_text(),
+            directive_name=self.directive_name,
             edit_text='',
             align='center')
         rows.append(
@@ -223,10 +225,10 @@ class SetAddWpConfig(BodyWidget):
             ])
         )
         U.connect_signal(
-            directive_name_edit,
+            self.directive_name_edit,
             'postchange',
             self.debug,
-            user_arg=directive_name_edit.get_edit_text())
+            user_arg=self.directive_name_edit.get_edit_text())
         pile = U.Pile(rows)
         return U.Filler(pile, 'middle')
     def debug(self, *args):
