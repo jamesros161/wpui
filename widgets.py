@@ -11,8 +11,9 @@ L = Log()
 PYTHONIOENCODING = "utf-8"
 class WpConfigValueEdit(U.Edit):
     """Class of Edit widgets for changing WpConfig Values"""
-    def __init__(self, directive_name='',edit_text=u'', align=''):
+    def __init__(self, app, directive_name='', edit_text=u'', align=''):
         super(WpConfigValueEdit, self).__init__(edit_text=edit_text, align=align)
+        self.app = app
         self.directive_name = directive_name
     def keypress(self, size, key):
         if key != 'enter':
@@ -22,6 +23,10 @@ class WpConfigValueEdit(U.Edit):
             'Directive: %s, Value: %s',
             self.original_widget.directive_name,
             self.original_widget.get_edit_text())
+        self.original_widget.app.views.GetWpConfig.actions.set_wp_config(
+            self.original_widget.directive_name,
+            self.original_widget.get_edit_text())
+        return True
 
 class BoxButton(U.WidgetWrap):
     """Custom Button that appears with text and a line'd border"""

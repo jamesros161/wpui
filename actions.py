@@ -40,3 +40,7 @@ class Actions(object):
         self.wp_config = WpConfig(self.app)
         L.debug('wp_config: %s', self.wp_config)
         self.app.views.GetWpConfig.body.after_action(self.wp_config)
+    def set_wp_config(self, directive_name, directive_value):
+        """Sets a single wp_config directive.
+        This is used by the wp_config display screen edit widgets"""
+        self.wp_config.set_wp_config(directive_name, directive_value)
