@@ -199,16 +199,19 @@ class SetAddWpConfig(BodyWidget):
         super(SetAddWpConfig, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
     def define_widget(self, **kwargs):
+        self.pile = None
         L.debug(' kwargs : %s', kwargs)
         self.directive_name = ''
         rows = []
+        self.pile = U.Pile(rows)
         self.directive_value_edit = WpConfigValueMap(
             self.app,
             'default',
             directive_name=self.directive_name,
             edit_text='',
-            align='center')
+            align='left')
         self.directive_name_edit = WpConfigNameMap(
+            self.pile,
             'default',
             self.directive_value_edit,
             align='left')
@@ -228,8 +231,7 @@ class SetAddWpConfig(BodyWidget):
                 self.directive_value_edit
             ])
         )
-        pile = U.Pile(rows)
-        return U.Filler(pile, 'middle')
+        return U.Filler(self.pile, 'middle')
     def debug(self, *args):
         """Prints debug for module"""
         L.debug('Args: %s', args)
