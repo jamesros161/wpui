@@ -45,7 +45,8 @@ class Actions(object):
         This is used by the wp_config display screen edit widgets"""
         result = self.wp_config.set_wp_config(directive_name, directive_value)
         L.debug("wp-cli set config result: %s", result)
+        L.debug("edit_map: %s", edit_map)
         if result:
-            edit_map.set_attr_map({'default':'body'})
+            edit_map.set_attr_map({None:'body'})
         else:
-            edit_map.set_attr_map({'default':'alert'})
+            edit_map.set_attr_map({None:'alert'})
