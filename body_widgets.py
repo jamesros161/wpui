@@ -208,7 +208,10 @@ class SetAddWpConfig(BodyWidget):
                 edit_text='',
                 caption='WP-Config Directive Value: ',
                 align='center')
-        return U.Filler(home_text, 'middle')
+        pile = U.Pile([
+            directive_name_edit,
+            directive_value_edit])
+        return U.Filler(pile, 'middle')
 class Database(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
     def __init__(self, app, user_args=None, calling_view=None):
