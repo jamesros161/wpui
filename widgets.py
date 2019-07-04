@@ -3,7 +3,6 @@
 or shortcuts for frequently used urwid
 widgets
 """
-import time
 import urwid as U
 from settings import Settings
 from logmod import Log
@@ -60,11 +59,9 @@ class WpConfigValueEdit(U.Edit):
             remove=remove)
         self.edit_pos = len(self.get_edit_text()) + 1
         if remove:
-            app = self.app
-            self = U.Text(('body', 'REMOVED'), align='left')
-            time.sleep(1)
-            app.loop.draw_screen()
-            #self.edit_pos = len(self.get_edit_text()) + 1
+            self.set_edit_text('REMOVED')
+            self.edit_pos = len(self.get_edit_text()) + 1
+        U.CURSOR_DOWN
         return True
     def set_attr_map(self, from_attr, to_attr):
         """Sets the attribute mapping for the
