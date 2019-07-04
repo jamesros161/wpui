@@ -30,7 +30,7 @@ class WpConfigValueEdit(U.Edit):
             self.directive_name,
             self.get_edit_text())
         self.app.views.GetWpConfig.actions.set_wp_config(
-            self,
+            self.attr_map,
             self.directive_name,
             self.get_edit_text())
         return True
