@@ -55,5 +55,6 @@ class Actions(object):
             edit_map.set_attr_map({None:'alert'})
     def re_salt(self):
         """Refreshes the salts defined in the wp-config.php"""
+        self.wp_config = WpConfig(self.app)
         self.wp_config.re_salt()
         self.app.views.activate(self.app, 'GetWpConfig')
