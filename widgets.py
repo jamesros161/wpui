@@ -18,16 +18,14 @@ class WpConfigValueMap(U.AttrMap):
             directive_name='',
             edit_text='',
             align='',
-            caption='',
-            remove=False):
+            caption=''):
         self.original_widget = WpConfigValueEdit(
             app,
             self,
             directive_name=directive_name,
             edit_text=edit_text,
             align=align,
-            caption=caption,
-            remove=remove)
+            caption=caption)
         super(WpConfigValueMap, self).__init__(self.original_widget, attr)
 class WpConfigValueEdit(U.Edit):
     """Class of Edit widgets for changing WpConfig Values"""
@@ -38,10 +36,8 @@ class WpConfigValueEdit(U.Edit):
             directive_name='',
             edit_text='',
             align='',
-            caption='',
-            remove=False):
+            caption=''):
         super(WpConfigValueEdit, self).__init__(edit_text=edit_text, align=align, caption=caption)
-        self.remove = remove
         self.app = app
         self.attr_map = attr_map
         self.directive_name = directive_name
@@ -52,11 +48,17 @@ class WpConfigValueEdit(U.Edit):
             'Directive: %s, Value: %s',
             self.directive_name,
             self.get_edit_text())
+        if self.get_edit_text():
+            remove = False
+        else:
+            remove = True
         self.app.views.GetWpConfig.actions.set_wp_config(
             self.attr_map,
             self.directive_name,
             self.get_edit_text(),
-            self.remove)
+            remove=remove)
+        if remove:
+            self.set_edit_text('REMOVED')
         return True
     def set_attr_map(self, from_attr, to_attr):
         """Sets the attribute mapping for the

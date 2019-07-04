@@ -30,16 +30,6 @@
         ["      Home     ", "Home"],
         [" Get WP Config ","GetWpConfig"],
         ["   Add Option  ","SetAddWpConfig"],
-        [" Remove Option ","SetRemWpConfig"],
-        [" Set DB Creds  ","SetDbCreds"],
-        ["    Re-Salt    ","ReSalt"],
-        ["      Quit     ","Quit"]
-    ],
-    "SetRemWpConfig" : [
-        ["      Home     ", "Home"],
-        [" Get WP Config ","GetWpConfig"],
-        ["   Add Option  ","SetAddWpConfig"],
-        [" Remove Option ","SetRemWpConfig"],
         [" Set DB Creds  ","SetDbCreds"],
         ["    Re-Salt    ","ReSalt"],
         ["      Quit     ","Quit"]
@@ -48,7 +38,6 @@
         ["      Home     ", "Home"],
         [" Get WP Config ","GetWpConfig"],
         ["   Add Option  ","SetAddWpConfig"],
-        [" Remove Option ","SetRemWpConfig"],
         [" Set DB Creds  ","SetDbCreds"],
         ["    Re-Salt    ","ReSalt"],
         ["      Quit     ","Quit"]
@@ -57,7 +46,6 @@
         ["      Home     ", "Home"],
         [" Get WP Config ","GetWpConfig"],
         ["   Add Option  ","SetAddWpConfig"],
-        [" Remove Option ","SetRemWpConfig"],
         [" Set DB Creds  ","SetDbCreds"],
         ["    Re-Salt    ","ReSalt"],
         ["      Quit     ","Quit"]
