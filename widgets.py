@@ -55,7 +55,8 @@ class WpConfigNameEdit(U.Edit):
         if key != 'enter':
             return super(WpConfigNameEdit, self).keypress(size, key)
         L.debug('Directive Name: %s', super(WpConfigNameEdit, self).get_edit_text())
-        self.value_map_instance.set_directive_name(super(WpConfigNameEdit, self).get_edit_text())
+        self.value_map_instance.original_widget.set_directive_name(
+            super(WpConfigNameEdit, self).get_edit_text())
         return True
 class BoxButton(U.WidgetWrap):
     """Custom Button that appears with text and a line'd border"""
