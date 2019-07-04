@@ -171,7 +171,7 @@ class CustomWidgets(object):
         legend_items_grid = U.GridFlow(legend_items, 21, 0, 0, 'center')
         legend_items_map = U.AttrMap(legend_items_grid, 'highlight')
         return U.Pile([menu_grid, legend_grid_map, legend_items_map])
-    def get_col_row(self, items, dividechars=None, **kwargs):
+    def get_col_row(self, items, dividechars=None):
         """Creates a single row of columns
 
         Arguments:
