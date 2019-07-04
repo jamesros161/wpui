@@ -59,7 +59,14 @@ class WpConfigNameMap(U.AttrMap):
         super(WpConfigNameMap, self).__init__(self.original_widget, attr)
 class WpConfigNameEdit(U.Edit):
     """Class of Edit widgets for changing WpConfig Values"""
-    def __init__(self, body_widget, value_map_instance, attr_map, edit_text=u'', align='', caption=''):
+    def __init__(
+            self,
+            body_widget,
+            value_map_instance,
+            attr_map,
+            edit_text=u'',
+            align='',
+            caption=''):
         self.value_map_instance = value_map_instance
         self.attr_map = attr_map
         self.body_widget = body_widget
