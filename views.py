@@ -82,11 +82,11 @@ class View(object):
         if self.title:
             title = self.title
         else:
-            title = self.app.S.display['title']
+            title = self.app.settings.display['title']
         if self.sub_title:
             sub_title = self.sub_title
         else:
-            sub_title = self.app.S.display['sub_title']
+            sub_title = self.app.settings.display['sub_title']
         self.header = W.get_header(self.name, title, sub_title)
         self.app.frame.contents.__setitem__('header', [self.header, None])
     def show_body(self):

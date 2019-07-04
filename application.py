@@ -20,7 +20,7 @@ class App(object):
     """App Class is a container for the state, views, menu, loop, and frame classes"""
     def __init__(self):
         L.debug("App Class Initializing")
-        self.S = S
+        self.settings = S
         self.frame = U.Frame(U.Filler(W.get_text('body', 'Loading...Please Wait', 'center')))
         self.loop = U.MainLoop(self.frame,
                                S.display['palette'],
@@ -106,7 +106,7 @@ class State(object):
                 ' ( ' + self.active_installation['home_url'] + ' )'
         else:
             sub_title = self.active_installation['directory']
-        self.app.S.display['sub_title'] = sub_title
+        self.app.settings.display['sub_title'] = sub_title
         L.debug('self.app.S.display["subtitle"]: %s', self.app.S.display['sub_title'])
         self.app.views.activate(self.app, 'GetWpConfig')
         _x = W.get_header('set_installation', S.display['title'], sub_title)
