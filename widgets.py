@@ -176,7 +176,7 @@ class CustomWidgets(object):
             [urwid.Column] -- An urwid.Columns object
             FLOW / BOX WIDGET
         """
-        L.debug("kwargs: %s", kwargs)
+        #L.debug("kwargs: %s", kwargs)
         if dividechars:
             return U.Columns(
                 items,

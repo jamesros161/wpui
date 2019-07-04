@@ -39,7 +39,7 @@ class BodyWidget(object):
             progress {str} -- string representation of the current
                               progress
         """
-        L.debug('Progress: %s', progress)
+        #L.debug('Progress: %s', progress)
         if progress:
             self.progress_bar.set_completion(int(progress))
         else:
@@ -109,7 +109,7 @@ class Installs(BodyWidget):
                         user_data=installation)),
                     (location_width, W.get_text('body', installation['directory'], 'center'))
                 ]
-                L.debug('valid_wp_options: %s', installation['valid_wp_options'])
+                #L.debug('valid_wp_options: %s', installation['valid_wp_options'])
                 if installation['valid_wp_options']:
                     installation_rows.extend([
                         ('weight', 2, W.get_text('body', installation['home_url'], 'center')),

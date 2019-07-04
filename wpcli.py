@@ -46,7 +46,7 @@ class Installations(object):
         progress_increments = progress_sections / 2
         for installation in self.installations:
             self.progress = self.progress + progress_increments
-            L.debug('Progress: %s', self.progress)
+            #L.debug('Progress: %s', self.progress)
             os.write(self.app.action_pipe, str(self.progress))
             db_check_data, db_check_error = self.call.wpcli(
                 installation['directory'],
@@ -55,10 +55,10 @@ class Installations(object):
                 data = db_check_data.splitlines()
                 for line in data:
                     if '_options' in line and 'OK' in line:
-                        L.debug('Line: %s', line)
+                        #L.debug('Line: %s', line)
                         installation['valid_wp_options'] = True
                         self.progress = self.progress + progress_increments
-                        L.debug('Progress: %s', self.progress)
+                        #L.debug('Progress: %s', self.progress)
                         os.write(self.app.action_pipe, str(self.progress))
                         homedata, _ = self.call.wpcli(
                             installation['directory'],
@@ -157,7 +157,7 @@ class WpConfig(object):
                 '--format=json',
                 '--no-color'])
         if wp_config_result:
-            L.debug('wp_config_result: %s', wp_config_result)
+            #L.debug('wp_config_result: %s', wp_config_result)
             self.wp_config_directive_list = json.loads(wp_config_result)
         if  wp_config_error:
             L.debug('wp_config_error: %s', wp_config_result)
