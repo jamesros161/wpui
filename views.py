@@ -79,7 +79,15 @@ class View(object):
     def show_header(self):
         """retrieves a header widget and sets the widget to the header section
         of App.frame"""
-        self.header = W.get_header(self.name, self.title, self.sub_title)
+        if self.title:
+            title = self.title
+        else:
+            title = self.app.S.display['title']
+        if self.sub_title:
+            sub_title = self.sub_title
+        else:
+            sub_title = self.app.S.display['sub_title']
+        self.header = W.get_header(self.name, title, sub_title)
         self.app.frame.contents.__setitem__('header', [self.header, None])
     def show_body(self):
         """retrieves a body widget and sets the widget to the body section

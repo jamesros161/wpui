@@ -93,7 +93,7 @@ class CustomWidgets(object):
     """Collection of custom widget getters"""
     def __init__(self):
         L.debug("CustomWidgets Initialized")
-        self.subtitle = None
+        self.sub_title = None
     def get_blank_box(self):
         """returns a blank box type widget"""
         return U.Filler(self.get_blank_flow())
@@ -109,23 +109,23 @@ class CustomWidgets(object):
     def get_div(self, div_char=' '):
         """returns a divider flow type widget"""
         return U.Divider(div_char=div_char, top=0, bottom=0)
-    def get_header(self, name, title, subtitle):
+    def get_header(self, name, title, sub_title):
         """returns a frame header widget"""
-        L.debug("Title: %s,  Name:, %s, Subtitle: %s", title, name, subtitle)
+        L.debug("Title: %s,  Name:, %s, sub_title: %s", title, name, sub_title)
         if title:
             title = self.get_text('bold', title, 'center')
         else:
             title = self.get_text('bold', S.display['title'], 'center')
-        if subtitle:
-            self.subtitle = self.get_text('bold', subtitle, 'center')
+        if sub_title:
+            self.sub_title = self.get_text('bold', sub_title, 'center')
         else:
-            L.debug("Passed Subtitle: %s, Settings Subtitle:%s", subtitle, S.display['subtitle'])
-            self.subtitle = self.get_text('bold', S.display['subtitle'], 'center')
+            L.debug("Passed sub_title: %s, Settings Subtitle:%s", sub_title, S.display['sub_title'])
+            self.sub_title = self.get_text('bold', S.display['sub_title'], 'center')
         title_map = U.AttrMap(title, 'bold')
         div_map = U.AttrMap(self.get_div(), 'body')
-        if self.subtitle:
-            subtitle_map = U.AttrMap(self.subtitle, 'bold')
-            return U.Pile((title_map, subtitle_map, div_map), focus_item=None)
+        if self.sub_title:
+            sub_title_map = U.AttrMap(self.sub_title, 'bold')
+            return U.Pile((title_map, sub_title_map, div_map), focus_item=None)
         else:
             return U.Pile((title_map, div_map), focus_item=None)
     def get_footer(self, name, app):
