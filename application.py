@@ -107,9 +107,9 @@ class State(object):
         else:
             subtitle = self.active_installation['directory']
         S.display['subtitle'] = subtitle
+        self.app.views.activate(self.app, 'GetWpConfig')
         _x = W.get_header('set_installation', S.display['title'], subtitle)
         self.app.frame.contents.__setitem__('header', [_x, None])
-        self.app.views.activate(self.app, 'GetWpConfig')
 
     def get_state(self, state_prop):
         """class getter for state properties
