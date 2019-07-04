@@ -107,7 +107,9 @@ class State(object):
         else:
             sub_title = self.active_installation['directory']
         self.app.settings.display['sub_title'] = sub_title
-        L.debug('self.app.S.display["subtitle"]: %s', self.app.S.display['sub_title'])
+        L.debug(
+            'self.app.settings.display["subtitle"]: %s',
+            self.app.settings.display['sub_title'])
         self.app.views.activate(self.app, 'GetWpConfig')
         _x = W.get_header('set_installation', S.display['title'], sub_title)
         self.app.frame.contents.__setitem__('header', [_x, None])
