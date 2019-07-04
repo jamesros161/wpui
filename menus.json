@@ -11,7 +11,7 @@
     "Installs" : [
         ["      Home     ", "Home"],
         [" Get WP Config ","GetWpConfig"],
-        ["   Set Config  ","SetWpConfig"],
+        ["   Set Config  ","SetAddWpConfig"],
         [" Set DB Creds  ","SetDbCreds"],
         ["    Re-Salt    ","ReSalt"],
         ["      Quit     ","Quit"]
@@ -19,7 +19,7 @@
     "GetWpConfig" : [
         ["      Home     ", "Home"],
         [" Get WP Config ","GetWpConfig"],
-        ["   Set Config  ","SetWpConfig"],
+        ["   Set Config  ","SetAddWpConfig"],
         [" Set DB Creds  ","SetDbCreds"],
         ["    Re-Salt    ","ReSalt"],
         ["      Quit     ","Quit"]
@@ -27,7 +27,7 @@
     "SetAddWpConfig" : [
         ["      Home     ", "Home"],
         [" Get WP Config ","GetWpConfig"],
-        ["   Set Config  ","SetWpConfig"],
+        ["   Set Config  ","SetAddWpConfig"],
         [" Set DB Creds  ","SetDbCreds"],
         ["    Re-Salt    ","ReSalt"],
         ["      Quit     ","Quit"]
@@ -35,7 +35,7 @@
     "SetDbCreds" : [
         ["      Home     ", "Home"],
         [" Get WP Config ","GetWpConfig"],
-        ["   Set Config  ","SetWpConfig"],
+        ["   Set Config  ","SetAddWpConfig"],
         [" Set DB Creds  ","SetDbCreds"],
         ["    Re-Salt    ","ReSalt"],
         ["      Quit     ","Quit"]
@@ -43,7 +43,7 @@
     "ReSalt" : [
         ["      Home     ", "Home"],
         [" Get WP Config ","GetWpConfig"],
-        ["   Set Config  ","SetWpConfig"],
+        ["   Set Config  ","SetAddWpConfig"],
         [" Set DB Creds  ","SetDbCreds"],
         ["    Re-Salt    ","ReSalt"],
         ["      Quit     ","Quit"]
