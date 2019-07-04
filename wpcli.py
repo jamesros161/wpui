@@ -193,6 +193,15 @@ class WpConfig(object):
             return True
         else:
             return False
+    def re_salt(self):
+        "Refreshes the stalts defined in the wp-config.php file"
+        path = self.installation['directory']
+        return_data, return_error = self.call.wpcli(
+            path, [
+                'config',
+                'shuffle-salts'
+                ])
+        L.debug('Set_Wp_Config Return Data: %s, Return Error: %s', return_data, return_error)
 class Call(object):
     """opens a subprocess to run wp-cli command"""
     def wpcli(self, path, arguments):

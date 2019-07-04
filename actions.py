@@ -53,3 +53,6 @@ class Actions(object):
             edit_map.set_attr_map({None:'body'})
         else:
             edit_map.set_attr_map({None:'alert'})
+    def re_salt(self):
+        self.wp_config.re_salt()
+        self.app.views.activate(self.app, 'GetWpConfig')

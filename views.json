@@ -30,10 +30,10 @@
         "action_on_load" : ""
     },
     "ReSalt" : {
-        "view_type" : "no_input",
+        "view_type" : "no_display",
         "title" : "",
         "sub_title" : "",
-        "action_on_load" : "resalt"
+        "action_on_load" : "re_salt"
     },
     "Database" : {
         "view_type" : "body_input",

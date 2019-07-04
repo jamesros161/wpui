@@ -57,10 +57,10 @@ class WpConfigValueEdit(U.Edit):
             self.directive_name,
             self.get_edit_text(),
             remove=remove)
-        self.edit_pos = -1
+        self.edit_pos = len(self.get_edit_text()) + 1
         if remove:
             self.set_edit_text('REMOVED')
-            self.edit_pos = -1
+            self.edit_pos = len(self.get_edit_text()) + 1
         return True
     def set_attr_map(self, from_attr, to_attr):
         """Sets the attribute mapping for the
@@ -102,7 +102,7 @@ class WpConfigNameEdit(U.Edit):
             super(WpConfigNameEdit, self).get_edit_text())
         self.set_attr_map(None, 'body')
         self.body_widget.pile.focus_position = 1
-        self.edit_pos = -1
+        self.edit_pos = len(self.get_edit_text()) + 1
         return True
     def set_attr_map(self, from_attr, to_attr):
         """Sets the attribute mapping for the

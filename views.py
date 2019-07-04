@@ -56,20 +56,26 @@ class View(object):
         """Starts the loading, and showing of the activated view
         Typically called by Views.activate, but sometimes called
         through other means"""
-        self.set_view_body()
-        self.show_header()
-        self.show_body()
-        self.show_footer()
-        if self.view_type == 'no_input':
-            self.set_focus('footer')
-        else:
-            self.set_focus('body')
-        if self.action_on_load:
-            self.app.loop.draw_screen()
-            L.debug('This View has an action to be run on load')
-            self.action = getattr(self.actions, self.action_on_load)
-            self.action_thread = Thread(target=self.action, name='action_thread')
-            self.action_thread.start()
+        if self.view_type == 'no_display':
+            if self.action_on_load:
+                L.debug('This View has an action to be run on load')
+                self.action = getattr(self.actions, self.action_on_load)
+                self.action()
+        else:                
+            self.set_view_body()
+            self.show_header()
+            self.show_body()
+            self.show_footer()
+            if self.view_type == 'no_input':
+                self.set_focus('footer')
+            else:
+                self.set_focus('body')
+            if self.action_on_load:
+                self.app.loop.draw_screen()
+                L.debug('This View has an action to be run on load')
+                self.action = getattr(self.actions, self.action_on_load)
+                self.action_thread = Thread(target=self.action, name='action_thread')
+                self.action_thread.start()
     def reload(self):
         """Reloads a previously activated view. Used by State.go_back and
         State.go_forward"""
