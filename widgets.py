@@ -11,8 +11,8 @@ L = Log()
 PYTHONIOENCODING = "utf-8"
 class WpConfigValueEdit(U.Edit):
     """Class of Edit widgets for changing WpConfig Values"""
-    def __init__(self, directive_name=''):
-        super(WpConfigValueEdit, self).__init__()
+    def __init__(self, directive_name='',edit_text=u'', align=''):
+        super(WpConfigValueEdit, self).__init__(edit_text=edit_text, align=align)
         self.directive_name = directive_name
     def keypress(self, size, key):
         if key != 'enter':
