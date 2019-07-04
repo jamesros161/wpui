@@ -126,13 +126,17 @@ class Installs(BodyWidget):
         else:
             installation_columns = [W.get_col_row([
                 W.get_blank_flow(),
-                W.get_text('body', 'There Are No WordPress Installations found for User: ' + getpass.getuser(),'center'),
+                W.get_text('body', 'There Are No WordPress Installations found for User: ' + getpass.getuser(), 'center'),
                 W.get_blank_flow()
             ])]
         installation_pile = U.Pile(installation_columns)
         filler = U.Filler(installation_pile, 'middle')
         self.app.frame.contents.__setitem__('body', [filler, None])
         time.sleep(1)
+        if installations:
+            self.app.frame.set_focus('body')
+        else:
+            self.app.frame.set_focus('footer')
         self.app.loop.draw_screen()
 class GetWpConfig(BodyWidget):
     """Creates the specific body widget for the view of the same name"""

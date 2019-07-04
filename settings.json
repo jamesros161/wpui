@@ -12,7 +12,7 @@
             ["body",    "dark cyan",    "default"],
             ["bold",    "light cyan, bold" , "black"],
             ["blue", "bold", "dark blue"],
-            ["highlight", "light cyan", "default"],
+            ["highlight", "dark cyan", "light cyan"],
             ["alert", "dark red, bold", "default"],
             ["boxborder", "light cyan", "default"],
             ["progressbar", "black", "dark cyan"]
