@@ -28,7 +28,7 @@
             ["Exit", "Ctrl + E"]
         ],
         "title" : "WP-CLI Tool",
-        "subtitle" : "If you can do it better, then do it",
+        "sub_title" : "If you can do it better, then do it",
         "menu_enabled" : "True",
         "col_div_chars" : 0
     }
