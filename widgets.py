@@ -11,12 +11,12 @@ L = Log()
 PYTHONIOENCODING = "utf-8"
 class WpConfigValueMap(U.AttrMap):
     """AttrMap for WpConfigValueEdit class"""
-    def __init__(self, app, attr, directive_name='', edit_text='', align=''):
-        self.original_widget = WpConfigValueEdit(app, self, directive_name, edit_text, align)
+    def __init__(self, app, attr, directive_name='', edit_text='', align='', caption=''):
+        self.original_widget = WpConfigValueEdit(app, self, directive_name=directive_name, edit_text=edit_text, align=align, caption=caption)
         super(WpConfigValueMap, self).__init__(self.original_widget, attr)
 class WpConfigValueEdit(U.Edit):
     """Class of Edit widgets for changing WpConfig Values"""
-    def __init__(self, app, attr_map, directive_name='', edit_text=u'', align=''):
+    def __init__(self, app, attr_map, directive_name='', edit_text=u'', align='', caption=''):
         super(WpConfigValueEdit, self).__init__(edit_text=edit_text, align=align)
         self.app = app
         self.attr_map = attr_map

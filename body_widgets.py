@@ -200,11 +200,14 @@ class SetAddWpConfig(BodyWidget):
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
     def define_widget(self, **kwargs):
         L.debug(' kwargs : %s', kwargs)
-        home_text = W.get_text(
-            'body',
-            'Welcome to the best Exim Search Utility ever created.\
-            \nSelect an option below to begin.',
-            'center')
+        directive_name_edit = W.get_edit('',caption='WP-Config Directive Name: ',align='center')
+        directive_value_edit = WpConfigValueMap(
+                self.app,
+                'default',
+                directive_name=directive_name_edit.get_edit_text(),
+                edit_text='',
+                caption='WP-Config Directive Value: ',
+                align='center')
         return U.Filler(home_text, 'middle')
 class Database(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
