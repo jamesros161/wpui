@@ -169,7 +169,8 @@ class GetWpConfig(BodyWidget):
             row_items = [
                 W.get_text('body', str(directive['type']), 'center'),
                 W.get_text('body', str(directive['name']), 'center'),
-                W.get_text('body', str(directive['value']), 'center')]
+                #W.get_text('body', str(directive['value']), 'center')]
+                W.get_edit(str(directive['value']), align='center')]
             row = W.get_col_row(row_items)
             directives_list.append(row)
         wp_config_pile = U.Pile(directives_list)
