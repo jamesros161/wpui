@@ -234,48 +234,6 @@ class SetAddWpConfig(BodyWidget):
     def debug(self, *args):
         """Prints debug for module"""
         L.debug('Args: %s', args)
-class SetRemWpConfig(BodyWidget):
-    """Removes an existing option from the wp-config.php"""
-    def __init__(self, app, user_args=None, calling_view=None):
-        super(SetRemWpConfig, self).__init__(app)
-        L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
-    def define_widget(self, **kwargs):
-        L.debug(' kwargs : %s', kwargs)
-        self.directive_name = ''
-        rows = []
-        self.directive_value_edit = WpConfigValueMap(
-            self.app,
-            'default',
-            directive_name=self.directive_name,
-            edit_text='',
-            align='left',
-            remove=True)
-        self.directive_name_edit = WpConfigNameMap(
-            self,
-            'default',
-            self.directive_value_edit,
-            align='left')
-        #self.directive_name_edit = WpConfigNameEdit(
-        #    self.directive_value_edit,
-        #    align='left'
-        #)
-        rows.append(
-            W.get_col_row([
-                W.get_text('default', 'WP-Config Directive Name: ', 'right'),
-                self.directive_name_edit
-            ])
-        )
-        rows.append(
-            W.get_col_row([
-                W.get_text('default', 'WP-Config Directive Value: ', 'right'),
-                self.directive_value_edit
-            ])
-        )
-        self.pile = U.Pile(rows)
-        return U.Filler(self.pile, 'middle')
-    def debug(self, *args):
-        """Prints debug for module"""
-        L.debug('Args: %s', args)
 class SetDbCreds(BodyWidget):
     """Easily set DB credentials for WP-Config"""
     def __init__(self, app, user_args=None, calling_view=None):

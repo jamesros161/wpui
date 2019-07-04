@@ -23,12 +23,6 @@
         "sub_title" : "",
         "action_on_load" : ""
     },
-    "SetRemWpConfig" : {
-        "view_type" : "body_input",
-        "title" : "",
-        "sub_title" : "",
-        "action_on_load" : ""
-    },
     "SetDbCreds" : {
         "view_type" : "body_input",
         "title" : "",
