@@ -169,6 +169,7 @@ class GetWpConfig(BodyWidget):
             button = U.AttrMap(
                     WpConfigValueEdit(
                         self.app,
+                        button,
                         directive_name=str(directive['name']),
                         edit_text=str(directive['value']),
                         align='center')
