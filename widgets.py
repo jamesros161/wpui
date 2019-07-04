@@ -61,7 +61,6 @@ class WpConfigValueEdit(U.Edit):
         if remove:
             self.set_edit_text('REMOVED')
             self.edit_pos = len(self.get_edit_text()) + 1
-        U.CURSOR_DOWN
         return True
     def set_attr_map(self, from_attr, to_attr):
         """Sets the attribute mapping for the
