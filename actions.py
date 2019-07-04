@@ -43,7 +43,7 @@ class Actions(object):
     def set_wp_config(self, edit_instance, directive_name, directive_value):
         """Sets a single wp_config directive.
         This is used by the wp_config display screen edit widgets"""
-        result, _ = self.wp_config.set_wp_config(directive_name, directive_value)
+        result = self.wp_config.set_wp_config(directive_name, directive_value)
         if result:
             edit_instance.set_attr_map('default', 'body')
         else:
