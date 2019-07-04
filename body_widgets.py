@@ -167,13 +167,13 @@ class GetWpConfig(BodyWidget):
                 U.AttrMap(W.get_text('header', 'Value', 'center'), 'header')])]
         for directive in wp_config.wp_config_directive_list:
             button = U.AttrMap(
-                    'body',
                     WpConfigValueEdit(
                         self.app,
                         directive_name=str(directive['name']),
                         edit_text=str(directive['value']),
                         align='center')
-                        )
+                        , 
+                        'body')
             row_items = [
                 W.get_text('body', str(directive['type']), 'center'),
                 W.get_text('body', str(directive['name']), 'center'),
