@@ -170,7 +170,7 @@ class WpConfig(object):
         return_data, return_error = self.call.wpcli(
             path, [
                 'config',
-                'set',
+                'sit',
                 directive_name,
                 directive_value])
         L.debug('Set_Wp_Config Return Data: %s, Return Error: %s', return_data, return_error)
