@@ -14,8 +14,11 @@ class Installations(object):
         self.username = getpass.getuser()
         self.homedir = os.path.expanduser('~%s' % self.username)
         self.installations = self.get_installation_dirs()
-        self.get_installation_details()
-        L.debug("WP Installation for user %s: %s", self.username, self.installations)
+        if self.installations:
+            self.get_installation_details()
+            L.debug("WP Installation for user %s: %s", self.username, self.installations)
+        else:
+            L.warning("No WP Installations available for this User!")
     def get_installation_dirs(self):
         """Gets installation directory list using os.walk"""
         installations = []

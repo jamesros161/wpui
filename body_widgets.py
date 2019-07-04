@@ -1,5 +1,6 @@
 """Collection of classes each used for a view"""
 import time
+import getpass
 import urwid as U
 from logmod import Log
 from settings import Settings
@@ -88,39 +89,46 @@ class Installs(BodyWidget):
             installations {list} -- [list of installations]
         """
         location_list = []
-        for installation in installations:
-            location_list.append(len(installation['directory']))
-        location_list.sort(reverse=True)
-        location_width = location_list[0] + 4
-        installation_columns = [W.get_col_row([
-            (10, U.AttrMap(W.get_div(), 'header')),
-            (location_width, U.AttrMap(W.get_text('header', 'Location', 'center'), 'header')),
-            ('weight', 2, U.AttrMap(W.get_text('header', 'Home URL', 'center'), 'header')),
-            (18, U.AttrMap(W.get_text('header', 'Valid wp_options', 'center'), 'header')),
-            (20, U.AttrMap(W.get_text('header', 'wp_db_check passed', 'center'), 'header'))
-        ])]
-        for installation in installations:
-            installation_rows = [
-                (10, BoxButton(
-                    ' + ',
-                    on_press=self.app.state.set_installation,
-                    user_data=installation)),
-                (location_width, W.get_text('body', installation['directory'], 'center'))
-            ]
-            L.debug('valid_wp_options: %s', installation['valid_wp_options'])
-            if installation['valid_wp_options']:
-                installation_rows.extend([
-                    ('weight', 2, W.get_text('body', installation['home_url'], 'center')),
-                    (18, W.get_text('body', str(installation['valid_wp_options']), 'center')),
-                    (20, W.get_text('body', str(installation['wp_db_check_success']), 'center'))
-                ])
-            else:
-                installation_rows.append(
-                    ('weight', 3, W.get_text('body', str(installation['wp_db_error']), 'center'))
+        if installations:
+            for installation in installations:
+                location_list.append(len(installation['directory']))
+            location_list.sort(reverse=True)
+            location_width = location_list[0] + 4
+            installation_columns = [W.get_col_row([
+                (10, U.AttrMap(W.get_div(), 'header')),
+                (location_width, U.AttrMap(W.get_text('header', 'Location', 'center'), 'header')),
+                ('weight', 2, U.AttrMap(W.get_text('header', 'Home URL', 'center'), 'header')),
+                (18, U.AttrMap(W.get_text('header', 'Valid wp_options', 'center'), 'header')),
+                (20, U.AttrMap(W.get_text('header', 'wp_db_check passed', 'center'), 'header'))
+            ])]
+            for installation in installations:
+                installation_rows = [
+                    (10, BoxButton(
+                        ' + ',
+                        on_press=self.app.state.set_installation,
+                        user_data=installation)),
+                    (location_width, W.get_text('body', installation['directory'], 'center'))
+                ]
+                L.debug('valid_wp_options: %s', installation['valid_wp_options'])
+                if installation['valid_wp_options']:
+                    installation_rows.extend([
+                        ('weight', 2, W.get_text('body', installation['home_url'], 'center')),
+                        (18, W.get_text('body', str(installation['valid_wp_options']), 'center')),
+                        (20, W.get_text('body', str(installation['wp_db_check_success']), 'center'))
+                    ])
+                else:
+                    installation_rows.append(
+                        ('weight', 3, W.get_text('body', str(installation['wp_db_error']), 'center'))
+                    )
+                installation_columns.append(
+                    W.get_col_row(installation_rows)
                 )
-            installation_columns.append(
-                W.get_col_row(installation_rows)
-            )
+        else:
+            installation_columns = [W.get_col_row([
+                W.get_blank_flow(),
+                W.get_text('body', 'There Are No WordPress Installations found for User: ' + getpass.getuser(),'center'),
+                W.get_blank_flow()
+            ])]
         installation_pile = U.Pile(installation_columns)
         filler = U.Filler(installation_pile, 'middle')
         self.app.frame.contents.__setitem__('body', [filler, None])
@@ -152,7 +160,7 @@ class GetWpConfig(BodyWidget):
             W.get_col_row([
                 U.AttrMap(W.get_text('header', 'Type', 'center'), 'header'),
                 U.AttrMap(W.get_text('header', 'Name', 'center'), 'header'),
-                U.AttrMap(W.get_text('header', 'Value', 'center'))])]
+                U.AttrMap(W.get_text('header', 'Value', 'center'), 'header')])]
         for directive in wp_config.wp_config_directive_list:
             row_items = [
                 W.get_text('body', str(directive['type']), 'center'),
