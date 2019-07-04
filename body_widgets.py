@@ -182,7 +182,7 @@ class GetWpConfig(BodyWidget):
                 edit_text=str(directive['value']),
                 align='center')
             row_items = [
-                (10, U.W.get_text('default', str(directive['type']), 'center')),
+                (10, W.get_text('default', str(directive['type']), 'center')),
                 W.get_text('default', str(directive['name']), 'center'),
                 ('weight', 2, button)
                 ]
