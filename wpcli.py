@@ -39,7 +39,7 @@ class Installations(object):
         """Getter for installation details"""
         L.debug('Start get_installation_details')
         self.progress = 0
-        if len(self.installations) > 0:
+        if self.installations:
             progress_sections = 100 / len(self.installations)
         else:
             progress_sections = 100

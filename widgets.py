@@ -9,6 +9,12 @@ from logmod import Log
 S = Settings()
 L = Log()
 PYTHONIOENCODING = "utf-8"
+class WpConfigValueMap(U.AttrMap):
+    """AttrMap for WpConfigValueEdit class"""
+    def __init__(self, app, attr, directive_name='', edit_text='', align=''):
+        self.original_widget = WpConfigValueEdit(app, self, directive_name, edit_text, align)
+        super(WpConfigValueMap, self).__init__(self.original_widget, attr)
+
 class WpConfigValueEdit(U.Edit):
     """Class of Edit widgets for changing WpConfig Values"""
     def __init__(self, app, attr_map, directive_name='', edit_text=u'', align=''):
@@ -95,7 +101,7 @@ class CustomWidgets(object):
     def get_blank_flow(self):
         """returns a blank flow type widget"""
         return self.get_text('body', '', 'center')
-    def get_edit(self,edit_text, caption='', align=''):
+    def get_edit(self, edit_text, caption='', align=''):
         """returns an edit widget"""
         return U.Edit(caption=caption, edit_text=edit_text, align=align)
     def get_text(self, text_format, text_string, alignment, **kwargs):

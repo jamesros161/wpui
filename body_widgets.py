@@ -4,7 +4,7 @@ import getpass
 import urwid as U
 from logmod import Log
 from settings import Settings
-from widgets import CustomWidgets, BoxButton, WpConfigValueEdit
+from widgets import CustomWidgets, BoxButton, WpConfigValueMap
 import widgets as W
 S = Settings()
 L = Log()
@@ -118,7 +118,13 @@ class Installs(BodyWidget):
                     ])
                 else:
                     installation_rows.append(
-                        ('weight', 3, W.get_text('body', str(installation['wp_db_error']), 'center'))
+                        (
+                            'weight',
+                            3,
+                            W.get_text(
+                                'body',
+                                str(installation['wp_db_error']),
+                                'center'))
                     )
                 installation_columns.append(
                     W.get_col_row(installation_rows)
@@ -126,7 +132,10 @@ class Installs(BodyWidget):
         else:
             installation_columns = [W.get_col_row([
                 W.get_blank_flow(),
-                W.get_text('body', 'There Are No WordPress Installations found for User: ' + getpass.getuser(), 'center'),
+                W.get_text(
+                    'body',
+                    'There Are No WordPress Installations found for User: ' + getpass.getuser(),
+                    'center'),
                 W.get_blank_flow()
             ])]
         installation_pile = U.Pile(installation_columns)
@@ -166,23 +175,17 @@ class GetWpConfig(BodyWidget):
                 U.AttrMap(W.get_text('header', 'Name', 'center'), 'header'),
                 U.AttrMap(W.get_text('header', 'Value', 'center'), 'header')])]
         for directive in wp_config.wp_config_directive_list:
-            button = U.AttrMap(
-                    WpConfigValueEdit(
-                        self.app,
-                        button,
-                        directive_name=str(directive['name']),
-                        edit_text=str(directive['value']),
-                        align='center')
-                        , 
-                        'default')
+            button = WpConfigValueMap(
+                self.app,
+                'default',
+                directive_name=str(directive['name']),
+                edit_text=str(directive['value']),
+                align='center')
             row_items = [
                 W.get_text('default', str(directive['type']), 'center'),
                 W.get_text('default', str(directive['name']), 'center'),
-                #W.get_text('body', str(directive['value']), 'center')]
                 button
                 ]
-                #W.get_edit(str(directive['value']), align='center')]
-            #U.connect_signal(button.original_widget,'postchange',button.original_widget.set_attr_map, user_arg=[button,'default','body'])
             row = W.get_col_row(row_items)
             directives_list.append(row)
         wp_config_pile = U.Pile(directives_list)
