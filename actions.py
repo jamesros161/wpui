@@ -40,10 +40,13 @@ class Actions(object):
         self.wp_config = WpConfig(self.app)
         L.debug('wp_config: %s', self.wp_config)
         self.app.views.GetWpConfig.body.after_action(self.wp_config)
-    def set_wp_config(self, edit_map, directive_name, directive_value):
+    def set_wp_config(self, edit_map, directive_name, directive_value, remove=False):
         """Sets a single wp_config directive.
         This is used by the wp_config display screen edit widgets"""
-        result = self.wp_config.set_wp_config(directive_name, directive_value)
+        if remove:
+            result = self.wp_config.del_wp_config(directive_name)
+        else:
+            result = self.wp_config.set_wp_config(directive_name, directive_value)
         L.debug("wp-cli set config result: %s", result)
         L.debug("edit_map: %s", edit_map)
         if result:

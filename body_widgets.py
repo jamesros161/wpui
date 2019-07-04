@@ -194,7 +194,7 @@ class GetWpConfig(BodyWidget):
         time.sleep(1)
         self.app.loop.draw_screen()
 class SetAddWpConfig(BodyWidget):
-    """Creates the specific body widget for the view of the same name"""
+    """Adds a new option to the wp-config.php"""
     def __init__(self, app, user_args=None, calling_view=None):
         super(SetAddWpConfig, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
@@ -208,6 +208,48 @@ class SetAddWpConfig(BodyWidget):
             directive_name=self.directive_name,
             edit_text='',
             align='left')
+        self.directive_name_edit = WpConfigNameMap(
+            self,
+            'default',
+            self.directive_value_edit,
+            align='left')
+        #self.directive_name_edit = WpConfigNameEdit(
+        #    self.directive_value_edit,
+        #    align='left'
+        #)
+        rows.append(
+            W.get_col_row([
+                W.get_text('default', 'WP-Config Directive Name: ', 'right'),
+                self.directive_name_edit
+            ])
+        )
+        rows.append(
+            W.get_col_row([
+                W.get_text('default', 'WP-Config Directive Value: ', 'right'),
+                self.directive_value_edit
+            ])
+        )
+        self.pile = U.Pile(rows)
+        return U.Filler(self.pile, 'middle')
+    def debug(self, *args):
+        """Prints debug for module"""
+        L.debug('Args: %s', args)
+class SetRemWpConfig(BodyWidget):
+    """Removes an existing option from the wp-config.php"""
+    def __init__(self, app, user_args=None, calling_view=None):
+        super(SetRemWpConfig, self).__init__(app)
+        L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
+    def define_widget(self, **kwargs):
+        L.debug(' kwargs : %s', kwargs)
+        self.directive_name = ''
+        rows = []
+        self.directive_value_edit = WpConfigValueMap(
+            self.app,
+            'default',
+            directive_name=self.directive_name,
+            edit_text='',
+            align='left',
+            remove=True)
         self.directive_name_edit = WpConfigNameMap(
             self,
             'default',
@@ -256,7 +298,7 @@ class SetDbCreds(BodyWidget):
         db_pass_edit = WpConfigValueMap(
             self.app,
             'default',
-            directive_name='DB_PASS',
+            directive_name='DB_PASSWORD',
             edit_text='',
             align='left')
         rows = [

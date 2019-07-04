@@ -11,7 +11,8 @@
     "Installs" : [
         ["      Home     ", "Home"],
         [" Get WP Config ","GetWpConfig"],
-        ["   Set Config  ","SetAddWpConfig"],
+        ["   Add Option  ","SetAddWpConfig"],
+        [" Remove Option ","SetRemWpConfig"],
         [" Set DB Creds  ","SetDbCreds"],
         ["    Re-Salt    ","ReSalt"],
         ["      Quit     ","Quit"]
@@ -19,7 +20,8 @@
     "GetWpConfig" : [
         ["      Home     ", "Home"],
         [" Get WP Config ","GetWpConfig"],
-        ["   Set Config  ","SetAddWpConfig"],
+        ["   Add Option  ","SetAddWpConfig"],
+        [" Remove Option ","SetRemWpConfig"],
         [" Set DB Creds  ","SetDbCreds"],
         ["    Re-Salt    ","ReSalt"],
         ["      Quit     ","Quit"]
@@ -27,7 +29,17 @@
     "SetAddWpConfig" : [
         ["      Home     ", "Home"],
         [" Get WP Config ","GetWpConfig"],
-        ["   Set Config  ","SetAddWpConfig"],
+        ["   Add Option  ","SetAddWpConfig"],
+        [" Remove Option ","SetRemWpConfig"],
+        [" Set DB Creds  ","SetDbCreds"],
+        ["    Re-Salt    ","ReSalt"],
+        ["      Quit     ","Quit"]
+    ],
+    "SetRemWpConfig" : [
+        ["      Home     ", "Home"],
+        [" Get WP Config ","GetWpConfig"],
+        ["   Add Option  ","SetAddWpConfig"],
+        [" Remove Option ","SetRemWpConfig"],
         [" Set DB Creds  ","SetDbCreds"],
         ["    Re-Salt    ","ReSalt"],
         ["      Quit     ","Quit"]
@@ -35,7 +47,8 @@
     "SetDbCreds" : [
         ["      Home     ", "Home"],
         [" Get WP Config ","GetWpConfig"],
-        ["   Set Config  ","SetAddWpConfig"],
+        ["   Add Option  ","SetAddWpConfig"],
+        [" Remove Option ","SetRemWpConfig"],
         [" Set DB Creds  ","SetDbCreds"],
         ["    Re-Salt    ","ReSalt"],
         ["      Quit     ","Quit"]
@@ -43,7 +56,8 @@
     "ReSalt" : [
         ["      Home     ", "Home"],
         [" Get WP Config ","GetWpConfig"],
-        ["   Set Config  ","SetAddWpConfig"],
+        ["   Add Option  ","SetAddWpConfig"],
+        [" Remove Option ","SetRemWpConfig"],
         [" Set DB Creds  ","SetDbCreds"],
         ["    Re-Salt    ","ReSalt"],
         ["      Quit     ","Quit"]

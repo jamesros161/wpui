@@ -178,6 +178,21 @@ class WpConfig(object):
             return True
         else:
             return False
+    def del_wp_config(self, directive_name):
+        """Sets a single wp_config directive.
+        This is used by the wp_config display screen edit widgets"""
+        path = self.installation['directory']
+        return_data, return_error = self.call.wpcli(
+            path, [
+                'config',
+                'delete',
+                directive_name
+                ])
+        L.debug('Set_Wp_Config Return Data: %s, Return Error: %s', return_data, return_error)
+        if return_data and 'Success' in return_data:
+            return True
+        else:
+            return False
 class Call(object):
     """opens a subprocess to run wp-cli command"""
     def wpcli(self, path, arguments):

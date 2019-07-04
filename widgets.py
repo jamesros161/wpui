@@ -11,19 +11,37 @@ L = Log()
 PYTHONIOENCODING = "utf-8"
 class WpConfigValueMap(U.AttrMap):
     """AttrMap for WpConfigValueEdit class"""
-    def __init__(self, app, attr, directive_name='', edit_text='', align='', caption=''):
+    def __init__(
+            self,
+            app,
+            attr,
+            directive_name='',
+            edit_text='',
+            align='',
+            caption='',
+            remove=False):
         self.original_widget = WpConfigValueEdit(
             app,
             self,
             directive_name=directive_name,
             edit_text=edit_text,
             align=align,
-            caption=caption)
+            caption=caption,
+            remove=remove)
         super(WpConfigValueMap, self).__init__(self.original_widget, attr)
 class WpConfigValueEdit(U.Edit):
     """Class of Edit widgets for changing WpConfig Values"""
-    def __init__(self, app, attr_map, directive_name='', edit_text=u'', align='', caption=''):
+    def __init__(
+            self,
+            app,
+            attr_map,
+            directive_name='',
+            edit_text='',
+            align='',
+            caption='',
+            remove=False):
         super(WpConfigValueEdit, self).__init__(edit_text=edit_text, align=align, caption=caption)
+        self.remove = remove
         self.app = app
         self.attr_map = attr_map
         self.directive_name = directive_name
@@ -37,7 +55,8 @@ class WpConfigValueEdit(U.Edit):
         self.app.views.GetWpConfig.actions.set_wp_config(
             self.attr_map,
             self.directive_name,
-            self.get_edit_text())
+            self.get_edit_text(),
+            self.remove)
         return True
     def set_attr_map(self, from_attr, to_attr):
         """Sets the attribute mapping for the
