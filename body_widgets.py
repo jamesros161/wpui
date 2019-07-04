@@ -227,9 +227,7 @@ class SetAddWpConfig(BodyWidget):
             'postchange',
             self.debug,
             user_arg=directive_name_edit.get_edit_text())
-        pile = U.Pile([
-            directive_name_edit,
-            directive_value_edit])
+        pile = U.Pile(rows)
         return U.Filler(pile, 'middle')
     def debug(self, *args):
         """Prints debug for module"""
