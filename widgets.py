@@ -18,14 +18,13 @@ class WpConfigValueEdit(U.Edit):
     def keypress(self, size, key):
         if key != 'enter':
             return super(WpConfigValueEdit, self).keypress(size, key)
-        self = U.AttrMap(self, 'bold')
         L.debug(
             'Directive: %s, Value: %s',
-            self.original_widget.directive_name,
-            self.original_widget.get_edit_text())
-        self.original_widget.app.views.GetWpConfig.actions.set_wp_config(
-            self.original_widget.directive_name,
-            self.original_widget.get_edit_text())
+            self.directive_name,
+            self.get_edit_text())
+        self.app.views.GetWpConfig.actions.set_wp_config(
+            self.directive_name,
+            self.get_edit_text())
         return True
 
 class BoxButton(U.WidgetWrap):
