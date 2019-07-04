@@ -173,15 +173,15 @@ class GetWpConfig(BodyWidget):
                         edit_text=str(directive['value']),
                         align='center')
                         , 
-                        'body')
+                        'default')
             row_items = [
-                W.get_text('body', str(directive['type']), 'center'),
-                W.get_text('body', str(directive['name']), 'center'),
+                W.get_text('default', str(directive['type']), 'center'),
+                W.get_text('default', str(directive['name']), 'center'),
                 #W.get_text('body', str(directive['value']), 'center')]
                 button
                 ]
                 #W.get_edit(str(directive['value']), align='center')]
-            U.connect_signal(button.original_widget,'postchange',button.set_attr_map, user_arg={'body':'bold'})
+            U.connect_signal(button.original_widget,'postchange',button.original_widget.set_attr_map, user_arg=[button,'default','body'])
             row = W.get_col_row(row_items)
             directives_list.append(row)
         wp_config_pile = U.Pile(directives_list)

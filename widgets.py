@@ -26,6 +26,8 @@ class WpConfigValueEdit(U.Edit):
             self.directive_name,
             self.get_edit_text())
         return True
+    def set_attr_map(self,*args):
+        L.debug('Args: %s', args)
 
 class BoxButton(U.WidgetWrap):
     """Custom Button that appears with text and a line'd border"""
