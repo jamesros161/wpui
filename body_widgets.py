@@ -4,7 +4,7 @@ import getpass
 import urwid as U
 from logmod import Log
 from settings import Settings
-from widgets import CustomWidgets, BoxButton, WpConfigValueMap, WpConfigNameEdit, WpConfigNameMap
+from widgets import CustomWidgets, BoxButton, WpConfigValueMap, WpConfigNameMap
 import widgets as W
 S = Settings()
 L = Log()
@@ -208,7 +208,10 @@ class SetAddWpConfig(BodyWidget):
             directive_name=self.directive_name,
             edit_text='',
             align='center')
-        self.directive_name_edit = WpConfigNameMap()
+        self.directive_name_edit = WpConfigNameMap(
+            'default',
+            self.directive_value_edit,
+            align='left')
         #self.directive_name_edit = WpConfigNameEdit(
         #    self.directive_value_edit,
         #    align='left'

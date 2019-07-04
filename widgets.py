@@ -67,8 +67,8 @@ class WpConfigNameEdit(U.Edit):
             return super(WpConfigNameEdit, self).keypress(size, key)
         L.debug('Directive Name: %s', super(WpConfigNameEdit, self).get_edit_text())
         self.value_map_instance.original_widget.set_directive_name(
-            super(WpConfigNameEdit, self).get_edit_text())    
-        self.set_attr_map(None,'body')    
+            super(WpConfigNameEdit, self).get_edit_text())
+        self.set_attr_map(None, 'body')
         return True
     def set_attr_map(self, from_attr, to_attr):
         """Sets the attribute mapping for the
