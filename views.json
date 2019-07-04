@@ -12,12 +12,12 @@
         "action_on_load" : "get_installations"
     },
     "GetWpConfig" : {
-        "view_type" : "no_input",
+        "view_type" : "body_input",
         "title" : "",
         "sub_title" : "",
         "action_on_load" : "get_wp_config"
     },
-    "SetWpConfig" : {
+    "SetAddWpConfig" : {
         "view_type" : "body_input",
         "title" : "",
         "sub_title" : "",

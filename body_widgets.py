@@ -171,9 +171,9 @@ class GetWpConfig(BodyWidget):
         L.debug(' wp_config : %s', wp_config)
         directives_list = [
             W.get_col_row([
-                U.AttrMap(W.get_text('header', 'Type', 'center'), 'header'),
+                (8, U.AttrMap(W.get_text('header', 'Type', 'center'), 'header')),
                 U.AttrMap(W.get_text('header', 'Name', 'center'), 'header'),
-                U.AttrMap(W.get_text('header', 'Value', 'center'), 'header')])]
+                ('weight', 2, U.AttrMap(W.get_text('header', 'Value', 'center'), 'header'))])]
         for directive in wp_config.wp_config_directive_list:
             button = WpConfigValueMap(
                 self.app,
@@ -193,6 +193,19 @@ class GetWpConfig(BodyWidget):
         self.app.frame.contents.__setitem__('body', [filler, None])
         time.sleep(1)
         self.app.loop.draw_screen()
+class SetAddWpConfig(BodyWidget):
+    """Creates the specific body widget for the view of the same name"""
+    def __init__(self, app, user_args=None, calling_view=None):
+        super(SetAddWpConfig, self).__init__(app)
+        L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
+    def define_widget(self, **kwargs):
+        L.debug(' kwargs : %s', kwargs)
+        home_text = W.get_text(
+            'body',
+            'Welcome to the best Exim Search Utility ever created.\
+            \nSelect an option below to begin.',
+            'center')
+        return U.Filler(home_text, 'middle')
 class Database(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
     def __init__(self, app, user_args=None, calling_view=None):

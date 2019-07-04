@@ -24,7 +24,7 @@
         ["    Re-Salt    ","ReSalt"],
         ["      Quit     ","Quit"]
     ],
-    "SetWpConfig" : [
+    "SetAddWpConfig" : [
         ["      Home     ", "Home"],
         [" Get WP Config ","GetWpConfig"],
         ["   Set Config  ","SetWpConfig"],
