@@ -166,12 +166,22 @@ class GetWpConfig(BodyWidget):
                 U.AttrMap(W.get_text('header', 'Name', 'center'), 'header'),
                 U.AttrMap(W.get_text('header', 'Value', 'center'), 'header')])]
         for directive in wp_config.wp_config_directive_list:
+            button = U.AttrMap(
+                    'body',
+                    WpConfigValueEdit(
+                        self.app,
+                        directive_name=str(directive['name']),
+                        edit_text=str(directive['value']),
+                        align='center')
+                        )
             row_items = [
                 W.get_text('body', str(directive['type']), 'center'),
                 W.get_text('body', str(directive['name']), 'center'),
                 #W.get_text('body', str(directive['value']), 'center')]
-                WpConfigValueEdit(self.app, directive_name=str(directive['name']),edit_text=str(directive['value']),align='center')]
+                button
+                ]
                 #W.get_edit(str(directive['value']), align='center')]
+            U.connect_signal(button.original_widget,'postchange',button.set_attr_map({'body':'bold'}))
             row = W.get_col_row(row_items)
             directives_list.append(row)
         wp_config_pile = U.Pile(directives_list)
