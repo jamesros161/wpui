@@ -26,7 +26,7 @@ class Menus(object):
 class Menu(object):
     """Individual menu object for each view"""
     def __init__(self, menu_name, menu_items):
-        L.debug("Menu %s Initialized", menu_name)
+        #L.debug("Menu %s Initialized", menu_name)
         self.name = menu_name
         self.items = menu_items
         #L.debug("Menu Items: %s", self.items)
