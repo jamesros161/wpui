@@ -13,7 +13,7 @@ class Actions(object):
         self.app = app
         self.installations = None
         self.database_information = None
-        self.wp_config = None
+        self.wp_config = WpConfig(self.app)
 
     def get_installations(self):
         """searches user's homedir for wp installations
@@ -37,7 +37,7 @@ class Actions(object):
         """Obtains wp_config information
         """
         L.debug("get_wp_config Action Started")
-        self.wp_config = WpConfig(self.app)
+        self.wp_config.get_wp_config()
         L.debug('wp_config: %s', self.wp_config)
         self.app.views.GetWpConfig.body.after_action(self.wp_config)
     def set_wp_config(self, edit_map, directive_name, directive_value, remove=False):
@@ -55,6 +55,5 @@ class Actions(object):
             edit_map.set_attr_map({None:'alert'})
     def re_salt(self):
         """Refreshes the salts defined in the wp-config.php"""
-        self.wp_config = WpConfig(self.app)
         self.wp_config.re_salt()
         self.app.views.activate(self.app, 'GetWpConfig')

@@ -61,7 +61,7 @@ class View(object):
                 L.debug('This View has an action to be run on load')
                 self.action = getattr(self.actions, self.action_on_load)
                 self.action()
-        else:                
+        else:
             self.set_view_body()
             self.show_header()
             self.show_body()

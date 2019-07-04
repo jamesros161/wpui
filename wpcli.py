@@ -142,7 +142,8 @@ class WpConfig(object):
         self.installation = self.app.state.active_installation
         self.wp_config_directive_list = []
         self.wp_config_error = None
-        self.get_wp_config()
+        self.progress = 0
+        #self.get_wp_config()
     def get_wp_config(self):
         """getter for wp_config data"""
         path = self.installation['directory']
