@@ -29,4 +29,4 @@ class Menu(object):
         L.debug("Menu %s Initialized", menu_name)
         self.name = menu_name
         self.items = menu_items
-        L.debug("Menu Items: %s", self.items)
+        #L.debug("Menu Items: %s", self.items)
