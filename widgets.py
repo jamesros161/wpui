@@ -23,7 +23,7 @@ class WpConfigValueMap(U.AttrMap):
 class WpConfigValueEdit(U.Edit):
     """Class of Edit widgets for changing WpConfig Values"""
     def __init__(self, app, attr_map, directive_name='', edit_text=u'', align='', caption=''):
-        super(WpConfigValueEdit, self).__init__(edit_text=edit_text, align=align)
+        super(WpConfigValueEdit, self).__init__(edit_text=edit_text, align=align, caption=caption)
         self.app = app
         self.attr_map = attr_map
         self.directive_name = directive_name
