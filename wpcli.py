@@ -167,7 +167,7 @@ class WpConfig(object):
         """Sets a single wp_config directive.
         This is used by the wp_config display screen edit widgets"""
         path = self.installation['directory']
-        return_data, return_error = self.call.wpcli(path, ['set', directive_name, directive_value])
+        return_data, return_error = self.call.wpcli(path, ['config', 'set', directive_name, directive_value])
         L.debug('Set_Wp_Config Return Data: %s, Return Error: %s', return_data, return_error)
 class Call(object):
     """opens a subprocess to run wp-cli command"""
