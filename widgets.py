@@ -59,7 +59,7 @@ class WpConfigValueEdit(U.Edit):
             remove=remove)
         self.edit_pos = len(self.get_edit_text()) + 1
         if remove:
-            self = U.Text(['REMOVED', 'body'], align='left')
+            self = U.Text(('body', 'REMOVED'), align='left')
             #self.edit_pos = len(self.get_edit_text()) + 1
         return True
     def set_attr_map(self, from_attr, to_attr):
