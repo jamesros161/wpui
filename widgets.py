@@ -18,7 +18,7 @@ class WpConfigValueEdit(U.Edit):
     def keypress(self, size, key):
         if key != 'enter':
             return super(WpConfigValueEdit, self).keypress(size, key)
-        self = U.AttrMap(self, 'blue')
+        self = U.AttrMap(self, 'bold')
         L.debug(
             'Directive: %s, Value: %s',
             self.original_widget.directive_name,
