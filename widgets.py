@@ -43,6 +43,9 @@ class WpConfigValueEdit(U.Edit):
         """Sets the attribute mapping for the
         edit text in response to wp-cli result"""
         self.attr_map.set_attr_map({from_attr:to_attr})
+    def set_directive_name(self, directive_name):
+        """Dynamically set directive_name"""
+        self.directive_name = directive_name
 class WpConfigNameEdit(U.Edit):
     """Class of Edit widgets for changing WpConfig Values"""
     def __init__(self, body_instance, edit_text=u'', align='', caption=''):
