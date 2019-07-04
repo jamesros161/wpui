@@ -231,6 +231,7 @@ class SetAddWpConfig(BodyWidget):
                 self.directive_value_edit
             ])
         )
+        self.pile =  U.Pile(rows)
         return U.Filler(self.pile, 'middle')
     def debug(self, *args):
         """Prints debug for module"""
