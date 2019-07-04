@@ -146,7 +146,7 @@ class WpConfig(object):
         #self.get_wp_config()
     def get_wp_config(self):
         """getter for wp_config data"""
-        path = self.installation['directory']
+        path = self.app.state.active_installation['directory']
         self.progress = 0
         progress_increments = 100
         self.progress = self.progress + progress_increments
@@ -167,7 +167,7 @@ class WpConfig(object):
     def set_wp_config(self, directive_name, directive_value):
         """Sets a single wp_config directive.
         This is used by the wp_config display screen edit widgets"""
-        path = self.installation['directory']
+        path = self.app.state.active_installation['directory']
         return_data, return_error = self.call.wpcli(
             path, [
                 'config',
@@ -182,7 +182,7 @@ class WpConfig(object):
     def del_wp_config(self, directive_name):
         """Sets a single wp_config directive.
         This is used by the wp_config display screen edit widgets"""
-        path = self.installation['directory']
+        path = self.app.state.active_installation['directory']
         return_data, return_error = self.call.wpcli(
             path, [
                 'config',
@@ -196,7 +196,7 @@ class WpConfig(object):
             return False
     def re_salt(self):
         "Refreshes the stalts defined in the wp-config.php file"
-        path = self.installation['directory']
+        path = self.app.state.active_installation['directory']
         return_data, return_error = self.call.wpcli(
             path, [
                 'config',
