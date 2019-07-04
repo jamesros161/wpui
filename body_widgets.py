@@ -202,8 +202,14 @@ class SetAddWpConfig(BodyWidget):
         L.debug(' kwargs : %s', kwargs)
         self.directive_name = ''
         rows = []
+        self.directive_value_edit = WpConfigValueMap(
+            self.app,
+            'default',
+            directive_name=self.directive_name,
+            edit_text='',
+            align='center')
         self.directive_name_edit = WpConfigNameEdit(
-            self,
+            self.directive_value_edit,
             align='left'
         )
         rows.append(
@@ -212,23 +218,12 @@ class SetAddWpConfig(BodyWidget):
                 self.directive_name_edit
             ])
         )
-        directive_value_edit = WpConfigValueMap(
-            self.app,
-            'default',
-            directive_name=self.directive_name,
-            edit_text='',
-            align='center')
         rows.append(
             W.get_col_row([
                 W.get_text('default', 'WP-Config Directive Value: ', 'right'),
-                directive_value_edit
+                self.directive_value_edit
             ])
         )
-        U.connect_signal(
-            self.directive_name_edit,
-            'postchange',
-            self.debug,
-            user_arg=self.directive_name_edit.get_edit_text())
         pile = U.Pile(rows)
         return U.Filler(pile, 'middle')
     def debug(self, *args):
