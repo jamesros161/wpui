@@ -9,6 +9,20 @@ from logmod import Log
 S = Settings()
 L = Log()
 PYTHONIOENCODING = "utf-8"
+class WpConfigValueEdit(U.Edit):
+    """Class of Edit widgets for changing WpConfig Values"""
+    def __init__(self, directive_name=''):
+        super(WpConfigValueEdit, self).__init__()
+        self.directive_name = directive_name
+    def keypress(self, size, key):
+        if key != 'enter':
+            return super(WpConfigValueEdit, self).keypress(size, key)
+        self = U.AttrMap(self, 'blue')
+        L.debug(
+            'Directive: %s, Value: %s',
+            self.original_widget.directive_name,
+            self.original_widget.get_edit_text())
+
 class BoxButton(U.WidgetWrap):
     """Custom Button that appears with text and a line'd border"""
     _border_char = u'─'
