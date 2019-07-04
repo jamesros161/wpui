@@ -52,7 +52,7 @@ class WpConfigNameEdit(U.Edit):
         self.value_map_instance = value_map_instance
         super(WpConfigNameEdit, self).__init__(edit_text=edit_text, align=align, caption=caption)
     def keypress(self, size, key):
-        if key != 'enter' or key != 'down':
+        if key != 'enter':
             return super(WpConfigNameEdit, self).keypress(size, key)
         L.debug('Directive Name: %s', super(WpConfigNameEdit, self).get_edit_text())
         self.value_map_instance.set_directive_name(super(WpConfigNameEdit, self).get_edit_text())
