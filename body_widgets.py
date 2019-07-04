@@ -211,10 +211,18 @@ class SetAddWpConfig(BodyWidget):
             edit_text='',
             caption='WP-Config Directive Value: ',
             align='center')
+        U.connect_signal(
+            directive_value_edit.original_widget,
+            'postchange',
+            self.debug,
+            user_arg=directive_name_edit.get_edit_text())
         pile = U.Pile([
             directive_name_edit,
             directive_value_edit])
         return U.Filler(pile, 'middle')
+    def debug(self, *args):
+        """Prints debug for module"""
+        L.debug('Args: %s', args)
 class Database(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
     def __init__(self, app, user_args=None, calling_view=None):
