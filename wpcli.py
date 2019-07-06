@@ -165,6 +165,34 @@ class DatabaseInformation(object):
             L.debug('Export Result:  %s', export[0])
             return export[0]
         return "Database Export Failed"
+    def import_db(self):
+        """Exports wp database"""
+        install_path = self.installation['directory']
+        n_length = 6
+        rand_numb = ''.join(
+            [
+                "%s" % randint(0, 9) for _ in range(0, n_length)
+            ])
+        date = datetime.now()
+        date = datetime.strftime(
+            date,
+            "%Y%m%d")
+        file_name = self.db_info['name'] + \
+            '-' + date  + '-' + rand_numb + '.sql'
+        file_path = os.path.join(
+            install_path,
+            file_name)
+        import_result = self.call.wpcli(
+            install_path,
+            [
+                'db',
+                'import',
+                file_path
+            ])
+        if import_result[0]:
+            L.debug('Import Result:  %s', import_result[0])
+            return import_result[0]
+        return "Database Export Failed"
     def get_import_list(self):
         """Return list of imports in user's directory"""
         imports = []

@@ -434,6 +434,25 @@ class DbImport(BodyWidget):
         self.app.frame.contents.__setitem__('body', [filler, None])
         time.sleep(1)
         self.app.loop.draw_screen()
+    def after_import(self, result):
+        """Updates the view's body in response to
+        wp-cli's import function
+        """
+        L.debug('Result: %s', result)
+        if result:
+            text = result
+        else:
+            text = "Database import failed"
+        main_text = W.get_text(
+            'body',
+            text,
+            'center')
+        #ok_button = BoxButton("OK", on_press=self.app.views.activate(self.app, 'Database'))
+        pile = U.Pile([main_text])
+        filler = U.Filler(pile, 'middle')
+        self.app.frame.contents.__setitem__('body', [filler, None])
+        time.sleep(1)
+        self.app.loop.draw_screen()
 class DbOptimize(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
     def __init__(self, app, user_args=None, calling_view=None):

@@ -78,6 +78,15 @@ class Actions(object):
         else:
             import_list = False
         self.app.views.DbImport.body.after_action(import_list)
-    def import_db(self,*args):
+    def import_db(self, button, path):
         """Performs actual import"""
-        L.debug("Args: %s", args)
+        L.debug("button: %s, path: %s", button, path)
+        if hasattr(self, 'database_information'):
+            L.debug("self.database_information exists")
+            import_results = self.database_information.import_db()
+        else:
+            L.debug("No  Database for this WP Install \n \
+                Or no WP Installation selected")
+            import_results = "No  Database for this WP Install \n \
+                Or no WP Installation selected"
+        self.app.views.DbExport.body.import_results(import_results)
