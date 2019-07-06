@@ -9,6 +9,53 @@ from logmod import Log
 S = Settings()
 L = Log()
 PYTHONIOENCODING = "utf-8"
+class DbImportEditMap(U.AttrMap):
+    """AttrMap for WpConfigValueEdit class"""
+    def __init__(
+            self,
+            app,
+            attr,
+            edit_text='',
+            align='',
+            on_enter='',
+            user_args='',
+            caption=''):
+        self.original_widget = DbImportEdit(
+            app,
+            self,
+            on_enter=on_enter,
+            edit_text=edit_text,
+            align=align,
+            user_args='',
+            caption=caption)
+        super(DbImportEditMap, self).__init__(self.original_widget, attr)
+class DbImportEdit(U.Edit):
+    """Class of Edit widgets for changing WpConfig Values"""
+    def __init__(
+            self,
+            app,
+            attr_map,
+            on_enter='',
+            edit_text='',
+            align='',
+            caption='',
+            user_args=''):
+        super(DbImportEdit, self).__init__(edit_text=edit_text, align=align, caption=caption)
+        self.app = app
+        self.attr_map = attr_map
+        self.on_enter = on_enter
+        self.user_args = user_args
+    def keypress(self, size, key):
+        if key != 'enter':
+            return super(DbImportEdit, self).keypress(size, key)
+        if not self.user_args:
+            self.user_args = self.get_edit_text()
+        L.debug(
+            'on_enter action: %s, user_args: %s',
+            self.on_enter,
+            self.user_args)
+        self.on_enter(self.user_args)
+        self.edit_pos = len(self.user_args) + 1
 class WpConfigValueMap(U.AttrMap):
     """AttrMap for WpConfigValueEdit class"""
     def __init__(

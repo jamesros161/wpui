@@ -16,6 +16,7 @@ class Installations(object):
         self.call = Call()
         self.username = getpass.getuser()
         self.homedir = os.path.expanduser('~%s' % self.username)
+        self.app.state.homedir = self.homedir
         L.debug("Homedir: %s", self.homedir)
         self.installations = self.get_installation_dirs()
         if self.installations:

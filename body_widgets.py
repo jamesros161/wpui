@@ -4,7 +4,7 @@ import getpass
 import urwid as U
 from logmod import Log
 from settings import Settings
-from widgets import CustomWidgets, BoxButton, WpConfigValueMap, WpConfigNameMap
+from widgets import CustomWidgets, BoxButton, WpConfigValueMap, WpConfigNameMap, DbImportEditMap
 import widgets as W
 S = Settings()
 L = Log()
@@ -429,6 +429,17 @@ class DbImport(BodyWidget):
                         W.get_blank_flow()
                     ])
                 )
+        import_rows.append(
+            W.get_col_row([
+                W.get_blank_flow(),
+                DbImportEditMap(
+                    self.app,
+                    'default',
+                    edit_text=self.app.state.homedir,
+                    align='left',
+                    on_enter=self.app.views.actions.import_db)
+            ])
+        )
         pile = U.Pile(import_rows)
         filler = U.Filler(pile, 'middle')
         self.app.frame.contents.__setitem__('body', [filler, None])
