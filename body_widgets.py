@@ -424,7 +424,7 @@ class DbImport(BodyWidget):
                         W.get_blank_flow,
                         ('weight', 3, BoxButton(
                             item,
-                            on_press=self.app.actions.import_db,
+                            on_press=self.app.views.actions.import_db,
                             user_data=item)),
                         W.get_blank_flow
                     ])
