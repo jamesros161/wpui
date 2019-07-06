@@ -1,8 +1,6 @@
 """Class for importing Json config files"""
 import os
 import json
-from logmod import Log
-L = Log()
 class Config(object):
     """Class for importing Json config files"""
     @staticmethod
@@ -20,7 +18,7 @@ class Config(object):
                 with open(path, 'r') as menus:
                     file_object = json.load(menus)
             except IOError:
-                L.error('JSON FILES MISSING. CHECK INSTALLATION PATH')
+                print('JSON FILES MISSING. CHECK INSTALLATION PATH')
             else:
                 file_dir = os.path.dirname('/etc/wpui/')
                 path = os.path.join(file_dir, filename)
