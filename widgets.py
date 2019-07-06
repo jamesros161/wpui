@@ -43,7 +43,7 @@ class DbImportEdit(U.Edit):
             caption='',
             edit_pos='',
             user_args=''):
-        super(DbImportEdit, self).__init__(edit_text=edit_text, align=align, caption=caption, eidt_pos=edit_pos)
+        super(DbImportEdit, self).__init__(edit_text=edit_text, align=align, caption=caption, edit_pos=edit_pos)
         self.app = app
         self.attr_map = attr_map
         self.on_enter = on_enter
