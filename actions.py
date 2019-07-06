@@ -83,7 +83,7 @@ class Actions(object):
         L.debug("button: %s, path: %s", button, path)
         if hasattr(self, 'database_information'):
             L.debug("self.database_information exists")
-            import_results = self.database_information.import_db()
+            import_results = self.database_information.import_db(path)
         else:
             L.debug("No  Database for this WP Install \n \
                 Or no WP Installation selected")
