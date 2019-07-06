@@ -20,7 +20,7 @@ class Menus(object):
         try:
             getattr(self, menu_name)
         except AttributeError:
-            self.app.L.warning("No Menu Exists by the name %s!!! Menu Retrieval Failed!", menu_name)
+            L.warning("No Menu Exists by the name %s!!! Menu Retrieval Failed!", menu_name)
             return False
         else:
             return getattr(self, menu_name)

@@ -57,6 +57,51 @@
         ["     Search    ","DbSearch"],
         ["      Quit     ","Quit"]
     ],
+    "DbExport" : [
+        ["      Home     ","Home"],
+        ["     Export    ","DbExport"],
+        ["     Import    ","DbImport"],
+        ["   Optimize    ","DbOptimize"],
+        ["     Repair    ","DbRepair"],
+        ["     Search    ","DbSearch"],
+        ["      Quit     ","Quit"]
+    ],
+    "DbImport" : [
+        ["      Home     ","Home"],
+        ["     Export    ","DbExport"],
+        ["     Import    ","DbImport"],
+        ["   Optimize    ","DbOptimize"],
+        ["     Repair    ","DbRepair"],
+        ["     Search    ","DbSearch"],
+        ["      Quit     ","Quit"]
+    ],
+    "DbOptimize" : [
+        ["      Home     ","Home"],
+        ["     Export    ","DbExport"],
+        ["     Import    ","DbImport"],
+        ["   Optimize    ","DbOptimize"],
+        ["     Repair    ","DbRepair"],
+        ["     Search    ","DbSearch"],
+        ["      Quit     ","Quit"]
+    ],
+    "DbRepair" : [
+        ["      Home     ","Home"],
+        ["     Export    ","DbExport"],
+        ["     Import    ","DbImport"],
+        ["   Optimize    ","DbOptimize"],
+        ["     Repair    ","DbRepair"],
+        ["     Search    ","DbSearch"],
+        ["      Quit     ","Quit"]
+    ],
+    "DbSearch" : [
+        ["      Home     ","Home"],
+        ["     Export    ","DbExport"],
+        ["     Import    ","DbImport"],
+        ["   Optimize    ","DbOptimize"],
+        ["     Repair    ","DbRepair"],
+        ["     Search    ","DbSearch"],
+        ["      Quit     ","Quit"]
+    ],
     "Themes" : [
         [" Installations ", "Installs"],
         ["      Home     ", "Home"],
