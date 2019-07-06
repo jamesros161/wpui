@@ -174,15 +174,15 @@ class DatabaseInformation(object):
         db_name = self.db_info['name']
         L.debug('db_name: %s', db_name)
         for root, _, files in os.walk(homedir, topdown=True):
-            L.debug('File: %s', files)
-            if db_name in files:
-                L.debug('Import Found: %s', files)
-                if not '/.' in root:
-                    _x = {
-                        'directory' : root,
-                        'file_name' : files
-                    }
-                    imports.append(_x)
+            for file_name  in files:
+                if db_name in file_name:
+                    L.debug('Import Found: %s', files)
+                    if not '/.' in root:
+                        _x = {
+                            'directory' : root,
+                            'file_name' : files
+                        }
+                        imports.append(_x)
         return imports
 class WpConfig(object):
     """Obtains and modified wp_config information"""
