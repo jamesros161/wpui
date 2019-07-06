@@ -178,10 +178,7 @@ class DatabaseInformation(object):
                 if db_name in file_name:
                     L.debug('Import Found: %s', files)
                     if not '/.' in root:
-                        _x = {
-                            'directory' : root,
-                            'file_name' : files
-                        }
+                        _x = os.path.join(root, file_name)
                         imports.append(_x)
         return imports
 class WpConfig(object):
