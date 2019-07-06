@@ -174,6 +174,7 @@ class DatabaseInformation(object):
         db_name = self.db_info['name']
         for root, _, files in os.walk(homedir, topdown=True):
             if db_name in files:
+                L.debug('Import Found: %s', files)
                 if not '/.' in root:
                     _x = {
                         'directory' : root,
