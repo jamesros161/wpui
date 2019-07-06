@@ -12,6 +12,7 @@ class Views(object):
     def __init__(self, app):
         self.app = app
         self.state = app.state
+        self.actions = Actions(self.app)
         views_json = Config.load('views.json')
         #with open('views.json', 'r') as views:
         #    views_json = json.load(views)
@@ -48,7 +49,7 @@ class View(object):
         self.body = None
         self.action = None
         self.action_thread = None
-        self.actions = Actions(app)
+        self.actions = self.app.views.actions
         self.view_type = view_json_data['view_type']
         self.title = view_json_data['title']
         self.sub_title = view_json_data['sub_title']
