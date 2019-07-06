@@ -172,6 +172,7 @@ class DatabaseInformation(object):
         homedir = os.path.expanduser('~%s' % username)
         L.debug("%s Homedir: %s", username, homedir)
         db_name = self.db_info['name']
+        L.debug('db_name: %s', db_name)
         for root, _, files in os.walk(homedir, topdown=True):
             if db_name in files:
                 L.debug('Import Found: %s', files)
