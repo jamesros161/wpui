@@ -421,12 +421,12 @@ class DbImport(BodyWidget):
             for item in import_list:
                 import_rows.append(
                     W.get_col_row([
-                        W.get_blank_flow,
+                        W.get_blank_flow(),
                         ('weight', 3, BoxButton(
                             item,
                             on_press=self.app.views.actions.import_db,
                             user_data=item)),
-                        W.get_blank_flow
+                        W.get_blank_flow()
                     ])
                 )
         pile = U.Pile(import_rows)
