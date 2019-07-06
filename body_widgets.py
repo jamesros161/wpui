@@ -396,7 +396,7 @@ class DbExport(BodyWidget):
             'body',
             text,
             'center')
-        ok_button = BoxButton("OK", on_press=self.app.views.activate('Database'))
+        ok_button = BoxButton("OK", on_press=self.app.views.activate(self.app,'Database'))
         pile = U.Pile([main_text, ok_button])
         filler = U.Filler(pile, 'middle')
         self.app.frame.contents.__setitem__('body', [filler, None])
