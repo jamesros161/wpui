@@ -89,4 +89,4 @@ class Actions(object):
                 Or no WP Installation selected")
             import_results = "No  Database for this WP Install \n \
                 Or no WP Installation selected"
-        self.app.views.DbExport.body.after_import(import_results)
+        self.app.views.DbImport.body.after_import(import_results)
