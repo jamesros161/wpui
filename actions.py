@@ -79,4 +79,5 @@ class Actions(object):
             import_list = False
         self.app.views.DbImport.body.after_action(import_list)
     def import_db(self,*args):
+        """Performs actual import"""
         L.debug("Args: %s", args)
