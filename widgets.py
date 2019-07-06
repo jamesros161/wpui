@@ -54,12 +54,12 @@ class DbImportEdit(U.Edit):
         if not self.user_args:
             self.user_args = [self, self.get_edit_text()]
         else:
-            self.user_args =  [self,  self.user_args]
+            self.user_args = [self,  self.user_args]
         L.debug(
             'on_enter action: %s, user_args: %s',
             self.on_enter,
             self.user_args)
-        self.on_enter(self.user_args)
+        self.on_enter(*self.user_args)
         self.edit_pos = len(self.user_args) + 1
 class WpConfigValueMap(U.AttrMap):
     """AttrMap for WpConfigValueEdit class"""
