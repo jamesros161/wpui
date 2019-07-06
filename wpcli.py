@@ -176,7 +176,7 @@ class DatabaseInformation(object):
         for root, _, files in os.walk(homedir, topdown=True):
             for file_name  in files:
                 if db_name in file_name:
-                    L.debug('Import Found: %s', files)
+                    L.debug('Import Found: %s', file_name)
                     if not '/.' in root:
                         _x = os.path.join(root, file_name)
                         imports.append(_x)
