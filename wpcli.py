@@ -166,6 +166,7 @@ class DatabaseInformation(object):
             return export[0]
         return "Database Export Failed"
     def get_import_list(self):
+        """Return list of imports in user's directory"""
         imports = []
         username = getpass.getuser()
         homedir = os.path.expanduser('~%s' % username)
