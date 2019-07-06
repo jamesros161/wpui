@@ -411,10 +411,29 @@ class DbImport(BodyWidget):
         L.debug(' kwargs : %s', kwargs)
         home_text = W.get_text(
             'body',
-            'Welcome to the best Exim Search Utility ever created.\
-            \nSelect an option below to begin.',
+            'Searching for database dumps to import...',
             'center')
         return U.Filler(home_text, 'middle')
+    def after_action(self, import_list):
+        """Displays list of imports available"""
+        import_rows = []
+        if import_list:
+            for item in import_list:
+                import_rows.append(
+                    W.get_col_row([
+                        W.get_blank_flow,
+                        ('weight', 3, BoxButton(
+                            item,
+                            on_press=self.app.actions.import_db,
+                            user_data=item)),
+                        W.get_blank_flow
+                    ])
+                )
+        pile = U.Pile(import_rows)
+        filler = (pile, 'middle')
+        self.app.frame.contents.__setitem__('body', [filler, None])
+        time.sleep(1)
+        self.app.loop.draw_screen()
 class DbOptimize(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
     def __init__(self, app, user_args=None, calling_view=None):
