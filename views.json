@@ -45,7 +45,7 @@
         "view_type" : "body_input",
         "title" : "",
         "sub_title" : "",
-        "action_on_load" : ""
+        "action_on_load" : "db_export"
     },
     "DbImport" : {
         "view_type" : "body_input",

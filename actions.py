@@ -57,3 +57,7 @@ class Actions(object):
         """Refreshes the salts defined in the wp-config.php"""
         self.wp_config.re_salt()
         self.app.views.activate(self.app, 'GetWpConfig')
+    def db_export(self):
+        """Exports Database"""
+        if self.database_information:
+            export_result = self.database_information.export()

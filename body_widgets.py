@@ -378,12 +378,27 @@ class DbExport(BodyWidget):
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
     def define_widget(self, **kwargs):
         L.debug(' kwargs : %s', kwargs)
-        home_text = W.get_text(
+        main_text = W.get_text(
             'body',
-            'Welcome to the best Exim Search Utility ever created.\
-            \nSelect an option below to begin.',
+            'Exporting Database....',
             'center')
-        return U.Filler(home_text, 'middle')
+        return U.Filler(main_text, 'middle')
+    def after_action(self, result, path):
+        """Updates the view's body in response to
+        the views action_on_load function
+        """
+        L.debug(' path : %s', path)
+        if result:
+            text = "Successfully exported  to " + path
+        else:
+            text = "Database export failed"
+        main_text = W.get_text(
+            'body',
+            text,
+            'center')
+        ok_button = BoxButton("OK", on_press=self.app.views.activate('Database'))
+        pile = U.Pile([main_text, ok_button])
+        return U.Filler(pile, 'middle')
 class DbImport(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
     def __init__(self, app, user_args=None, calling_view=None):

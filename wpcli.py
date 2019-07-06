@@ -3,8 +3,11 @@ import os
 import getpass
 import subprocess
 import json
+from random import randint
 from logmod import Log
+from datetime import datetime
 L = Log()
+
 class Installations(object):
     """Class used for obtaining installation dir and details"""
     def __init__(self, app):
@@ -134,6 +137,34 @@ class DatabaseInformation(object):
                 self.db_info['check_error'] = dbcheck_error.decode(encoding='UTF-8')
         #L.debug('db_info: %s',self.db_info)
         os.close(self.app.action_pipe)
+    def export(self):
+        """Exports wp database"""
+        install_path = self.installation['directory']
+        n_length = 6
+        rand_numb = ''.join(
+            [
+                "%s" % randint(0, 9) for _ in range(0, n_length)
+            ])
+        date = datetime.now()
+        date = datetime.strftime(
+            date,
+            "%Y%m%d")
+        file_name = self.db_info['name'] + \
+            '-' + date  + '-' + rand_numb + '.sql'
+        file_path = os.path.join(
+            install_path,
+            file_name)
+        export = self.call.wpcli(
+            install_path,
+            [
+                'db',
+                'export',
+                file_path
+            ])
+        if export[0]:
+            L.debug('Export Result:  %s', export[0])
+            return export[0]
+        return False
 class WpConfig(object):
     """Obtains and modified wp_config information"""
     def __init__(self, app):
