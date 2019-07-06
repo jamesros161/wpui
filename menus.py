@@ -1,13 +1,14 @@
 """Imports Menus from associated menus.json file"""
-import json
 from logmod import Log
+from config import Config
 L = Log()
 class Menus(object):
     """Imports Menus from associated menus.json file"""
     def __init__(self, app):
         self.app = app
-        with open('menus.json', 'r') as menus:
-            menus_json = json.load(menus)
+        menus_json = Config.load('menus.json')
+        #with open('menus.json', 'r') as menus:
+        #    menus_json = json.load(menus)
         for key, value in menus_json.items():
             setattr(self, key, Menu(key, value))
     def get_menu(self, menu_name):

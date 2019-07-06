@@ -2,6 +2,7 @@
 import json
 from threading import Thread
 from logmod import Log
+from config import Config
 import body_widgets
 from actions import Actions
 L = Log()
@@ -11,8 +12,9 @@ class Views(object):
     def __init__(self, app):
         self.app = app
         self.state = app.state
-        with open('views.json', 'r') as views:
-            views_json = json.load(views)
+        views_json = Config.load('views.json')
+        #with open('views.json', 'r') as views:
+        #    views_json = json.load(views)
         #L.debug('views_json: %s', views_json)
         for key, value in views_json.items():
             setattr(self, key, View(app, key, value))
