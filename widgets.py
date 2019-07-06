@@ -52,7 +52,9 @@ class DbImportEdit(U.Edit):
         if key != 'enter':
             return super(DbImportEdit, self).keypress(size, key)
         if not self.user_args:
-            self.user_args = self.get_edit_text()
+            self.user_args = [self, self.get_edit_text()]
+        else:
+            self.user_args =  [self,  self.user_args]
         L.debug(
             'on_enter action: %s, user_args: %s',
             self.on_enter,
