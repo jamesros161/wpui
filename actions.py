@@ -59,5 +59,7 @@ class Actions(object):
         self.app.views.activate(self.app, 'GetWpConfig')
     def db_export(self):
         """Exports Database"""
+        L.debug("Export Database Action Started")
         if self.database_information:
+            L.debug("self.dtabase_information exists")
             export_result = self.database_information.export()
