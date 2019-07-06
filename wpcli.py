@@ -165,6 +165,21 @@ class DatabaseInformation(object):
             L.debug('Export Result:  %s', export[0])
             return export[0]
         return "Database Export Failed"
+    def get_import_list(self):
+        imports = []
+        username = getpass.getuser()
+        homedir = os.path.expanduser('~%s' % username)
+        L.debug("%s Homedir: %s", username, homedir)
+        db_name = self.db_info['name']
+        for root, _, files in os.walk(homedir, topdown=True):
+            if db_name in files:
+                if not '/.' in root:
+                    _x = {
+                        'directory' : root,
+                        'file_name' : files
+                    }
+                    imports.append(_x)
+        return imports
 class WpConfig(object):
     """Obtains and modified wp_config information"""
     def __init__(self, app):

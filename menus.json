@@ -59,7 +59,7 @@
     ],
     "DbExport" : [
         ["      Home     ","Home"],
-        ["     Export    ","DbExport"],
+        ["   Databases   ","Database"],
         ["     Import    ","DbImport"],
         ["   Optimize    ","DbOptimize"],
         ["     Repair    ","DbRepair"],

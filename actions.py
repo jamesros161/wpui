@@ -69,3 +69,9 @@ class Actions(object):
             export_result = "No  Database for this WP Install \n \
                 Or no WP Installation selected"
         self.app.views.DbExport.body.after_action(export_result)
+    def db_import(self):
+        """Imports Databases"""
+        L.debug("Import Database Action Started")
+        if hasattr(self, 'database_information'):
+            import_list = self.database_information.get_import_list()
+            L.debug('Imports:  %s', import_list)
