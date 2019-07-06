@@ -383,13 +383,13 @@ class DbExport(BodyWidget):
             'Exporting Database....',
             'center')
         return U.Filler(main_text, 'middle')
-    def after_action(self, result, path):
+    def after_action(self, result):
         """Updates the view's body in response to
         the views action_on_load function
         """
-        L.debug(' path : %s', path)
+        L.debug('Result: %s', result)
         if result:
-            text = "Successfully exported  to " + path
+            text = result
         else:
             text = "Database export failed"
         main_text = W.get_text(
@@ -398,7 +398,10 @@ class DbExport(BodyWidget):
             'center')
         ok_button = BoxButton("OK", on_press=self.app.views.activate('Database'))
         pile = U.Pile([main_text, ok_button])
-        return U.Filler(pile, 'middle')
+        filler = U.Filler(pile, 'middle')
+        self.app.frame.contents.__setitem__('body', [filler, None])
+        time.sleep(1)
+        self.app.loop.draw_screen()
 class DbImport(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
     def __init__(self, app, user_args=None, calling_view=None):
