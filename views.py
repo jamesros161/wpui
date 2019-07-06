@@ -18,7 +18,7 @@ class Views(object):
         #    views_json = json.load(views)
         #L.debug('views_json: %s', views_json)
         for key, value in views_json.items():
-            setattr(self, key, View(app, key, value))
+            setattr(self, key, View(app, self, key, value))
     def activate(self, app, *args, **kwargs):
         """Activates the selected view"""
         L.debug('views.activate args: %s, kwargs: %s', args, kwargs)
@@ -41,7 +41,7 @@ class Views(object):
 class View(object):
     """View Objects old the various parts of a given view
     such as the header, footer, body, etc"""
-    def __init__(self, app, name, view_json_data):
+    def __init__(self, app, views, name, view_json_data):
         self.app = app
         #L.debug("View %s Initialized", name)
         self.name = name
@@ -49,7 +49,7 @@ class View(object):
         self.body = None
         self.action = None
         self.action_thread = None
-        self.actions = self.app.views.actions
+        self.actions = views.actions
         self.view_type = view_json_data['view_type']
         self.title = view_json_data['title']
         self.sub_title = view_json_data['sub_title']
