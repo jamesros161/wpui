@@ -430,7 +430,7 @@ class DbImport(BodyWidget):
                     ])
                 )
         pile = U.Pile(import_rows)
-        filler = (pile, 'middle')
+        filler = U.Filler(pile, 'middle')
         self.app.frame.contents.__setitem__('body', [filler, None])
         time.sleep(1)
         self.app.loop.draw_screen()
