@@ -77,6 +77,7 @@ class State(object):
         self.view_chain = []
         self.view_chain_pos = -1
         self.active_installation = None
+        self.db_exports = []
     def update_state(self, state_prop, value):
         """Update's a specified property of the application state
 
