@@ -19,7 +19,7 @@ class DbImportEditMap(U.AttrMap):
             align='',
             on_enter='',
             user_args='',
-            edit_pos='',
+            edit_pos=None,
             caption=''):
         self.original_widget = DbImportEdit(
             app,
@@ -41,7 +41,7 @@ class DbImportEdit(U.Edit):
             edit_text='',
             align='',
             caption='',
-            edit_pos='',
+            edit_pos=None,
             user_args=''):
         super(DbImportEdit, self).__init__(edit_text=edit_text, align=align, caption=caption, edit_pos=edit_pos)
         self.app = app

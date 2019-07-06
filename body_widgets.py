@@ -438,7 +438,6 @@ class DbImport(BodyWidget):
                     edit_text=self.app.state.homedir,
                     align='left',
                     on_enter=self.app.views.actions.import_db,
-                    edit_pos=len(self.app.state.homedir) + 1,
                     caption='Other Import Path: ')),
                 W.get_blank_flow()
             ])
