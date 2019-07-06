@@ -63,3 +63,9 @@ class Actions(object):
         if hasattr(self, 'database_information'):
             L.debug("self.database_information exists")
             export_result = self.database_information.export()
+        else:
+            L.debug("No  Database for this WP Install \n \
+                Or no WP Installation selected")
+            export_result = "No  Database for this WP Install \n \
+                Or no WP Installation selected"
+        self.app.views.DbExport.body.after_action(export_result)

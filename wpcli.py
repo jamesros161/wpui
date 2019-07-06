@@ -164,7 +164,7 @@ class DatabaseInformation(object):
         if export[0]:
             L.debug('Export Result:  %s', export[0])
             return export[0]
-        return False
+        return "Database Export Failed"
 class WpConfig(object):
     """Obtains and modified wp_config information"""
     def __init__(self, app):
