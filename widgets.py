@@ -27,7 +27,7 @@ class DbImportEditMap(U.AttrMap):
             on_enter=on_enter,
             edit_text=edit_text,
             align=align,
-            user_args='',
+            user_args=user_args,
             edit_pos=edit_pos,
             caption=caption)
         super(DbImportEditMap, self).__init__(self.original_widget, attr)

@@ -432,14 +432,15 @@ class DbImport(BodyWidget):
         import_rows.append(
             W.get_col_row([
                 W.get_blank_flow(),
-                DbImportEditMap(
+                ('weight', 3, DbImportEditMap(
                     self.app,
-                    'default',
+                    'body',
                     edit_text=self.app.state.homedir,
                     align='left',
                     on_enter=self.app.views.actions.import_db,
                     edit_pos=len(self.app.state.homedir) + 1,
-                    caption='Other Import Path: ')
+                    caption='Other Import Path: '),
+                W.get_blank_flow()
             ])
         )
         pile = U.Pile(import_rows)
