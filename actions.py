@@ -78,3 +78,5 @@ class Actions(object):
         else:
             import_list = False
         self.app.views.DbImport.body.after_action(import_list)
+    def import_db(self,*args):
+        L.debug("Args: %s", args)
