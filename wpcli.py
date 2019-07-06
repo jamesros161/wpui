@@ -189,6 +189,7 @@ class DatabaseInformation(object):
                 'import',
                 file_path
             ])
+        L.debug('Import_results: %s', import_result)
         if import_result[0]:
             L.debug('Import Result:  %s', import_result[0])
             return import_result[0]
