@@ -238,6 +238,23 @@ class DatabaseInformation(object):
         else:
             return "Database Optimize Failed"
 
+    def db_repair(self, path):
+        """Repair Database"""
+        L.debug("Begin Repair DB")
+        # Export Database before repairing
+        self.export()
+
+        result, error = self.call.wpcli(
+            path,
+            [
+                'db',
+                'repair'
+            ])
+        if result:
+            return result
+        else:
+            return "Database Optimize Failed"
+
 
 class WpConfig(object):
     """Obtains and modified wp_config information"""
