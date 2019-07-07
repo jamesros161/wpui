@@ -76,6 +76,22 @@ class Home(BodyWidget):
         return U.Filler(home_text, 'middle')
 
 
+class Invalid(BodyWidget):
+    """Creates the specific body widget for the view of the same name"""
+
+    def __init__(self, app, user_args=None, calling_view=None):
+        super(Invalid, self).__init__(app)
+        L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
+
+    def define_widget(self, **kwargs):
+        L.debug(' kwargs : %s', kwargs)
+        main_text = W.get_text(
+            'body',
+            'The View you selected is invalid or has not been created yet',
+            'center')
+        return U.Filler(home_text, 'middle')
+
+
 class Installs(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
 

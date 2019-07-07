@@ -1,6 +1,15 @@
 {
     "Home" : [
-        [" Installations ", "Installs"],
+        [" Installations ","Installs"],
+        ["     Themes    ","Themes"],
+        ["   Databases   ","Database"],
+        ["    Plugins    ","Plugins"],
+        ["     Users     ","Users"],
+        ["    WP Core    ", "Core"],
+        ["      Quit     ","Quit"]
+    ],
+    "Invalid" : [
+        [" Installations ","Installs"],
         ["     Themes    ","Themes"],
         ["   Databases   ","Database"],
         ["    Plugins    ","Plugins"],

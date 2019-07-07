@@ -23,12 +23,17 @@ class Views(object):
     def activate(self, app, *args, **kwargs):
         """Activates the selected view"""
         L.debug('views.activate args: %s, kwargs: %s', args, kwargs)
-        activating_view = getattr(self, args[0])
+        try:
+            activating_view = getattr(self, args[0])
+        except AttributeError:
+            activating_viw = getattr(self, 'Invalid')
+        else:
+            activating_view = getattr(self, args[0])
         if ('Home' not in activating_view.name and
                 'Installs' not in activating_view.name and
                 'Quit' not in activating_view.name):
             if not self.app.state.active_installation:
-                self.app.views.activate(app, 'Installs')
+                    self.app.views.activate(app, 'Installs')
             else:
                 if "no_view_chain" not in activating_view.view_type:
                     self.state.view_chain_pos += 1
