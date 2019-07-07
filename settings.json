@@ -3,7 +3,7 @@
             "level" : "DEBUG",
             "name" : "wpui.log",
             "format" : "%(asctime)s.%(msecs)03d (%(levelname)s)\n    %(module)s / %(funcName)s:%(lineno)4d\n        %(message)s",
-            "datefmt" : "%b/%d/%Y %H:%M:%S"
+            "datefmt" : "[%b %d %Y] %H:%M:%S"
         },
     "display" : {
         "palette": [
