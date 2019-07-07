@@ -160,7 +160,7 @@ class DatabaseInformation(object):
     def export(self):
         """Exports wp database"""
         install_path = self.installation['directory']
-        export_path = self.homedir
+        export_path = self.app.state.homedir
         n_length = 6
         rand_numb = ''.join(
             [
@@ -221,7 +221,7 @@ class DatabaseInformation(object):
                         imports.append(_x)
         return imports
 
-    def db_optimize(self, path):
+    def optimize_db(self, path):
         """Optimize Database"""
         L.debug("Begin Optimize DB")
         # Export Database before optimizing

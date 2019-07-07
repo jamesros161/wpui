@@ -110,7 +110,7 @@ class Actions(object):
     def db_optimize(self):
         """Optimizes Database"""
         L.debug("Start db_optimize action")
-        path = self.installations['directory']
+        path = self.app.state.active_installation['directory']
         if hasattr(self, 'database_information'):
             L.debug("self.database_information exists")
             optimize_results = self.database_information.optimize_db(path)
