@@ -654,12 +654,30 @@ class DbRepair(BodyWidget):
 
     def define_widget(self, **kwargs):
         L.debug(' kwargs : %s', kwargs)
-        home_text = W.get_text(
+        main_text = W.get_text(
             'body',
-            'Welcome to the best Exim Search Utility ever created.\
-            \nSelect an option below to begin.',
+            'Repairing Database....',
             'center')
-        return U.Filler(home_text, 'middle')
+        return U.Filler(main_text, 'middle')
+
+    def after_action(self, result):
+        """Updates the view's body in response to
+        the views action_on_load function
+        """
+        L.debug('Result: %s', result)
+        if result:
+            text = result
+        else:
+            text = "Database Repair failed"
+        main_text = W.get_text(
+            'body',
+            text,
+            'center')
+        pile = U.Pile([main_text])
+        filler = U.Filler(pile, 'middle')
+        self.app.frame.contents.__setitem__('body', [filler, None])
+        time.sleep(1)
+        self.app.loop.draw_screen()
 
 
 class DbSearch(BodyWidget):

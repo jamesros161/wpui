@@ -120,3 +120,17 @@ class Actions(object):
             import_results = "No  Database for this WP Install \n \
                 Or no WP Installation selected"
         self.app.views.DbOptimize.body.after_action(optimize_results)
+
+    def db_repair(self):
+        """Optimizes Database"""
+        L.debug("Start db_repair action")
+        path = self.app.state.active_installation['directory']
+        if hasattr(self, 'database_information'):
+            L.debug("self.database_information exists")
+            db_repair_results = self.database_information.db_repair(path)
+        else:
+            L.debug("No  Database for this WP Install \n \
+                Or no WP Installation selected")
+            import_results = "No  Database for this WP Install \n \
+                Or no WP Installation selected"
+        self.app.views.DbRepair.body.after_action(db_repair_results)
