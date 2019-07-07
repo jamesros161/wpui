@@ -4,7 +4,7 @@ import getpass
 import urwid as U
 from logmod import Log
 from settings import Settings
-from widgets import CustomWidgets, BoxButton, WpConfigValueMap,
+from widgets import CustomWidgets, BoxButton, WpConfigValueMap
 from widgets import WpConfigNameMap, DbImportEditMap
 import widgets as W
 S = Settings()
