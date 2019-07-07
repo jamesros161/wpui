@@ -5,6 +5,8 @@ import sys
 import getpass
 from settings import Settings
 S = Settings()
+
+
 class Log(object):
     """Logging class for application logger
     """
@@ -49,4 +51,9 @@ class Log(object):
             sys.__excepthook__(exc_type, exc_value, exc_traceback)
             return
 
-        self.logger.error("Uncaught exception", exc_info=(exc_type, exc_value, exc_traceback))
+        self.logger.error(
+            "Uncaught exception",
+            exc_info=(
+                exc_type,
+                exc_value,
+                exc_traceback))

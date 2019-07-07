@@ -1,6 +1,8 @@
 """Class for importing Json config files"""
 import os
 import json
+
+
 class Config(object):
     """Class for importing Json config files"""
     @staticmethod

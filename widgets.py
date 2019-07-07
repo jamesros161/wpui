@@ -9,6 +9,8 @@ from logmod import Log
 S = Settings()
 L = Log()
 PYTHONIOENCODING = "utf-8"
+
+
 class DbImportEditMap(U.AttrMap):
     """AttrMap for WpConfigValueEdit class"""
     def __init__(
@@ -31,6 +33,8 @@ class DbImportEditMap(U.AttrMap):
             edit_pos=edit_pos,
             caption=caption)
         super(DbImportEditMap, self).__init__(self.original_widget, attr)
+
+
 class DbImportEdit(U.Edit):
     """Class of Edit widgets for changing WpConfig Values"""
     def __init__(
@@ -43,11 +47,16 @@ class DbImportEdit(U.Edit):
             caption='',
             edit_pos=None,
             user_args=''):
-        super(DbImportEdit, self).__init__(edit_text=edit_text, align=align, caption=caption, edit_pos=edit_pos)
+        super(DbImportEdit, self).__init__(
+            edit_text=edit_text,
+            align=align,
+            caption=caption,
+            edit_pos=edit_pos)
         self.app = app
         self.attr_map = attr_map
         self.on_enter = on_enter
         self.user_args = user_args
+
     def keypress(self, size, key):
         if key != 'enter':
             return super(DbImportEdit, self).keypress(size, key)
@@ -61,6 +70,8 @@ class DbImportEdit(U.Edit):
             self.user_args)
         self.on_enter(*self.user_args)
         self.edit_pos = len(self.user_args) + 1
+
+
 class WpConfigValueMap(U.AttrMap):
     """AttrMap for WpConfigValueEdit class"""
     def __init__(
@@ -79,6 +90,8 @@ class WpConfigValueMap(U.AttrMap):
             align=align,
             caption=caption)
         super(WpConfigValueMap, self).__init__(self.original_widget, attr)
+
+
 class WpConfigValueEdit(U.Edit):
     """Class of Edit widgets for changing WpConfig Values"""
     def __init__(
@@ -89,10 +102,14 @@ class WpConfigValueEdit(U.Edit):
             edit_text='',
             align='',
             caption=''):
-        super(WpConfigValueEdit, self).__init__(edit_text=edit_text, align=align, caption=caption)
+        super(WpConfigValueEdit, self).__init__(
+            edit_text=edit_text,
+            align=align,
+            caption=caption)
         self.app = app
         self.attr_map = attr_map
         self.directive_name = directive_name
+
     def keypress(self, size, key):
         if key != 'enter':
             return super(WpConfigValueEdit, self).keypress(size, key)
@@ -114,16 +131,22 @@ class WpConfigValueEdit(U.Edit):
             self.set_edit_text('REMOVED')
             self.edit_pos = len(self.get_edit_text()) + 1
         return True
+
     def set_attr_map(self, from_attr, to_attr):
         """Sets the attribute mapping for the
         edit text in response to wp-cli result"""
-        self.attr_map.set_attr_map({from_attr:to_attr})
+        self.attr_map.set_attr_map({from_attr: to_attr})
+
     def set_directive_name(self, directive_name):
         """Dynamically set directive_name"""
         self.directive_name = directive_name
+
+
 class WpConfigNameMap(U.AttrMap):
     """AttrMap for WpConfigValueEdit class"""
-    def __init__(self, body_widget, attr, value_map_instance, edit_text='', align='', caption=''):
+    def __init__(self,
+                 body_widget, attr, value_map_instance,
+                 edit_text='', align='', caption=''):
         self.original_widget = WpConfigNameEdit(
             body_widget,
             value_map_instance,
@@ -132,6 +155,8 @@ class WpConfigNameMap(U.AttrMap):
             align=align,
             caption=caption)
         super(WpConfigNameMap, self).__init__(self.original_widget, attr)
+
+
 class WpConfigNameEdit(U.Edit):
     """Class of Edit widgets for changing WpConfig Values"""
     def __init__(
@@ -145,24 +170,33 @@ class WpConfigNameEdit(U.Edit):
         self.value_map_instance = value_map_instance
         self.attr_map = attr_map
         self.body_widget = body_widget
-        super(WpConfigNameEdit, self).__init__(edit_text=edit_text, align=align, caption=caption)
+        super(WpConfigNameEdit, self).__init__(
+            edit_text=edit_text,
+            align=align, caption=caption)
+
     def keypress(self, size, key):
         if key != 'enter':
             return super(WpConfigNameEdit, self).keypress(size, key)
-        L.debug('Directive Name: %s', super(WpConfigNameEdit, self).get_edit_text())
+        L.debug(
+            'Directive Name: %s',
+            super(WpConfigNameEdit, self).get_edit_text())
         self.value_map_instance.original_widget.set_directive_name(
             super(WpConfigNameEdit, self).get_edit_text())
         self.set_attr_map(None, 'body')
         self.body_widget.pile.focus_position = 1
         self.edit_pos = len(self.get_edit_text()) + 1
         return True
+
     def set_attr_map(self, from_attr, to_attr):
         """Sets the attribute mapping for the
         edit text in response to wp-cli result"""
-        self.attr_map.set_attr_map({from_attr:to_attr})
+        self.attr_map.set_attr_map({from_attr: to_attr})
+
+
 class BoxButton(U.WidgetWrap):
     """Custom Button that appears with text and a line'd border"""
     _border_char = u'─'
+
     def __init__(self, label, on_press=None, user_data=None, enabled=True):
         padding_size = 2
         border = self._border_char * (len(label) + padding_size * 2)
@@ -173,7 +207,6 @@ class BoxButton(U.WidgetWrap):
         self.on_press_action = on_press
         self.on_press_user_data = user_data
         self.enabled = enabled
-        # self.widget = urwid.Text([self.top, self.middle, self.bottom])
         self.widget = U.Pile([
             U.Text(self.top[:-1], align='center'),
             U.Text(self.middle[:-1], align='center'),
@@ -181,12 +214,6 @@ class BoxButton(U.WidgetWrap):
         ])
 
         self.widget = U.AttrMap(self.widget, 'body', 'highlight')
-
-        # self.widget = urwid.Padding(self.widget, 'center')
-        # self.widget = urwid.Filler(self.widget)
-
-        # here is a lil hack: use a hidden button for evt handling
-        #debug('on_press: %s, user_data: %s', )
         self._hidden_btn = U.Button('hidden %s' % label, on_press, user_data)
 
         super(BoxButton, self).__init__(self.widget)
@@ -197,9 +224,11 @@ class BoxButton(U.WidgetWrap):
             return True
         else:
             return False
+
     def disable(self):
         """disables button"""
         self.enabled = False
+
     def enable(self):
         """enables button"""
         self.enabled = True
@@ -211,26 +240,38 @@ class BoxButton(U.WidgetWrap):
     def mouse_event(self, *args, **kw):
         """passes mouse events to button"""
         return self._hidden_btn.mouse_event(*args, **kw)
+
+
 class CustomWidgets(object):
     """Collection of custom widget getters"""
     def __init__(self):
         L.debug("CustomWidgets Initialized")
         self.sub_title = None
+
     def get_blank_box(self):
         """returns a blank box type widget"""
         return U.Filler(self.get_blank_flow())
+
     def get_blank_flow(self):
         """returns a blank flow type widget"""
         return self.get_text('body', '', 'center')
+
     def get_edit(self, edit_text, caption='', align=''):
         """returns an edit widget"""
         return U.Edit(caption=caption, edit_text=edit_text, align=align)
+
     def get_text(self, text_format, text_string, alignment, **kwargs):
         """returns a text flow type widget"""
-        return U.Text((text_format, text_string), align=alignment, wrap='space', **kwargs)
+        return U.Text(
+            (text_format, text_string),
+            align=alignment,
+            wrap='space',
+            **kwargs)
+
     def get_div(self, div_char=' '):
         """returns a divider flow type widget"""
         return U.Divider(div_char=div_char, top=0, bottom=0)
+
     def get_header(self, name, title, sub_title):
         """returns a frame header widget"""
         L.debug("Title: %s,  Name:, %s, sub_title: %s", title, name, sub_title)
@@ -241,8 +282,11 @@ class CustomWidgets(object):
         if sub_title:
             self.sub_title = self.get_text('bold', sub_title, 'center')
         else:
-            L.debug("Passed sub_title: %s, Settings Subtitle:%s", sub_title, S.display['sub_title'])
-            self.sub_title = self.get_text('bold', S.display['sub_title'], 'center')
+            L.debug(
+                "Passed sub_title: %s, Settings Subtitle:%s",
+                sub_title, S.display['sub_title'])
+            self.sub_title = self.get_text(
+                'bold', S.display['sub_title'], 'center')
         title_map = U.AttrMap(title, 'bold')
         div_map = U.AttrMap(self.get_div(), 'body')
         if self.sub_title:
@@ -250,6 +294,7 @@ class CustomWidgets(object):
             return U.Pile((title_map, sub_title_map, div_map), focus_item=None)
         else:
             return U.Pile((title_map, div_map), focus_item=None)
+
     def get_footer(self, name, app):
         """returns a frame footer widget"""
         menu = app.menus.get_menu(name)
@@ -273,7 +318,8 @@ class CustomWidgets(object):
             item_widths.append(item.cursor_position)
         item_widths.sort()
         if item_widths:
-            menu_grid = U.GridFlow(menu_grid_items, item_widths[-1], 0, 0, 'center')
+            menu_grid = U.GridFlow(
+                menu_grid_items, item_widths[-1], 0, 0, 'center')
         else:
             menu_grid = self.get_div()
         legend_items = []
@@ -283,10 +329,12 @@ class CustomWidgets(object):
         legend_grid_map = U.AttrMap(legend_grid, 'bold')
         legend_items = []
         for legend in S.display['legend']:
-            legend_items.append(self.get_text('highlight', legend[1], 'center'))
+            legend_items.append(
+                self.get_text('highlight', legend[1], 'center'))
         legend_items_grid = U.GridFlow(legend_items, 21, 0, 0, 'center')
         legend_items_map = U.AttrMap(legend_items_grid, 'highlight')
         return U.Pile([menu_grid, legend_grid_map, legend_items_map])
+
     def get_col_row(self, items, dividechars=None):
         """Creates a single row of columns
 
@@ -298,7 +346,7 @@ class CustomWidgets(object):
             [urwid.Column] -- An urwid.Columns object
             FLOW / BOX WIDGET
         """
-        #L.debug("kwargs: %s", kwargs)
+        # L.debug("kwargs: %s", kwargs)
         if dividechars:
             return U.Columns(
                 items,
@@ -313,6 +361,7 @@ class CustomWidgets(object):
                 focus_column=None,
                 min_width=1,
                 box_columns=None)
+
     def get_line_box(
             self, contents, title,
             tlcorner='┌', tline='─',
@@ -333,8 +382,10 @@ class CustomWidgets(object):
             title {string} -- Title String
 
         Keyword Argumnts:
-            content_list -- If true, the value of contents must be a list of widgets
-                            If false, the value must be a single widget to be used as
+            content_list --
+                If true, the value of contents must be a list of widgets
+
+                If false, the value must be a single widget to be used as
                             original_widget -- default{False}
 
         Returns:
@@ -355,6 +406,7 @@ class CustomWidgets(object):
             bline=bline,
             brcorner=brcorner)
         return U.AttrMap(linebox, 'boxborder')
+
     def get_list_box(self, contents):
         """Creates a ListBox using a SimpleFocusListWalker, with the contents
            being a list of widgets
@@ -363,15 +415,18 @@ class CustomWidgets(object):
             contents {list} -- list of widgets
 
         Returns:
-            list -- [0]: urwid.ListBox
-                    [1]: urwid.SimpleFocusListWalker - Access this to make changes to the list
-                               which the SimpleFocusListWalker will follow.
+            list --
+                [0]: urwid.ListBox
+                [1]: urwid.SimpleFocusListWalker
+                    - Access this to make changes to the list
+                      which the SimpleFocusListWalker will follow.
         BOX WIDGET
         """
-        #debug('Started getListBox: %s', contents)
+        # debug('Started getListBox: %s', contents)
         walker = U.SimpleFocusListWalker(contents)
         list_box = U.ListBox(walker)
         return [list_box, walker]
+
     def centered_list_box(self, contents, title, list_height, **kwargs):
         """returns a list/line box that is screen centered"""
         L.debug("kwargs: %s", kwargs)
@@ -380,9 +435,9 @@ class CustomWidgets(object):
             self.get_blank_box(),
             ('weight', 2, filler),
             self.get_blank_box()])
-        #debug('centeredListLineBox filler.sizing(): %s', filler.sizing())
+        # debug('centeredListLineBox filler.sizing(): %s', filler.sizing())
         line_box = self.get_line_box(inside_col, title)
-        #debug('centeredListLineBox listBox: %s', contents)
+        # debug('centeredListLineBox listBox: %s', contents)
         outsidefiller = U.Filler(line_box, height=list_height)
         outside_col = self.get_col_row([
             self.get_blank_box(),

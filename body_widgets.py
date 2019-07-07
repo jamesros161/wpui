@@ -4,13 +4,16 @@ import getpass
 import urwid as U
 from logmod import Log
 from settings import Settings
-from widgets import CustomWidgets, BoxButton, WpConfigValueMap, WpConfigNameMap, DbImportEditMap
+from widgets import CustomWidgets, BoxButton, WpConfigValueMap,
+from widgets import WpConfigNameMap, DbImportEditMap
 import widgets as W
 S = Settings()
 L = Log()
 W = CustomWidgets()
-#PRIMARY BodyWidget
+# PRIMARY BodyWidget
 # Class#
+
+
 class BodyWidget(object):
     """Parent Class for body widgets
 
@@ -18,9 +21,14 @@ class BodyWidget(object):
         obj -- Returns a widget to be used as the 'body' portion of the frame
     """
     def __init__(self, app):
-        self.progress_bar = U.ProgressBar('body', 'progressbar', current=0, done=100)
+        self.progress_bar = U.ProgressBar(
+            'body',
+            'progressbar',
+            current=0,
+            done=100)
         self.app = app
         self.widget = self.define_widget()
+
     def define_widget(self, **kwargs):
         """Page displayed as Home Page for the application
         """
@@ -31,6 +39,7 @@ class BodyWidget(object):
             Select an option below to begin.',
             'center')
         return U.Filler(home_text, 'middle')
+
     def update_progress_bar(self, progress):
         """Updates the progress bar on body widgets that
         have a progress bar
@@ -39,7 +48,7 @@ class BodyWidget(object):
             progress {str} -- string representation of the current
                               progress
         """
-        #L.debug('Progress: %s', progress)
+        # L.debug('Progress: %s', progress)
         if progress:
             self.progress_bar.set_completion(int(progress))
         else:
@@ -47,13 +56,15 @@ class BodyWidget(object):
             self.app.loop.remove_watch_pipe(self.app.action_pipe)
             self.app.loop.draw_screen()
 
-#ADD SUBCLASSES HERE for each view's body
+# ADD SUBCLASSES HERE for each view's body
+
 
 class Home(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
     def __init__(self, app, user_args=None, calling_view=None):
         super(Home, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
+
     def define_widget(self, **kwargs):
         L.debug(' kwargs : %s', kwargs)
         home_text = W.get_text(
@@ -62,11 +73,13 @@ class Home(BodyWidget):
             \nSelect an option below to begin.', 'center')
         return U.Filler(home_text, 'middle')
 
+
 class Installs(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
     def __init__(self, app, user_args=None, calling_view=None):
         super(Installs, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
+
     def define_widget(self, **kwargs):
         L.debug(' kwargs : %s', kwargs)
         main_text = W.get_text(
@@ -79,8 +92,10 @@ class Installs(BodyWidget):
             ('weight', 2, W.get_blank_flow())
         ])
         main_pile = U.Pile([main_text, progress_row])
-        self.app.action_pipe = self.app.loop.watch_pipe(self.update_progress_bar)
+        self.app.action_pipe = self.app.loop.watch_pipe(
+            self.update_progress_bar)
         return U.Filler(main_pile, 'middle')
+
     def after_action(self, installations):
         """Updates the view's body in response to
         the views action_on_load function
@@ -96,10 +111,36 @@ class Installs(BodyWidget):
             location_width = location_list[0] + 4
             installation_columns = [W.get_col_row([
                 (10, U.AttrMap(W.get_div(), 'header')),
-                (location_width, U.AttrMap(W.get_text('header', 'Location', 'center'), 'header')),
-                ('weight', 2, U.AttrMap(W.get_text('header', 'Home URL', 'center'), 'header')),
-                (18, U.AttrMap(W.get_text('header', 'Valid wp_options', 'center'), 'header')),
-                (20, U.AttrMap(W.get_text('header', 'wp_db_check passed', 'center'), 'header'))
+                (
+                    location_width,
+                    U.AttrMap(
+                        W.get_text(
+                            'header',
+                            'Location',
+                            'center'
+                            ),
+                        'header')),
+                ('weight', 2, U.AttrMap(
+                    W.get_text(
+                        'header',
+                        'Home URL',
+                        'center'
+                        ),
+                    'header')),
+                (18, U.AttrMap(
+                    W.get_text(
+                        'header',
+                        'Valid wp_options',
+                        'center'
+                        ),
+                    'header')),
+                (20, U.AttrMap(
+                    W.get_text(
+                        'header',
+                        'wp_db_check passed',
+                        'center'
+                        ),
+                    'header'))
             ])]
             for installation in installations:
                 installation_rows = [
@@ -107,14 +148,28 @@ class Installs(BodyWidget):
                         ' + ',
                         on_press=self.app.state.set_installation,
                         user_data=installation)),
-                    (location_width, W.get_text('body', installation['directory'], 'center'))
+                    (location_width, W.get_text(
+                        'body',
+                        installation['directory'],
+                        'center'))
                 ]
-                #L.debug('valid_wp_options: %s', installation['valid_wp_options'])
+                # L.debug(
+                #     'valid_wp_options: %s',
+                #     installation['valid_wp_options'])
                 if installation['valid_wp_options']:
                     installation_rows.extend([
-                        ('weight', 2, W.get_text('body', installation['home_url'], 'center')),
-                        (18, W.get_text('body', str(installation['valid_wp_options']), 'center')),
-                        (20, W.get_text('body', str(installation['wp_db_check_success']), 'center'))
+                        ('weight', 2, W.get_text(
+                            'body',
+                            installation['home_url'],
+                            'center')),
+                        (18, W.get_text(
+                            'body',
+                            str(installation['valid_wp_options']),
+                            'center')),
+                        (20, W.get_text(
+                            'body',
+                            str(installation['wp_db_check_success']),
+                            'center'))
                     ])
                 else:
                     installation_rows.append(
@@ -134,7 +189,8 @@ class Installs(BodyWidget):
                 W.get_blank_flow(),
                 W.get_text(
                     'body',
-                    'There Are No WordPress Installations found for User: ' + getpass.getuser(),
+                    'There Are No WordPress Installations found for User: ' +
+                    getpass.getuser(),
                     'center'),
                 W.get_blank_flow()
             ])]
@@ -147,22 +203,30 @@ class Installs(BodyWidget):
         else:
             self.app.frame.set_focus('footer')
         self.app.loop.draw_screen()
+
+
 class GetWpConfig(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
     def __init__(self, app, user_args=None, calling_view=None):
         super(GetWpConfig, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
+
     def define_widget(self, **kwargs):
         L.debug(' kwargs : %s', kwargs)
-        main_text = W.get_text('body', 'Obtaining WP-Config  directives', 'center')
+        main_text = W.get_text(
+            'body',
+            'Obtaining WP-Config  directives',
+            'center')
         progress_row = W.get_col_row([
             ('weight', 2, W.get_blank_flow()),
             self.progress_bar,
             ('weight', 2, W.get_blank_flow())
         ])
         main_pile = U.Pile([main_text, progress_row])
-        self.app.action_pipe = self.app.loop.watch_pipe(self.update_progress_bar)
+        self.app.action_pipe = self.app.loop.watch_pipe(
+            self.update_progress_bar)
         return U.Filler(main_pile, 'middle')
+
     def after_action(self, wp_config):
         """Updates the view's body in response to
         the views action_on_load function
@@ -171,9 +235,17 @@ class GetWpConfig(BodyWidget):
         L.debug(' wp_config : %s', wp_config)
         directives_list = [
             W.get_col_row([
-                (10, U.AttrMap(W.get_text('header', 'Type', 'center'), 'header')),
+                (10, U.AttrMap(W.get_text(
+                    'header',
+                    'Type',
+                    'center'),
+                    'header')),
                 U.AttrMap(W.get_text('header', 'Name', 'center'), 'header'),
-                ('weight', 2, U.AttrMap(W.get_text('header', 'Value', 'left'), 'header'))])]
+                ('weight', 2, U.AttrMap(W.get_text(
+                    'header',
+                    'Value',
+                    'left'),
+                    'header'))])]
         for directive in wp_config.wp_config_directive_list:
             button = WpConfigValueMap(
                 self.app,
@@ -193,11 +265,14 @@ class GetWpConfig(BodyWidget):
         self.app.frame.contents.__setitem__('body', [filler, None])
         time.sleep(1)
         self.app.loop.draw_screen()
+
+
 class SetAddWpConfig(BodyWidget):
     """Adds a new option to the wp-config.php"""
     def __init__(self, app, user_args=None, calling_view=None):
         super(SetAddWpConfig, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
+
     def define_widget(self, **kwargs):
         L.debug(' kwargs : %s', kwargs)
         self.directive_name = ''
@@ -213,10 +288,6 @@ class SetAddWpConfig(BodyWidget):
             'default',
             self.directive_value_edit,
             align='left')
-        #self.directive_name_edit = WpConfigNameEdit(
-        #    self.directive_value_edit,
-        #    align='left'
-        #)
         rows.append(
             W.get_col_row([
                 W.get_text('default', 'WP-Config Directive Name: ', 'right'),
@@ -231,14 +302,18 @@ class SetAddWpConfig(BodyWidget):
         )
         self.pile = U.Pile(rows)
         return U.Filler(self.pile, 'middle')
+
     def debug(self, *args):
         """Prints debug for module"""
         L.debug('Args: %s', args)
+
+
 class SetDbCreds(BodyWidget):
     """Easily set DB credentials for WP-Config"""
     def __init__(self, app, user_args=None, calling_view=None):
         super(SetDbCreds, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
+
     def define_widget(self, **kwargs):
         L.debug(' kwargs : %s', kwargs)
         db_name_edit = WpConfigValueMap(
@@ -275,14 +350,18 @@ class SetDbCreds(BodyWidget):
         ]
         self.pile = U.Pile(rows)
         return U.Filler(self.pile, 'middle')
+
     def debug(self, *args):
         """Prints debug for module"""
         L.debug('Args: %s', args)
+
+
 class Database(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
     def __init__(self, app, user_args=None, calling_view=None):
         super(Database, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
+
     def define_widget(self, **kwargs):
         L.debug(' kwargs : %s', kwargs)
         main_text = W.get_text(
@@ -295,8 +374,10 @@ class Database(BodyWidget):
             ('weight', 2, W.get_blank_flow())
         ])
         main_pile = U.Pile([main_text, progress_row])
-        self.app.action_pipe = self.app.loop.watch_pipe(self.update_progress_bar)
+        action_pipe = self.app.loop.watch_pipe(self.update_progress_bar)
+        self.app.action_pipe = action_pipe
         return U.Filler(main_pile, 'middle')
+
     def after_action(self, db_info):
         """Updates the view's body in response to
         the views action_on_load function
@@ -342,8 +423,16 @@ class Database(BodyWidget):
         db_info_rows.append(
             W.get_col_row([
                 (5, U.AttrMap(W.get_blank_flow(), 'header')),
-                U.AttrMap(W.get_text('header', 'Table Name', 'left'), 'header'),
-                (18, U.AttrMap(W.get_text('header', 'Check Status', 'center'), 'header')),
+                U.AttrMap(W.get_text(
+                    'header',
+                    'Table Name',
+                    'left'),
+                    'header'),
+                (18, U.AttrMap(W.get_text(
+                    'header',
+                    'Check Status',
+                    'center'),
+                    'header')),
                 (5, U.AttrMap(W.get_blank_flow(), 'header'))
             ])
         )
@@ -371,11 +460,14 @@ class Database(BodyWidget):
         self.app.frame.contents.__setitem__('body', [filler, None])
         time.sleep(1)
         self.app.loop.draw_screen()
+
+
 class DbExport(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
     def __init__(self, app, user_args=None, calling_view=None):
         super(DbExport, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
+
     def define_widget(self, **kwargs):
         L.debug(' kwargs : %s', kwargs)
         main_text = W.get_text(
@@ -383,6 +475,7 @@ class DbExport(BodyWidget):
             'Exporting Database....',
             'center')
         return U.Filler(main_text, 'middle')
+
     def after_action(self, result):
         """Updates the view's body in response to
         the views action_on_load function
@@ -396,17 +489,19 @@ class DbExport(BodyWidget):
             'body',
             text,
             'center')
-        #ok_button = BoxButton("OK", on_press=self.app.views.activate(self.app, 'Database'))
         pile = U.Pile([main_text])
         filler = U.Filler(pile, 'middle')
         self.app.frame.contents.__setitem__('body', [filler, None])
         time.sleep(1)
         self.app.loop.draw_screen()
+
+
 class DbImport(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
     def __init__(self, app, user_args=None, calling_view=None):
         super(DbImport, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
+
     def define_widget(self, **kwargs):
         L.debug(' kwargs : %s', kwargs)
         home_text = W.get_text(
@@ -414,6 +509,7 @@ class DbImport(BodyWidget):
             'Searching for database dumps to import...',
             'center')
         return U.Filler(home_text, 'middle')
+
     def after_action(self, import_list):
         """Displays list of imports available"""
         import_rows = []
@@ -447,6 +543,7 @@ class DbImport(BodyWidget):
         self.app.frame.contents.__setitem__('body', [filler, None])
         time.sleep(1)
         self.app.loop.draw_screen()
+
     def after_import(self, result):
         """Updates the view's body in response to
         wp-cli's import function
@@ -460,17 +557,19 @@ class DbImport(BodyWidget):
             'body',
             text,
             'center')
-        #ok_button = BoxButton("OK", on_press=self.app.views.activate(self.app, 'Database'))
         pile = U.Pile([main_text])
         filler = U.Filler(pile, 'middle')
         self.app.frame.contents.__setitem__('body', [filler, None])
         time.sleep(1)
         self.app.loop.draw_screen()
+
+
 class DbOptimize(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
     def __init__(self, app, user_args=None, calling_view=None):
         super(DbOptimize, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
+
     def define_widget(self, **kwargs):
         L.debug(' kwargs : %s', kwargs)
         home_text = W.get_text(
@@ -479,11 +578,14 @@ class DbOptimize(BodyWidget):
             \nSelect an option below to begin.',
             'center')
         return U.Filler(home_text, 'middle')
+
+
 class DbRepair(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
     def __init__(self, app, user_args=None, calling_view=None):
         super(DbRepair, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
+
     def define_widget(self, **kwargs):
         L.debug(' kwargs : %s', kwargs)
         home_text = W.get_text(
@@ -492,11 +594,14 @@ class DbRepair(BodyWidget):
             \nSelect an option below to begin.',
             'center')
         return U.Filler(home_text, 'middle')
+
+
 class DbSearch(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
     def __init__(self, app, user_args=None, calling_view=None):
         super(DbSearch, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
+
     def define_widget(self, **kwargs):
         L.debug(' kwargs : %s', kwargs)
         home_text = W.get_text(
@@ -505,11 +610,14 @@ class DbSearch(BodyWidget):
             \nSelect an option below to begin.',
             'center')
         return U.Filler(home_text, 'middle')
+
+
 class Plugins(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
     def __init__(self, app, user_args=None, calling_view=None):
         super(Plugins, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
+
     def define_widget(self, **kwargs):
         L.debug(' kwargs : %s', kwargs)
         home_text = W.get_text(
@@ -517,11 +625,14 @@ class Plugins(BodyWidget):
             'Installed Plugins for selected WP Installation',
             'center')
         return U.Filler(home_text, 'middle')
+
+
 class Themes(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
     def __init__(self, app, user_args=None, calling_view=None):
         super(Themes, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
+
     def define_widget(self, **kwargs):
         L.debug(' kwargs : %s', kwargs)
         home_text = W.get_text(
@@ -530,11 +641,13 @@ class Themes(BodyWidget):
             'center')
         return U.Filler(home_text, 'middle')
 
+
 class Users(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
     def __init__(self, app, user_args=None, calling_view=None):
         super(Users, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
+
     def define_widget(self, **kwargs):
         L.debug(' kwargs : %s', kwargs)
         home_text = W.get_text(
@@ -543,11 +656,13 @@ class Users(BodyWidget):
             'center')
         return U.Filler(home_text, 'middle')
 
+
 class Core(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
     def __init__(self, app, user_args=None, calling_view=None):
         super(Core, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
+
     def define_widget(self, **kwargs):
         L.debug(' kwargs : %s', kwargs)
         home_text = W.get_text(
@@ -556,11 +671,13 @@ class Core(BodyWidget):
             'center')
         return U.Filler(home_text, 'middle')
 
+
 class Quit(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
     def __init__(self, app, user_args=None, calling_view=None):
         super(Quit, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
+
     def define_widget(self, **kwargs):
         L.debug(' Body Widget View Name: %s', self.app.state.active_view.name)
         L.debug(' Previous View Name: %s', self.app.state.previous_view.name)

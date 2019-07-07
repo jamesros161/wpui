@@ -8,6 +8,7 @@ from logmod import Log
 from datetime import datetime
 L = Log()
 
+
 class Installations(object):
     """Class used for obtaining installation dir and details"""
     def __init__(self, app):
@@ -21,25 +22,29 @@ class Installations(object):
         self.installations = self.get_installation_dirs()
         if self.installations:
             self.get_installation_details()
-            L.debug("WP Installation for user %s: %s", self.username, self.installations)
+            L.debug(
+                "WP Installation for user %s: %s",
+                self.username, self.installations)
         else:
             L.warning("No WP Installations available for this User!")
+
     def get_installation_dirs(self):
         """Gets installation directory list using os.walk"""
         installations = []
         L.debug("%s Homedir: %s", self.username, self.homedir)
         for root, _, files in os.walk(self.homedir, topdown=True):
             if 'wp-config.php' in files:
-                if not '/.' in root:
+                if '/.' not in root:
                     _x = {
-                        'directory' : root,
-                        'home_url' : '',
-                        'valid_wp_options' : False,
-                        'wp_db_check_success' : False,
-                        'wp_db_error' : ''
+                        'directory': root,
+                        'home_url': '',
+                        'valid_wp_options': False,
+                        'wp_db_check_success': False,
+                        'wp_db_error': ''
                     }
                     installations.append(_x)
         return installations
+
     def get_installation_details(self):
         """Getter for installation details"""
         L.debug('Start get_installation_details')
@@ -51,7 +56,7 @@ class Installations(object):
         progress_increments = progress_sections / 2
         for installation in self.installations:
             self.progress = self.progress + progress_increments
-            #L.debug('Progress: %s', self.progress)
+            # L.debug('Progress: %s', self.progress)
             os.write(self.app.action_pipe, str(self.progress))
             db_check_data, db_check_error = self.call.wpcli(
                 installation['directory'],
@@ -60,14 +65,19 @@ class Installations(object):
                 data = db_check_data.splitlines()
                 for line in data:
                     if '_options' in line and 'OK' in line:
-                        #L.debug('Line: %s', line)
+                        # L.debug('Line: %s', line)
                         installation['valid_wp_options'] = True
                         self.progress = self.progress + progress_increments
-                        #L.debug('Progress: %s', self.progress)
+                        # L.debug('Progress: %s', self.progress)
                         os.write(self.app.action_pipe, str(self.progress))
                         homedata, _ = self.call.wpcli(
                             installation['directory'],
-                            ['option', 'get', 'home', '--skip-plugins', '--skip-themes'])
+                            [
+                                'option',
+                                'get',
+                                'home',
+                                '--skip-plugins',
+                                '--skip-themes'])
                         if homedata:
                             installation['home_url'] = homedata.rstrip()
                     if 'Success: Database checked' in line:
@@ -75,6 +85,8 @@ class Installations(object):
             if db_check_error:
                 installation['wp_db_error'] = db_check_error
         os.close(self.app.action_pipe)
+
+
 class DatabaseInformation(object):
     """Obtains database information"""
     def __init__(self, app):
@@ -90,13 +102,14 @@ class DatabaseInformation(object):
             'check_error': None
         }
         self.get_db_size()
+
     def get_db_size(self):
         """Get database size and name list"""
         path = self.installation['directory']
         self.progress = 0
         progress_increments = 100 / 2
 
-        #GET DATABASE NAME AND SIZE
+        # GET DATABASE NAME AND SIZE
         self.progress = self.progress + progress_increments
         L.debug('Progress: %s', self.progress)
         os.write(self.app.action_pipe, str(self.progress))
@@ -114,14 +127,18 @@ class DatabaseInformation(object):
             self.db_info['name'] = result_json[0]['Name']
             self.db_info['size'] = result_json[0]['Size']
         if dbsize_error:
-            L.debug('wp_db_size error:%s', dbsize_error.decode(encoding='UTF-8'))
+            L.debug(
+                'wp_db_size error:%s',
+                dbsize_error.decode(encoding='UTF-8'))
             self.db_info['size_error'] = dbsize_error.decode(encoding='UTF-8')
-        #RUN CHECK DB
+        # RUN CHECK DB
         self.progress = self.progress + progress_increments
         L.debug('Progress: %s', self.progress)
         os.write(self.app.action_pipe, str(self.progress))
         if dbsize_result:
-            dbcheck_result, dbcheck_error = self.call.wpcli(path, ['db', 'check'])
+            dbcheck_result, dbcheck_error = self.call.wpcli(
+                path,
+                ['db', 'check'])
             dbcheck_result_list = []
             if dbcheck_result:
                 for line in dbcheck_result.splitlines():
@@ -134,10 +151,12 @@ class DatabaseInformation(object):
                             }
                         )
                 self.db_info['check_tables'] = dbcheck_result_list
-            if  dbcheck_error:
-                self.db_info['check_error'] = dbcheck_error.decode(encoding='UTF-8')
-        #L.debug('db_info: %s',self.db_info)
+            if dbcheck_error:
+                db_check_decoded = dbcheck_error.decode(encoding='UTF-8')
+                self.db_info['check_error'] = db_check_decoded
+        # L.debug('db_info: %s',self.db_info)
         os.close(self.app.action_pipe)
+
     def export(self):
         """Exports wp database"""
         install_path = self.installation['directory']
@@ -151,7 +170,7 @@ class DatabaseInformation(object):
             date,
             "%Y%m%d")
         file_name = self.db_info['name'] + \
-            '-' + date  + '-' + rand_numb + '.sql'
+            '-' + date + '-' + rand_numb + '.sql'
         file_path = os.path.join(
             install_path,
             file_name)
@@ -166,6 +185,7 @@ class DatabaseInformation(object):
             L.debug('Export Result:  %s', export[0])
             return export[0]
         return "Database Export Failed"
+
     def import_db(self, path):
         """Exports wp database"""
         install_path = self.installation['directory']
@@ -182,6 +202,7 @@ class DatabaseInformation(object):
             L.debug('Import Result:  %s', import_result[0])
             return import_result[0]
         return "Database Export Failed"
+
     def get_import_list(self):
         """Return list of imports in user's directory"""
         imports = []
@@ -191,13 +212,15 @@ class DatabaseInformation(object):
         db_name = self.db_info['name']
         L.debug('db_name: %s', db_name)
         for root, _, files in os.walk(homedir, topdown=True):
-            for file_name  in files:
+            for file_name in files:
                 if db_name in file_name:
                     L.debug('Import Found: %s', file_name)
-                    if not '/.' in root:
+                    if '/.' not in root:
                         _x = os.path.join(root, file_name)
                         imports.append(_x)
         return imports
+
+
 class WpConfig(object):
     """Obtains and modified wp_config information"""
     def __init__(self, app):
@@ -208,7 +231,7 @@ class WpConfig(object):
         self.wp_config_directive_list = []
         self.wp_config_error = None
         self.progress = 0
-        #self.get_wp_config()
+
     def get_wp_config(self):
         """getter for wp_config data"""
         path = self.app.state.active_installation['directory']
@@ -223,12 +246,13 @@ class WpConfig(object):
                 '--format=json',
                 '--no-color'])
         if wp_config_result:
-            #L.debug('wp_config_result: %s', wp_config_result)
+            # L.debug('wp_config_result: %s', wp_config_result)
             self.wp_config_directive_list = json.loads(wp_config_result)
-        if  wp_config_error:
+        if wp_config_error:
             L.debug('wp_config_error: %s', wp_config_result)
             self.wp_config_error = wp_config_error
         os.close(self.app.action_pipe)
+
     def set_wp_config(self, directive_name, directive_value):
         """Sets a single wp_config directive.
         This is used by the wp_config display screen edit widgets"""
@@ -239,11 +263,14 @@ class WpConfig(object):
                 'set',
                 directive_name,
                 directive_value])
-        L.debug('Set_Wp_Config Return Data: %s, Return Error: %s', return_data, return_error)
+        L.debug(
+            'Set_Wp_Config Return Data: %s, Return Error: %s',
+            return_data, return_error)
         if return_data and 'Success' in return_data:
             return True
         else:
             return False
+
     def del_wp_config(self, directive_name):
         """Sets a single wp_config directive.
         This is used by the wp_config display screen edit widgets"""
@@ -254,11 +281,14 @@ class WpConfig(object):
                 'delete',
                 directive_name
                 ])
-        L.debug('Set_Wp_Config Return Data: %s, Return Error: %s', return_data, return_error)
+        L.debug(
+            'Set_Wp_Config Return Data: %s, Return Error: %s',
+            return_data, return_error)
         if return_data and 'Success' in return_data:
             return True
         else:
             return False
+
     def re_salt(self):
         "Refreshes the stalts defined in the wp-config.php file"
         path = self.app.state.active_installation['directory']
@@ -267,7 +297,11 @@ class WpConfig(object):
                 'config',
                 'shuffle-salts'
                 ])
-        L.debug('Set_Wp_Config Return Data: %s, Return Error: %s', return_data, return_error)
+        L.debug(
+            'Set_Wp_Config Return Data: %s, Return Error: %s',
+            return_data, return_error)
+
+
 class Call(object):
     """opens a subprocess to run wp-cli command"""
     def wpcli(self, path, arguments):
