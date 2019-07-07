@@ -23,29 +23,22 @@ class Views(object):
     def activate(self, app, *args, **kwargs):
         """Activates the selected view"""
         L.debug('views.activate args: %s, kwargs: %s', args, kwargs)
-        try:
-            activating_view = getattr(self, args[0])
-        except:
-            L.warning('Error Loading Action: %s', e.message)
-            activating_view = getattr(self, 'Invalid')
-            activating_view.start()
-        else:
-            activating_view = getattr(self, args[0])
-            if ('Home' not in activating_view.name and
-                    'Installs' not in activating_view.name and
-                    'Quit' not in activating_view.name):
-                if not self.app.state.active_installation:
-                        self.app.views.activate(app, 'Installs')
-                else:
-                    if "no_view_chain" not in activating_view.view_type:
-                        self.state.view_chain_pos += 1
-                        self.state.set_view(activating_view)
-                    activating_view.start()
+        activating_view = getattr(self, args[0])
+        if ('Home' not in activating_view.name and
+                'Installs' not in activating_view.name and
+                'Quit' not in activating_view.name):
+            if not self.app.state.active_installation:
+                self.app.views.activate(app, 'Installs')
             else:
                 if "no_view_chain" not in activating_view.view_type:
                     self.state.view_chain_pos += 1
                     self.state.set_view(activating_view)
                 activating_view.start()
+        else:
+            if "no_view_chain" not in activating_view.view_type:
+                self.state.view_chain_pos += 1
+                self.state.set_view(activating_view)
+            activating_view.start()
 
 
 class View(object):
@@ -74,13 +67,8 @@ class View(object):
         if self.view_type == 'no_display':
             if self.action_on_load:
                 L.debug('This View has an action to be run on load')
-                try:
-                    getattr(self.actions, self.action_on_load)
-                except AttributeError as e:
-                    L.warning('Error Loading Action: %s', e.message)
-                else:
-                    self.action = getattr(self.actions, self.action_on_load)
-                    self.action()
+                self.action = getattr(self.actions, self.action_on_load)
+                self.action()
         else:
             self.set_view_body()
             self.show_header()
@@ -93,17 +81,11 @@ class View(object):
             if self.action_on_load:
                 self.app.loop.draw_screen()
                 L.debug('This View has an action to be run on load')
-                try:
-                    getattr(self.actions, self.action_on_load)
-                except AttributeError:
-                    pass
-                else:
-                    self.action = getattr(self.actions, self.action_on_load)
-                    self.action()
-                    self.action_thread = Thread(
-                        target=self.action,
-                        name='action_thread')
-                    self.action_thread.start()
+                self.action = getattr(self.actions, self.action_on_load)
+                self.action_thread = Thread(
+                    target=self.action,
+                    name='action_thread')
+                self.action_thread.start()
 
     def reload(self):
         """Reloads a previously activated view. Used by State.go_back and

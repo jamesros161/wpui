@@ -160,6 +160,7 @@ class DatabaseInformation(object):
     def export(self):
         """Exports wp database"""
         install_path = self.installation['directory']
+        export_path = self.homedir
         n_length = 6
         rand_numb = ''.join(
             [
@@ -172,7 +173,7 @@ class DatabaseInformation(object):
         file_name = self.db_info['name'] + \
             '-' + date + '-' + rand_numb + '.sql'
         file_path = os.path.join(
-            install_path,
+            export_path,
             file_name)
         export = self.call.wpcli(
             install_path,
@@ -219,6 +220,23 @@ class DatabaseInformation(object):
                         _x = os.path.join(root, file_name)
                         imports.append(_x)
         return imports
+
+    def db_optimize(self, path):
+        """Optimize Database"""
+        L.debug("Begin Optimize DB")
+        # Export Database before optimizing
+        self.export()
+
+        result, error = self.call.wpcli(
+            path,
+            [
+                'db',
+                'optimize'
+            ])
+        if result:
+            return result
+        else:
+            return "Database Optimize Failed"
 
 
 class WpConfig(object):
