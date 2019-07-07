@@ -2,7 +2,7 @@
     "logging" : {
             "level" : "DEBUG",
             "name" : "wpui.log",
-            "format" : "%(asctime)s.%(msecs)03d (%(levelname)s) @ LINE %(lineno)4d IN %(module)s /%(funcName)s :: %(message)s",
+            "format" : "%(asctime)s.%(msecs)03d (%(levelname)s)\n   %(lineno)4d :: %(module)s /%(funcName)s\n       %(message)s",
             "datefmt" : "%Y-%m-%d %H:%M:%S"
         },
     "display" : {
