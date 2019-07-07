@@ -60,7 +60,7 @@
         "action_on_load" : "get_db_imports"
     },
     "DbOptimize" : {
-        "view_type" : "no_display",
+        "view_type" : "no_input",
         "title" : "",
         "sub_title" : "",
         "action_on_load" : "db_optimize"
