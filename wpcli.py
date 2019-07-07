@@ -76,9 +76,7 @@ class Installations(object):
                             [
                                 'option',
                                 'get',
-                                'home',
-                                '--skip-plugins',
-                                '--skip-themes'])
+                                'home'])
                         if homedata:
                             installation['home_url'] = homedata.rstrip()
                     if 'Success: Database checked' in line:
@@ -308,13 +306,16 @@ class WpConfig(object):
 class Call(object):
     """opens a subprocess to run wp-cli command"""
 
-    def wpcli(self, path, arguments):
+    def wpcli(self, path, arguments, skip_themes=True, skip_plugins=True):
         """runs_wp-cli command"""
         popen_args = ['wp']
         for argument in arguments:
             popen_args.append(argument)
         popen_args.append('--path='+path)
-
+        if skip_themes:
+            popen_args.append('--skip-themes')
+        if skip_plugins:
+            popen_args.append('--skip-plugins')
         data, error = subprocess.Popen(
             popen_args,
             stdout=subprocess.PIPE,

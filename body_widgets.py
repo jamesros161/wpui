@@ -413,8 +413,8 @@ class Database(BodyWidget):
         db_info_rows.append(W.get_div())
         db_info_rows.append(
             W.get_col_row([
-                W.get_text('body', db_info['name'], 'center'),
-                W.get_text('body', db_info['size'], 'center')
+                W.get_text('body', str(db_info['name']), 'center'),
+                W.get_text('body', str(db_info['size']), 'center')
             ])
         )
         db_info_rows.append(W.get_div())
