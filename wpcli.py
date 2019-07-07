@@ -253,7 +253,7 @@ class DatabaseInformation(object):
         if result:
             return result
         else:
-            return "Database Optimize Failed"
+            return "Database Repair Failed"
 
 
 class WpConfig(object):
