@@ -11,6 +11,7 @@ W = body_widgets.CustomWidgets()
 
 class Views(object):
     """Stores individual View objects, and activates them"""
+
     def __init__(self, app):
         self.app = app
         self.state = app.state
@@ -43,6 +44,7 @@ class Views(object):
 class View(object):
     """View Objects old the various parts of a given view
     such as the header, footer, body, etc"""
+
     def __init__(self, app, views, name, view_json_data):
         self.app = app
         # L.debug("View %s Initialized", name)

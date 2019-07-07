@@ -10,6 +10,7 @@ S = Settings()
 class Log(object):
     """Logging class for application logger
     """
+
     def __init__(self):
         log_format = S.logging['format']
         log_name = S.logging['name']

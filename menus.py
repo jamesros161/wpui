@@ -6,6 +6,7 @@ L = Log()
 
 class Menus(object):
     """Imports Menus from associated menus.json file"""
+
     def __init__(self, app):
         self.app = app
         menus_json = Config.load('menus.json')
@@ -31,6 +32,7 @@ class Menus(object):
 
 class Menu(object):
     """Individual menu object for each view"""
+
     def __init__(self, menu_name, menu_items):
         # L.debug("Menu %s Initialized", menu_name)
         self.name = menu_name

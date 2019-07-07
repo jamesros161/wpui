@@ -17,6 +17,7 @@ L.info("\n****\nApplication Started at %s \n\n****\n",
            datetime.now(),
            "%Y-%m-%d %H:%M:%S.%f"))
 
+
 def main():
     """Starts main loop"""
     app = App()
@@ -27,6 +28,7 @@ def main():
         datetime.strftime(
             datetime.now(),
             "%Y-%m-%d %H:%M:%S.%f"))
+
 
 if __name__ == '__main__':
     main()

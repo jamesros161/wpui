@@ -11,6 +11,7 @@ L = Log()
 class Actions(object):
     """This class contains all the action methods
         that are called after a view loads"""
+
     def __init__(self, app):
         self.app = app
         self.installations = None

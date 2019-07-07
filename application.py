@@ -21,6 +21,7 @@ W = CustomWidgets()
 class App(object):
     """App Class is a container for the
     state, views, menu, loop, and frame classes"""
+
     def __init__(self):
         L.debug("App Class Initializing")
         self.settings = S
@@ -76,6 +77,7 @@ class State(object):
     """This is the state manager used to track movement between views,
     and allow user to go backwards and forwards
     """
+
     def __init__(self, app):
         self.app = app
         L.debug('App.State Initializing')

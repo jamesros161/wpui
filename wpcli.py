@@ -11,6 +11,7 @@ L = Log()
 
 class Installations(object):
     """Class used for obtaining installation dir and details"""
+
     def __init__(self, app):
         self.app = app
         L.debug('Installations Initialized')
@@ -89,6 +90,7 @@ class Installations(object):
 
 class DatabaseInformation(object):
     """Obtains database information"""
+
     def __init__(self, app):
         self.app = app
         L.debug('Installations Initialized')
@@ -223,6 +225,7 @@ class DatabaseInformation(object):
 
 class WpConfig(object):
     """Obtains and modified wp_config information"""
+
     def __init__(self, app):
         self.app = app
         L.debug('Installations Initialized')
@@ -280,7 +283,7 @@ class WpConfig(object):
                 'config',
                 'delete',
                 directive_name
-                ])
+            ])
         L.debug(
             'Set_Wp_Config Return Data: %s, Return Error: %s',
             return_data, return_error)
@@ -296,7 +299,7 @@ class WpConfig(object):
             path, [
                 'config',
                 'shuffle-salts'
-                ])
+            ])
         L.debug(
             'Set_Wp_Config Return Data: %s, Return Error: %s',
             return_data, return_error)
@@ -304,6 +307,7 @@ class WpConfig(object):
 
 class Call(object):
     """opens a subprocess to run wp-cli command"""
+
     def wpcli(self, path, arguments):
         """runs_wp-cli command"""
         popen_args = ['wp']
@@ -315,5 +319,5 @@ class Call(object):
             popen_args,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE
-            ).communicate()
+        ).communicate()
         return data, error

@@ -13,6 +13,7 @@ PYTHONIOENCODING = "utf-8"
 
 class DbImportEditMap(U.AttrMap):
     """AttrMap for WpConfigValueEdit class"""
+
     def __init__(
             self,
             app,
@@ -37,6 +38,7 @@ class DbImportEditMap(U.AttrMap):
 
 class DbImportEdit(U.Edit):
     """Class of Edit widgets for changing WpConfig Values"""
+
     def __init__(
             self,
             app,
@@ -74,6 +76,7 @@ class DbImportEdit(U.Edit):
 
 class WpConfigValueMap(U.AttrMap):
     """AttrMap for WpConfigValueEdit class"""
+
     def __init__(
             self,
             app,
@@ -94,6 +97,7 @@ class WpConfigValueMap(U.AttrMap):
 
 class WpConfigValueEdit(U.Edit):
     """Class of Edit widgets for changing WpConfig Values"""
+
     def __init__(
             self,
             app,
@@ -144,6 +148,7 @@ class WpConfigValueEdit(U.Edit):
 
 class WpConfigNameMap(U.AttrMap):
     """AttrMap for WpConfigValueEdit class"""
+
     def __init__(self,
                  body_widget, attr, value_map_instance,
                  edit_text='', align='', caption=''):
@@ -159,6 +164,7 @@ class WpConfigNameMap(U.AttrMap):
 
 class WpConfigNameEdit(U.Edit):
     """Class of Edit widgets for changing WpConfig Values"""
+
     def __init__(
             self,
             body_widget,
@@ -244,6 +250,7 @@ class BoxButton(U.WidgetWrap):
 
 class CustomWidgets(object):
     """Collection of custom widget getters"""
+
     def __init__(self):
         L.debug("CustomWidgets Initialized")
         self.sub_title = None

@@ -20,6 +20,7 @@ class BodyWidget(object):
     Returns:
         obj -- Returns a widget to be used as the 'body' portion of the frame
     """
+
     def __init__(self, app):
         self.progress_bar = U.ProgressBar(
             'body',
@@ -61,6 +62,7 @@ class BodyWidget(object):
 
 class Home(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
+
     def __init__(self, app, user_args=None, calling_view=None):
         super(Home, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
@@ -76,6 +78,7 @@ class Home(BodyWidget):
 
 class Installs(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
+
     def __init__(self, app, user_args=None, calling_view=None):
         super(Installs, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
@@ -118,28 +121,28 @@ class Installs(BodyWidget):
                             'header',
                             'Location',
                             'center'
-                            ),
+                        ),
                         'header')),
                 ('weight', 2, U.AttrMap(
                     W.get_text(
                         'header',
                         'Home URL',
                         'center'
-                        ),
+                    ),
                     'header')),
                 (18, U.AttrMap(
                     W.get_text(
                         'header',
                         'Valid wp_options',
                         'center'
-                        ),
+                    ),
                     'header')),
                 (20, U.AttrMap(
                     W.get_text(
                         'header',
                         'wp_db_check passed',
                         'center'
-                        ),
+                    ),
                     'header'))
             ])]
             for installation in installations:
@@ -207,6 +210,7 @@ class Installs(BodyWidget):
 
 class GetWpConfig(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
+
     def __init__(self, app, user_args=None, calling_view=None):
         super(GetWpConfig, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
@@ -257,7 +261,7 @@ class GetWpConfig(BodyWidget):
                 (10, W.get_text('default', str(directive['type']), 'center')),
                 W.get_text('default', str(directive['name']), 'center'),
                 ('weight', 2, button)
-                ]
+            ]
             row = W.get_col_row(row_items)
             directives_list.append(row)
         wp_config_pile = U.Pile(directives_list)
@@ -269,6 +273,7 @@ class GetWpConfig(BodyWidget):
 
 class SetAddWpConfig(BodyWidget):
     """Adds a new option to the wp-config.php"""
+
     def __init__(self, app, user_args=None, calling_view=None):
         super(SetAddWpConfig, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
@@ -310,6 +315,7 @@ class SetAddWpConfig(BodyWidget):
 
 class SetDbCreds(BodyWidget):
     """Easily set DB credentials for WP-Config"""
+
     def __init__(self, app, user_args=None, calling_view=None):
         super(SetDbCreds, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
@@ -358,6 +364,7 @@ class SetDbCreds(BodyWidget):
 
 class Database(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
+
     def __init__(self, app, user_args=None, calling_view=None):
         super(Database, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
@@ -388,7 +395,7 @@ class Database(BodyWidget):
                     'header',
                     'Database Information',
                     'center'
-                    ), 'header')
+                ), 'header')
             ])
         ]
         db_info_rows.append(
@@ -396,11 +403,11 @@ class Database(BodyWidget):
                 U.AttrMap(W.get_text(
                     'header', 'Database Name',
                     'center'
-                    ), 'header'),
+                ), 'header'),
                 U.AttrMap(W.get_text(
                     'header', 'Database Size',
                     'center'
-                    ), 'header')
+                ), 'header')
             ])
         )
         db_info_rows.append(W.get_div())
@@ -417,7 +424,7 @@ class Database(BodyWidget):
                     'header',
                     'Database Table Check Results',
                     'center'
-                    ), 'header')
+                ), 'header')
             ])
         )
         db_info_rows.append(
@@ -464,6 +471,7 @@ class Database(BodyWidget):
 
 class DbExport(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
+
     def __init__(self, app, user_args=None, calling_view=None):
         super(DbExport, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
@@ -498,6 +506,7 @@ class DbExport(BodyWidget):
 
 class DbImport(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
+
     def __init__(self, app, user_args=None, calling_view=None):
         super(DbImport, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
@@ -566,6 +575,7 @@ class DbImport(BodyWidget):
 
 class DbOptimize(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
+
     def __init__(self, app, user_args=None, calling_view=None):
         super(DbOptimize, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
@@ -582,6 +592,7 @@ class DbOptimize(BodyWidget):
 
 class DbRepair(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
+
     def __init__(self, app, user_args=None, calling_view=None):
         super(DbRepair, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
@@ -598,6 +609,7 @@ class DbRepair(BodyWidget):
 
 class DbSearch(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
+
     def __init__(self, app, user_args=None, calling_view=None):
         super(DbSearch, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
@@ -614,6 +626,7 @@ class DbSearch(BodyWidget):
 
 class Plugins(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
+
     def __init__(self, app, user_args=None, calling_view=None):
         super(Plugins, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
@@ -629,6 +642,7 @@ class Plugins(BodyWidget):
 
 class Themes(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
+
     def __init__(self, app, user_args=None, calling_view=None):
         super(Themes, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
@@ -644,6 +658,7 @@ class Themes(BodyWidget):
 
 class Users(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
+
     def __init__(self, app, user_args=None, calling_view=None):
         super(Users, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
@@ -659,6 +674,7 @@ class Users(BodyWidget):
 
 class Core(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
+
     def __init__(self, app, user_args=None, calling_view=None):
         super(Core, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
@@ -674,6 +690,7 @@ class Core(BodyWidget):
 
 class Quit(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
+
     def __init__(self, app, user_args=None, calling_view=None):
         super(Quit, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
@@ -687,7 +704,7 @@ class Quit(BodyWidget):
             W.get_col_row([
                 BoxButton('Yes', on_press=self.app.exit),
                 BoxButton('No', on_press=self.app.state.go_back)
-                ]),
+            ]),
             W.get_div()]
         quit_box = W.get_list_box(quit_list)[0]
         return W.centered_list_box(
