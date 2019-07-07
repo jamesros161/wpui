@@ -25,7 +25,8 @@ class Views(object):
         L.debug('views.activate args: %s, kwargs: %s', args, kwargs)
         try:
             activating_view = getattr(self, args[0])
-        except AttributeError:
+        except:
+            L.warning('Error Loading Action: %s', e.message)
             activating_view = getattr(self, 'Invalid')
             activating_view.start()
         else:
@@ -73,8 +74,13 @@ class View(object):
         if self.view_type == 'no_display':
             if self.action_on_load:
                 L.debug('This View has an action to be run on load')
-                self.action = getattr(self.actions, self.action_on_load)
-                self.action()
+                try:
+                    getattr(self.actions, self.action_on_load)
+                except AttributeError as e:
+                    L.warning('Error Loading Action: %s', e.message)
+                else:
+                    self.action = getattr(self.actions, self.action_on_load)
+                    self.action()
         else:
             self.set_view_body()
             self.show_header()
@@ -87,11 +93,17 @@ class View(object):
             if self.action_on_load:
                 self.app.loop.draw_screen()
                 L.debug('This View has an action to be run on load')
-                self.action = getattr(self.actions, self.action_on_load)
-                self.action_thread = Thread(
-                    target=self.action,
-                    name='action_thread')
-                self.action_thread.start()
+                try:
+                    getattr(self.actions, self.action_on_load)
+                except AttributeError:
+                    pass
+                else:
+                    self.action = getattr(self.actions, self.action_on_load)
+                    self.action()
+                    self.action_thread = Thread(
+                        target=self.action,
+                        name='action_thread')
+                    self.action_thread.start()
 
     def reload(self):
         """Reloads a previously activated view. Used by State.go_back and
