@@ -127,7 +127,7 @@ class DatabaseInformation(object):
             self.db_info['name'] = result_json[0]['Name']
             self.db_info['size'] = result_json[0]['Size']
         if dbsize_error:
-            L.debug(
+            L.warning(
                 'wp_db_size error:%s',
                 dbsize_error.decode(encoding='UTF-8'))
             self.db_info['size_error'] = dbsize_error.decode(encoding='UTF-8')
@@ -213,7 +213,7 @@ class DatabaseInformation(object):
         L.debug('db_name: %s', db_name)
         for root, _, files in os.walk(homedir, topdown=True):
             for file_name in files:
-                if db_name in file_name:
+                if db_name in file_name and 'sql' in file_name:
                     L.debug('Import Found: %s', file_name)
                     if '/.' not in root:
                         _x = os.path.join(root, file_name)

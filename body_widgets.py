@@ -398,60 +398,80 @@ class Database(BodyWidget):
                 ), 'header')
             ])
         ]
-        db_info_rows.append(
-            W.get_col_row([
-                U.AttrMap(W.get_text(
-                    'header', 'Database Name',
-                    'center'
-                ), 'header'),
-                U.AttrMap(W.get_text(
-                    'header', 'Database Size',
-                    'center'
-                ), 'header')
-            ])
-        )
-        db_info_rows.append(W.get_div())
-        db_info_rows.append(
-            W.get_col_row([
-                W.get_text('body', str(db_info['name']), 'center'),
-                W.get_text('body', str(db_info['size']), 'center')
-            ])
-        )
-        db_info_rows.append(W.get_div())
-        db_info_rows.append(
-            W.get_col_row([
-                U.AttrMap(W.get_text(
-                    'header',
-                    'Database Table Check Results',
-                    'center'
-                ), 'header')
-            ])
-        )
-        db_info_rows.append(
-            W.get_col_row([
-                (5, U.AttrMap(W.get_blank_flow(), 'header')),
-                U.AttrMap(W.get_text(
-                    'header',
-                    'Table Name',
-                    'left'),
-                    'header'),
-                (18, U.AttrMap(W.get_text(
-                    'header',
-                    'Check Status',
-                    'center'),
-                    'header')),
-                (5, U.AttrMap(W.get_blank_flow(), 'header'))
-            ])
-        )
-        for table in db_info['check_tables']:
+        if db_info['size_error']:
+            db_info_rows.append(
+                    W.get_text('default',
+                               "Database Error:\n\n" +
+                               db_info['size_error'] + "\n" +
+                               "Troubleshoot Database Connection",
+                               'center')
+            )
+        elif db_info['check_error']:
+            db_info_rows.append(
+                    W.get_text('default',
+                               "Database Error:\n\n" +
+                               db_info['check_error'] + "\n" +
+                               "Troubleshoot Database Connection",
+                               'center')
+            )
+        else:
             db_info_rows.append(
                 W.get_col_row([
-                    (5, W.get_blank_flow()),
-                    W.get_text('body', table['table_name'], 'left'),
-                    (16, W.get_text('body', table['check_status'], 'center')),
-                    (5, W.get_blank_flow())
+                    U.AttrMap(W.get_text(
+                        'header', 'Database Name',
+                        'center'
+                    ), 'header'),
+                    U.AttrMap(W.get_text(
+                        'header', 'Database Size',
+                        'center'
+                    ), 'header')
                 ])
             )
+            db_info_rows.append(W.get_div())
+            db_info_rows.append(
+                W.get_col_row([
+                    W.get_text('body', str(db_info['name']), 'center'),
+                    W.get_text('body', str(db_info['size']), 'center')
+                ])
+            )
+            db_info_rows.append(W.get_div())
+            db_info_rows.append(
+                W.get_col_row([
+                    U.AttrMap(W.get_text(
+                        'header',
+                        'Database Table Check Results',
+                        'center'
+                    ), 'header')
+                ])
+            )
+            db_info_rows.append(
+                W.get_col_row([
+                    (5, U.AttrMap(W.get_blank_flow(), 'header')),
+                    U.AttrMap(W.get_text(
+                        'header',
+                        'Table Name',
+                        'left'),
+                        'header'),
+                    (18, U.AttrMap(W.get_text(
+                        'header',
+                        'Check Status',
+                        'center'),
+                        'header')),
+                    (5, U.AttrMap(W.get_blank_flow(), 'header'))
+                ])
+            )
+            for table in db_info['check_tables']:
+                db_info_rows.append(
+                    W.get_col_row([
+                        (5, W.get_blank_flow()),
+                        W.get_text('body', table['table_name'], 'left'),
+                        (16, W.get_text(
+                            'body',
+                            table['check_status'],
+                            'center')),
+                        (5, W.get_blank_flow())
+                    ])
+                )
         db_info_pile = U.Pile(db_info_rows)
         db_info_wrapper = W.get_col_row([
             W.get_blank_flow(),
@@ -534,19 +554,20 @@ class DbImport(BodyWidget):
                         W.get_blank_flow()
                     ])
                 )
-        import_rows.append(
-            W.get_col_row([
-                W.get_blank_flow(),
-                ('weight', 3, DbImportEditMap(
+        import_edit = DbImportEditMap(
                     self.app,
                     'body',
                     edit_text=self.app.state.homedir,
                     align='left',
                     on_enter=self.app.views.actions.import_db,
-                    caption='Other Import Path: ')),
-                W.get_blank_flow()
-            ])
-        )
+                    caption='Other Import Path: ')
+        import_edit_linebox = W.get_line_box(import_edit, '')
+        import_edit_row = W.get_col_row([
+            W.get_blank_flow(),
+            ('weight', 1, import_edit_linebox),
+            W.get_blank_flow()
+        ])
+        import_rows.append(import_edit_row)
         pile = U.Pile(import_rows)
         filler = U.Filler(pile, 'middle')
         self.app.frame.contents.__setitem__('body', [filler, None])
