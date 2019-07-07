@@ -26,24 +26,25 @@ class Views(object):
         try:
             activating_view = getattr(self, args[0])
         except AttributeError:
-            activating_viw = getattr(self, 'Invalid')
+            activating_view = getattr(self, 'Invalid')
+            activating_view.start()
         else:
             activating_view = getattr(self, args[0])
-        if ('Home' not in activating_view.name and
-                'Installs' not in activating_view.name and
-                'Quit' not in activating_view.name):
-            if not self.app.state.active_installation:
-                    self.app.views.activate(app, 'Installs')
+            if ('Home' not in activating_view.name and
+                    'Installs' not in activating_view.name and
+                    'Quit' not in activating_view.name):
+                if not self.app.state.active_installation:
+                        self.app.views.activate(app, 'Installs')
+                else:
+                    if "no_view_chain" not in activating_view.view_type:
+                        self.state.view_chain_pos += 1
+                        self.state.set_view(activating_view)
+                    activating_view.start()
             else:
                 if "no_view_chain" not in activating_view.view_type:
                     self.state.view_chain_pos += 1
                     self.state.set_view(activating_view)
                 activating_view.start()
-        else:
-            if "no_view_chain" not in activating_view.view_type:
-                self.state.view_chain_pos += 1
-                self.state.set_view(activating_view)
-            activating_view.start()
 
 
 class View(object):
