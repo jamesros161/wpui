@@ -1,4 +1,4 @@
-"""When a view finishes loading to the screen,
+"""When view finishes loading to the screen,
 if it has an "action_on_load" attribute set,
 then the cooresponding method of Actions will be called.
 
