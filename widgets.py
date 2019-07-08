@@ -11,6 +11,69 @@ L = Log()
 PYTHONIOENCODING = "utf-8"
 
 
+class DbSearchEditMap(U.AttrMap):
+    """AttrMap for WpConfigValueEdit class"""
+
+    def __init__(
+            self,
+            app,
+            attr,
+            edit_text='',
+            align='',
+            on_enter='',
+            user_args='',
+            edit_pos=None,
+            caption=''):
+        self.original_widget = DbImportEdit(
+            app,
+            self,
+            on_enter=on_enter,
+            edit_text=edit_text,
+            align=align,
+            user_args=user_args,
+            edit_pos=edit_pos,
+            caption=caption)
+        super(DbSearchEditMap, self).__init__(self.original_widget, attr)
+
+
+class DbSearchEdit(U.Edit):
+    """Class of Edit widgets for changing WpConfig Values"""
+
+    def __init__(
+            self,
+            app,
+            attr_map,
+            on_enter='',
+            edit_text='',
+            align='',
+            caption='',
+            edit_pos=None,
+            user_args=''):
+        super(DbSearchEdit, self).__init__(
+            edit_text=edit_text,
+            align=align,
+            caption=caption,
+            edit_pos=edit_pos)
+        self.app = app
+        self.attr_map = attr_map
+        self.on_enter = on_enter
+        self.user_args = user_args
+
+    def keypress(self, size, key):
+        if key != 'enter':
+            return super(DbImportEdit, self).keypress(size, key)
+        if not self.user_args:
+            self.user_args = [self, self.get_edit_text()]
+        else:
+            self.user_args = [self,  self.user_args]
+        L.debug(
+            'on_enter action: %s, user_args: %s',
+            self.on_enter,
+            self.user_args)
+        self.on_enter(*self.user_args)
+        self.edit_pos = len(self.user_args) + 1
+
+
 class DbImportEditMap(U.AttrMap):
     """AttrMap for WpConfigValueEdit class"""
 

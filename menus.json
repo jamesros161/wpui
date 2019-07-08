@@ -64,6 +64,7 @@
         ["   Optimize    ","DbOptimize"],
         ["     Repair    ","DbRepair"],
         ["     Search    ","DbSearch"],
+        ["Search/Replace ","SearchReplace"],
         ["      Quit     ","Quit"]
     ],
     "DbExport" : [
@@ -73,6 +74,7 @@
         ["   Optimize    ","DbOptimize"],
         ["     Repair    ","DbRepair"],
         ["     Search    ","DbSearch"],
+        ["Search/Replace ","SearchReplace"],
         ["      Quit     ","Quit"]
     ],
     "DbImport" : [
@@ -82,6 +84,7 @@
         ["   Optimize    ","DbOptimize"],
         ["     Repair    ","DbRepair"],
         ["     Search    ","DbSearch"],
+        ["Search/Replace ","SearchReplace"],
         ["      Quit     ","Quit"]
     ],
     "DbOptimize" : [
@@ -91,6 +94,7 @@
         ["   Optimize    ","DbOptimize"],
         ["     Repair    ","DbRepair"],
         ["     Search    ","DbSearch"],
+        ["Search/Replace ","SearchReplace"],
         ["      Quit     ","Quit"]
     ],
     "DbRepair" : [
@@ -100,6 +104,7 @@
         ["   Optimize    ","DbOptimize"],
         ["     Repair    ","DbRepair"],
         ["     Search    ","DbSearch"],
+        ["Search/Replace ","SearchReplace"],
         ["      Quit     ","Quit"]
     ],
     "DbSearch" : [
@@ -109,6 +114,7 @@
         ["   Optimize    ","DbOptimize"],
         ["     Repair    ","DbRepair"],
         ["     Search    ","DbSearch"],
+        ["Search/Replace ","SearchReplace"],
         ["      Quit     ","Quit"]
     ],
     "Themes" : [

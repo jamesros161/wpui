@@ -134,3 +134,7 @@ class Actions(object):
             import_results = "No  Database for this WP Install \n \
                 Or no WP Installation selected"
         self.app.views.DbRepair.body.after_action(db_repair_results)
+
+    def db_search(self, *args):
+        """Search Database for Query"""
+        L.debug('Args: %s', args)

@@ -5,7 +5,7 @@ import urwid as U
 from logmod import Log
 from settings import Settings
 from widgets import CustomWidgets, BoxButton, WpConfigValueMap
-from widgets import WpConfigNameMap, DbImportEditMap
+from widgets import WpConfigNameMap, DbImportEditMap, DbSearchEditMap
 import widgets as W
 S = Settings()
 L = Log()
@@ -491,7 +491,7 @@ class Database(BodyWidget):
         db_info_pile = U.Pile(db_info_rows)
         db_info_wrapper = W.get_col_row([
             W.get_blank_flow(),
-            db_info_pile,
+            ('weight', 3, db_info_pile),
             W.get_blank_flow()
         ])
         outer_pile = U.Pile([
@@ -689,12 +689,19 @@ class DbSearch(BodyWidget):
 
     def define_widget(self, **kwargs):
         L.debug(' kwargs : %s', kwargs)
-        home_text = W.get_text(
-            'body',
-            'Welcome to the best Exim Search Utility ever created.\
-            \nSelect an option below to begin.',
-            'center')
-        return U.Filler(home_text, 'middle')
+        db_search_row = W.get_col_row([
+            W.get_blank_flow(),
+            (
+                'weight',
+                3,
+                DbSearchEditMap(
+                    self.app,
+                    'body',
+                    caption='Database Search Query',
+                    on_enter=self.app.views.actions.db_search)),
+            W.get_blank_flow()
+        ])
+        return U.Filler(db_search_row, 'middle')
 
 
 class Plugins(BodyWidget):
