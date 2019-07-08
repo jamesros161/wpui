@@ -252,8 +252,10 @@ class DatabaseInformation(object):
             ])
         if result:
             return result
-        else:
+        elif error:
             return "Database Repair Failed"
+        else:
+            return "No Results Found"
 
     def db_search(self, path, query):
         """Searches database"""
@@ -265,10 +267,11 @@ class DatabaseInformation(object):
                 'search',
                 query
             ])
+        L.debug('Database Search Result: %s', result)
         if result:
             return result
         else:
-            L.warning('Dabase Search error: %s', error)
+            L.warning('Database Search error: %s', error)
             return "Database Search Error"
 
 
