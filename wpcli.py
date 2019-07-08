@@ -251,11 +251,12 @@ class DatabaseInformation(object):
                 'repair'
             ])
         if result:
+            result = result.splitlines()
             return result
         elif error:
-            return "Database Repair Failed"
+            return ["Database Repair Failed"]
         else:
-            return "No Results Found"
+            return ["No Results Found"]
 
     def db_search(self, path, query):
         """Searches database"""

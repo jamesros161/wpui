@@ -706,6 +706,20 @@ class DbSearch(BodyWidget):
 
     def after_action(self, db_search_results):
         L.debug('Search Results: %s', db_search_results)
+        search_result_rows = []
+        for result in db_search_results:
+            search_result_rows.append(
+                W.get_col_row([
+                    W.get_blank_flow(),
+                    W.get_text('default', result, 'center'),
+                    W.get_blank_flow()
+                ])
+            )
+        pile = U.Pile(search_result_rows)
+        filler = U.Filler(pile, 'middle')
+        self.app.frame.contents.__setitem__('body', [filler, None])
+        time.sleep(1)
+        self.app.loop.draw_screen()
 
 
 class Plugins(BodyWidget):
