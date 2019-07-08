@@ -698,7 +698,8 @@ class DbSearch(BodyWidget):
                     self.app,
                     'body',
                     caption='Database Search Query',
-                    on_enter=self.app.views.actions.db_search)),
+                    on_enter=self.app.views.actions.db_search,
+                    align='left')),
             W.get_blank_flow()
         ])
         return U.Filler(db_search_row, 'middle')
