@@ -697,12 +697,15 @@ class DbSearch(BodyWidget):
                 DbSearchEditMap(
                     self.app,
                     'body',
-                    caption='Database Search Query',
+                    caption='Database Search Query: ',
                     on_enter=self.app.views.actions.db_search,
                     align='left')),
             W.get_blank_flow()
         ])
         return U.Filler(db_search_row, 'middle')
+
+    def after_action(self, db_search_results):
+        L.debug('Search Results: %s', db_search_results)
 
 
 class Plugins(BodyWidget):

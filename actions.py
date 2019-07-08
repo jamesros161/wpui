@@ -135,6 +135,17 @@ class Actions(object):
                 Or no WP Installation selected"
         self.app.views.DbRepair.body.after_action(db_repair_results)
 
-    def db_search(self, *args):
+    def db_search(self, edit, query):
         """Search Database for Query"""
-        L.debug('Args: %s', args)
+        L.debug('Query: %s', query)
+        path = self.app.state.active_installation['directory']
+        if hasattr(self, 'database_information'):
+            L.debug("self.database_information exists")
+            db_search_results = self.database_information.db_search(
+                path, query)
+        else:
+            L.debug("No  Database for this WP Install \n \
+                Or no WP Installation selected")
+            import_results = "No  Database for this WP Install \n \
+                Or no WP Installation selected"
+        self.app.views.DbSearch.body.after_action(db_search_results)

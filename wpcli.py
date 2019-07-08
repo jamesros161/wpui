@@ -255,6 +255,22 @@ class DatabaseInformation(object):
         else:
             return "Database Repair Failed"
 
+    def db_search(self, path, query):
+        """Searches database"""
+        L.debug("Begin DB Search WP Cli")
+        result, error = self.call.wpcli(
+            path,
+            [
+                'db',
+                'search',
+                query
+            ])
+        if result:
+            return result
+        else:
+            L.warning('Dabase Search error: %s', error)
+            return "Database Search Error"
+
 
 class WpConfig(object):
     """Obtains and modified wp_config information"""
