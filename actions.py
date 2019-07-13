@@ -148,4 +148,5 @@ class Actions(object):
                 Or no WP Installation selected")
             import_results = "No  Database for this WP Install \n \
                 Or no WP Installation selected"
+        L.debug("DB Search Results: %s", db_search_results)
         self.app.views.DbSearch.body.after_action(db_search_results)

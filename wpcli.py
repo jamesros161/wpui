@@ -270,7 +270,28 @@ class DatabaseInformation(object):
             ])
         L.debug('Database Search Result: %s', result)
         if result:
-            return result
+            result = result.splitlines()
+            result_dicts = []
+            i = 0
+            while i < len(result) - 1:
+                L.debug('i % 2: %s', i % 2)
+                if i % 2 == 0 or i == 0:
+                    a = result[i].split(':')
+                    result_dicts.append({
+                        'table': a[0],
+                        'column': a[1]
+                    })
+                else:
+                    a = result[i].split(':', 1)
+                    L.debug('a : %s', a)
+                    L.debug('result_dicts: %s', result_dicts)
+                    result_dicts[i - 1]['row'] = a[0]
+                    result_dicts[i - 1]['value'] = a[1]
+                i += 1
+            return result_dicts
+        elif not error:
+            L.debug("No search results")
+            return "No Matching Results"
         else:
             L.warning('Database Search error: %s', error)
             return "Database Search Error"
