@@ -17,6 +17,7 @@ class Actions(object):
         self.installations = None
         self.database_information = None
         self.wp_config = WpConfig(self.app)
+        self.db_exported = False
 
     def get_installations(self):
         """searches user's homedir for wp installations
@@ -71,18 +72,28 @@ class Actions(object):
         self.wp_config.re_salt()
         self.app.views.activate(self.app, 'GetWpConfig')
 
-    def db_export(self):
+    def db_export(self, silent=False):
         """Exports Database"""
         L.debug("Export Database Action Started")
         if hasattr(self, 'database_information'):
             L.debug("self.database_information exists")
             export_result = self.database_information.export()
+            self.db_exported = True
+            if silent:
+                if export_result == "Database Export Failed":
+                    return False
+                else:
+                    return True
         else:
             L.debug("No  Database for this WP Install \n \
                 Or no WP Installation selected")
             export_result = "No  Database for this WP Install \n \
                 Or no WP Installation selected"
-        self.app.views.DbExport.body.after_action(export_result)
+            self.db_exported = False
+            if silent:
+                return False
+        if not silent:
+            self.app.views.DbExport.body.after_action(export_result)
 
     def get_db_imports(self):
         """Imports Databases"""
@@ -149,4 +160,51 @@ class Actions(object):
             import_results = "No  Database for this WP Install \n \
                 Or no WP Installation selected"
         L.debug("DB Search Results: %s", db_search_results)
-        self.app.views.DbSearch.body.after_action(db_search_results)
+        self.app.views.DbSearch.body.after_action(
+            db_search_results, query)
+
+    def sr_search(self, origin, search_term):
+        L.debug('Origin: %s, Search Term: %s', origin, search_term)
+        self.sr_search_term = search_term
+        self.db_exported = self.db_export(silent=True)
+
+    def sr_replace(self, origin, replace_term, dry_run=True):
+        L.debug('Origin: %s, Replace Term: % s, db_exported: %s',
+                origin, replace_term, self.db_exported)
+        if isinstance(replace_term, basestring):
+            L.debug('replace_term is string: %s', type(replace_term))
+            self.replace_term = replace_term
+        else:
+            L.debug('replace_term is not string: %s', type(replace_term))
+            dry_run = replace_term[0]
+        path = self.app.state.active_installation['directory']
+        db_export_message = ''
+        results = []
+        if not self.db_exported:
+            db_exported = self.db_export(silent=True)
+            L.debug("Second Try to Export: %s", db_exported)
+            if db_exported:
+                pass
+            else:
+                L.warning('DB Export Failed!')
+                db_export_message = (
+                    "WP-CLI Failed to Export this site's database.\n"
+                    "Proceed with Search & Replace with caution\n")
+        if dry_run:
+            results = self.database_information.sr_search_replace(
+                path,
+                self.sr_search_term,
+                self.replace_term,
+                dry_run=True
+            )
+            self.app.views.SearchReplace.body.after_dry_run(
+                results, db_export_message)
+        else:
+            results = self.database_information.sr_search_replace(
+                path,
+                self.sr_search_term,
+                self.replace_term,
+                dry_run=False
+            )
+            self.app.views.SearchReplace.body.after_replacement(
+                results, db_export_message)

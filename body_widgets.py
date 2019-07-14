@@ -6,6 +6,7 @@ from logmod import Log
 from settings import Settings
 from widgets import CustomWidgets, BoxButton, WpConfigValueMap
 from widgets import WpConfigNameMap, DbImportEditMap, DbSearchEditMap
+from widgets import SRSearchEditMap
 import widgets as W
 S = Settings()
 L = Log()
@@ -704,19 +705,230 @@ class DbSearch(BodyWidget):
         ])
         return U.Filler(db_search_row, 'middle')
 
-    def after_action(self, db_search_results):
+    def after_action(self, db_search_results, query):
         L.debug('Search Results: %s', db_search_results)
-        db_search_results = db_search_results.splitlines()
-        search_result_rows = []
+        search_result_rows = [
+            W.get_col_row([
+                W.get_blank_flow(),
+                ('weight', 4,  U.AttrMap(W.get_text(
+                    'header', 'DB Search Results for: ', 'right'), 'header')),
+                ('weight', 4,  U.AttrMap(W.get_text(
+                    'header', query, 'left'), 'header')),
+                W.get_blank_flow()]),
+            W.get_col_row([
+                W.get_blank_flow(),
+                ('weight', 4,  U.AttrMap(W.get_blank_flow(), 'header')),
+                ('weight', 4,  U.AttrMap(W.get_blank_flow(), 'header')),
+                W.get_blank_flow()]),
+            W.get_col_row([
+                W.get_blank_flow(),
+                ('weight', 1, U.AttrMap(W.get_text(
+                    'header', 'Row', 'center'), 'header')),
+                ('weight', 1,  U.AttrMap(W.get_text(
+                    'header', 'Table', 'center'), 'header')),
+                ('weight', 2,  U.AttrMap(W.get_text(
+                    'header', 'Column', 'center'), 'header')),
+                ('weight', 4,  U.AttrMap(W.get_text(
+                    'header', 'Value', 'center'), 'header')),
+                W.get_blank_flow()
+            ]),
+        ]
         for result in db_search_results:
             search_result_rows.append(
                 W.get_col_row([
                     W.get_blank_flow(),
-                    ('weight', 4, W.get_text('default', result, 'center')),
+                    ('weight', 1, W.get_text(
+                        'default', result['row'], 'center')),
+                    ('weight', 1, W.get_text(
+                        'default', result['table'], 'center')),
+                    ('weight', 2, W.get_text(
+                        'default', result['column'], 'center')),
+                    ('weight', 4, W.get_text(
+                        'default', result['value'], 'center')),
                     W.get_blank_flow()
                 ])
             )
         pile = U.Pile(search_result_rows)
+        filler = U.Filler(pile, 'middle')
+        self.app.frame.contents.__setitem__('body', [filler, None])
+        time.sleep(1)
+        self.app.loop.draw_screen()
+
+
+class SearchReplace(BodyWidget):
+    """Creates the specific body widget for the view of the same name"""
+
+    def __init__(self, app, user_args=None, calling_view=None):
+        super(SearchReplace, self).__init__(app)
+        L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
+
+    def define_widget(self, **kwargs):
+        L.debug(' kwargs : %s', kwargs)
+        sr_search_edit = SRSearchEditMap(
+            self.app,
+            self,
+            'default',
+            drop_cursor=True,
+            on_enter=self.app.views.actions.sr_search,
+            align='left')
+        sr_replace_edit = SRSearchEditMap(
+            self.app,
+            self,
+            'default',
+            edit_text='',
+            on_enter=self.app.views.actions.sr_replace,
+            align='left')
+        rows = [
+            W.get_col_row([
+                W.get_text('default', 'Search Term: ', 'right'),
+                sr_search_edit
+            ]),
+            W.get_col_row([
+                W.get_text('default', 'Replacement Term: ', 'right'),
+                sr_replace_edit
+            ])
+        ]
+        self.pile = U.Pile(rows)
+        return U.Filler(self.pile, 'middle')
+
+    def after_dry_run(self, results, db_export_message):
+        L.debug('results: %s', results)
+        dry_run_rows = []
+        if db_export_message:
+            L.debug('db_export_message: %s', db_export_message)
+            dry_run_rows.append(
+                W.get_col_row([
+                    W.get_blank_flow(),
+                    U.AttrMap(
+                        W.get_text(
+                            'flashing', db_export_message, 'center'),
+                        'flashing'),
+                    W.get_blank_flow()
+                ])
+            )
+            dry_run_rows.append(W.get_div())
+            dry_run_rows.append(
+                W.get_col_row([
+                    W.get_blank_flow(),
+                    U.AttrMap(
+                        W.get_text(
+                            'body', S.display['mycophagists'], 'center'),
+                        'body'),
+                    W.get_blank_flow()
+                ])
+            )
+            dry_run_rows.append(W.get_div())
+        if results:
+            dry_run_rows.append(
+                W.get_col_row([
+                    W.get_blank_flow(),
+                    U.AttrMap(
+                        W.get_text(
+                            'header', 'Table', 'center'),
+                        'header'),
+                    U.AttrMap(
+                        W.get_text(
+                            'header', 'Column', 'center'),
+                        'header'),
+                    U.AttrMap(
+                        W.get_text(
+                            'header', 'Count', 'center'),
+                        'header'),
+                    W.get_blank_flow()
+                ])
+            )
+            for result in results:
+                if not isinstance(result, basestring):
+                    if int(result['count']) > 0:
+                        dry_run_rows.append(
+                            W.get_col_row([
+                                W.get_blank_flow(),
+                                U.AttrMap(
+                                    W.get_text(
+                                        'default', result['table'], 'center'),
+                                    'default'),
+                                U.AttrMap(
+                                    W.get_text(
+                                        'default', result['column'], 'center'),
+                                    'default'),
+                                U.AttrMap(
+                                    W.get_text(
+                                        'default', result['count'], 'center'),
+                                    'default'),
+                                W.get_blank_flow()
+                            ])
+                        )
+            dry_run_rows.append(W.get_div())
+            dry_run_rows.append(
+                W.get_col_row([
+                    W.get_blank_flow(),
+                    BoxButton(
+                        'Replace',
+                        on_press=self.app.views.actions.sr_replace,
+                        user_data=[False]),
+                    W.get_blank_flow()
+                ])
+            )
+        pile = U.Pile(dry_run_rows)
+        filler = U.Filler(pile, 'middle')
+        self.app.frame.contents.__setitem__('body', [filler, None])
+        time.sleep(1)
+        self.app.loop.draw_screen()
+
+    def after_replacement(self, results, db_export_message):
+        L.debug("After Replacement")
+        if results:
+            dry_run_rows.append(
+                W.get_col_row([
+                    W.get_blank_flow(),
+                    U.AttrMap(
+                        W.get_text(
+                            'header', 'Table', 'center'),
+                        'header'),
+                    U.AttrMap(
+                        W.get_text(
+                            'header', 'Column', 'center'),
+                        'header'),
+                    U.AttrMap(
+                        W.get_text(
+                            'header', 'Count', 'center'),
+                        'header'),
+                    W.get_blank_flow()
+                ])
+            )
+            for result in results:
+                if not isinstance(result, basestring):
+                    if int(result['count']) > 0:
+                        dry_run_rows.append(
+                            W.get_col_row([
+                                W.get_blank_flow(),
+                                U.AttrMap(
+                                    W.get_text(
+                                        'default', result['table'], 'center'),
+                                    'default'),
+                                U.AttrMap(
+                                    W.get_text(
+                                        'default', result['column'], 'center'),
+                                    'default'),
+                                U.AttrMap(
+                                    W.get_text(
+                                        'default', result['count'], 'center'),
+                                    'default'),
+                                W.get_blank_flow()
+                            ])
+                        )
+            dry_run_rows.append(W.get_div())
+            dry_run_rows.append(
+                W.get_col_row([
+                    W.get_blank_flow(),
+                    BoxButton(
+                        'Undo',
+                        on_press=self.app.views.actions.db_import,
+                        user_data=['Silent']),
+                    W.get_blank_flow()
+                ])
+            )
+        pile = U.Pile(dry_run_rows)
         filler = U.Filler(pile, 'middle')
         self.app.frame.contents.__setitem__('body', [filler, None])
         time.sleep(1)

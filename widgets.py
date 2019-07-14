@@ -24,9 +24,10 @@ class DbSearchEditMap(U.AttrMap):
             user_args='',
             edit_pos=None,
             caption=''):
-        self.original_widget = DbImportEdit(
+        self.original_widget = DbSearchEdit(
             app,
             self,
+            body_widget,
             on_enter=on_enter,
             edit_text=edit_text,
             align=align,
@@ -61,7 +62,7 @@ class DbSearchEdit(U.Edit):
 
     def keypress(self, size, key):
         if key != 'enter':
-            return super(DbImportEdit, self).keypress(size, key)
+            return super(DbSearchEdit, self).keypress(size, key)
         if not self.user_args:
             self.user_args = [self, self.get_edit_text()]
         else:
@@ -71,6 +72,79 @@ class DbSearchEdit(U.Edit):
             self.on_enter,
             self.user_args)
         self.on_enter(*self.user_args)
+        self.edit_pos = len(self.user_args) + 1
+
+
+class SRSearchEditMap(U.AttrMap):
+    """AttrMap for WpConfigValueEdit class"""
+
+    def __init__(
+            self,
+            app,
+            body_widget,
+            attr,
+            edit_text='',
+            align='',
+            on_enter='',
+            user_args='',
+            edit_pos=None,
+            caption='',
+            drop_cursor=False):
+        self.original_widget = SRSearchEdit(
+            app,
+            body_widget,
+            self,
+            on_enter=on_enter,
+            edit_text=edit_text,
+            align=align,
+            user_args=user_args,
+            edit_pos=edit_pos,
+            caption=caption,
+            drop_cursor=drop_cursor)
+        super(SRSearchEditMap, self).__init__(self.original_widget, attr)
+
+
+class SRSearchEdit(U.Edit):
+    """Class of Edit widgets for changing WpConfig Values"""
+
+    def __init__(
+            self,
+            app,
+            body_widget,
+            attr_map,
+            on_enter='',
+            edit_text='',
+            align='',
+            caption='',
+            edit_pos=None,
+            user_args='',
+            drop_cursor=False):
+        super(SRSearchEdit, self).__init__(
+            edit_text=edit_text,
+            align=align,
+            caption=caption,
+            edit_pos=edit_pos)
+        self.app = app
+        self.drop_cursor = drop_cursor
+        self.body_widget = body_widget
+        self.attr_map = attr_map
+        self.on_enter = on_enter
+        self.user_args = user_args
+
+    def keypress(self, size, key):
+        if key != 'enter':
+            return super(SRSearchEdit, self).keypress(size, key)
+        if not self.user_args:
+            self.user_args = [self, self.get_edit_text()]
+        else:
+            self.user_args = [self,  self.user_args]
+        L.debug(
+            'on_enter action: %s, user_args: %s',
+            self.on_enter,
+            self.user_args)
+        self.on_enter(*self.user_args)
+        if self.drop_cursor:
+            self.body_widget.pile.focus_position = 1
         self.edit_pos = len(self.user_args) + 1
 
 
@@ -266,7 +340,8 @@ class BoxButton(U.WidgetWrap):
     """Custom Button that appears with text and a line'd border"""
     _border_char = u'─'
 
-    def __init__(self, label, on_press=None, user_data=None, enabled=True):
+    def __init__(self, label, on_press=None,
+                 user_data=None, enabled=True):
         padding_size = 2
         border = self._border_char * (len(label) + padding_size * 2)
         self.cursor_position = len(border) + padding_size
@@ -281,9 +356,9 @@ class BoxButton(U.WidgetWrap):
             U.Text(self.middle[:-1], align='center'),
             U.Text(self.bottom, align='center'),
         ])
-
         self.widget = U.AttrMap(self.widget, 'body', 'highlight')
-        self._hidden_btn = U.Button('hidden %s' % label, on_press, user_data)
+        self._hidden_btn = U.Button(
+            'hidden %s' % label, on_press, user_data)
 
         super(BoxButton, self).__init__(self.widget)
 

@@ -266,15 +266,15 @@ class DatabaseInformation(object):
             [
                 'db',
                 'search',
-                query
+                query,
             ])
         L.debug('Database Search Result: %s', result)
         if result:
             result = result.splitlines()
             result_dicts = []
             i = 0
-            while i < len(result) - 1:
-                L.debug('i % 2: %s', i % 2)
+            while i < len(result):
+                # L.debug('i % 2 %s', i % 2)
                 if i % 2 == 0 or i == 0:
                     a = result[i].split(':')
                     result_dicts.append({
@@ -285,8 +285,8 @@ class DatabaseInformation(object):
                     a = result[i].split(':', 1)
                     L.debug('a : %s', a)
                     L.debug('result_dicts: %s', result_dicts)
-                    result_dicts[i - 1]['row'] = a[0]
-                    result_dicts[i - 1]['value'] = a[1]
+                    result_dicts[i / 2]['row'] = a[0]
+                    result_dicts[i / 2]['value'] = a[1]
                 i += 1
             return result_dicts
         elif not error:
@@ -295,6 +295,46 @@ class DatabaseInformation(object):
         else:
             L.warning('Database Search error: %s', error)
             return "Database Search Error"
+
+    def sr_search_replace(self, path,
+                          sr_search_term, sr_replace_term, dry_run=True):
+            """Search and replace database"""
+            L.debug("Begin wp search-replace")
+            call_args = [
+                'search-replace',
+                sr_search_term,
+                sr_replace_term,
+                '--all-tables',
+                '--precise'
+            ]
+            if dry_run:
+                call_args.append('--dry-run')
+            results, error = self.call.wpcli(
+                path,
+                call_args)
+            L.debug('Search & Replace Result: %s', results)
+            L.debug('Search & Replace Error: %s', error)
+            results_count = ''
+            if results:
+                results_dicts = []
+                results = results.splitlines()
+                for result in results:
+                    if result not in results[0]:
+                        if result in results[-1]:
+                            x = result.split()
+                            results_count = x[1]
+                        else:
+                            x = result.split('\t')
+                            results_dicts.append({
+                                "table": x[0],
+                                "column": x[1],
+                                "count": x[2]
+                            })
+                L.debug('Search & Replace Result: %s', results_dicts)
+                L.debug('Search & Replace Count: %s', results_count)
+                return results_dicts
+            else:
+                return error
 
 
 class WpConfig(object):
@@ -384,6 +424,7 @@ class Call(object):
 
     def wpcli(self, path, arguments, skip_themes=True, skip_plugins=True):
         """runs_wp-cli command"""
+        L.debug('Begin wp-cli command: %s', arguments)
         popen_args = ['wp']
         for argument in arguments:
             popen_args.append(argument)

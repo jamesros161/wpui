@@ -117,6 +117,16 @@
         ["Search/Replace ","SearchReplace"],
         ["      Quit     ","Quit"]
     ],
+    "SearchReplace" : [
+        ["      Home     ","Home"],
+        ["     Export    ","DbExport"],
+        ["     Import    ","DbImport"],
+        ["   Optimize    ","DbOptimize"],
+        ["     Repair    ","DbRepair"],
+        ["     Search    ","DbSearch"],
+        ["Search/Replace ","SearchReplace"],
+        ["      Quit     ","Quit"]
+    ],
     "Themes" : [
         [" Installations ", "Installs"],
         ["      Home     ", "Home"],

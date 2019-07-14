@@ -15,6 +15,7 @@
             ["blue", "bold", "dark blue"],
             ["highlight", "light blue", "default"],
             ["alert", "dark red, bold", "default"],
+            ["flashing", "dark red, blink, bold", "default"],
             ["boxborder", "light cyan", "default"],
             ["progressbar", "black", "dark cyan"]
         ],
@@ -30,6 +31,7 @@
         "title" : "WP-CLI Tool",
         "sub_title" : "If you can do it better, then do it",
         "menu_enabled" : "True",
-        "col_div_chars" : 0
+        "col_div_chars" : 0,
+        "mycophagists" : "A wise man once said, \"There are two kinds of mycophagists...Brave ones, and live ones....\""
     }
 }

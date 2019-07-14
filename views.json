@@ -77,6 +77,12 @@
         "sub_title" : "",
         "action_on_load" : ""
     },
+    "SearchReplace": {
+        "view_type": "body_input",
+        "title": "",
+        "sub_title": "",
+        "action_on_load": ""
+    },
     "Plugins" : {
         "view_type" : "body_input",
         "title" : "",
