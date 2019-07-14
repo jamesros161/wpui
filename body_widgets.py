@@ -839,6 +839,17 @@ class SearchReplace(BodyWidget):
                     W.get_blank_flow()
                 ])
             )
+            if results_count == '0':
+                dry_run_rows.append(
+                    W.get_col_row([
+                        W.get_blank_flow(),
+                        BoxButton(
+                            'New Search & Replace',
+                            on_press=self.app.views.activate,
+                            user_data='SearchReplace'),
+                        W.get_blank_flow()
+                    ])
+                )
             if results_count != '0':
                 dry_run_rows.append(
                     W.get_col_row([
