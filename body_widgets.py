@@ -822,6 +822,21 @@ class SearchReplace(BodyWidget):
             dry_run_rows.append(
                 W.get_col_row([
                     W.get_blank_flow(),
+                    U.AttrMap(W.get_blank_flow(), 'header'),
+                    U.AttrMap(
+                        W.get_text(
+                            'header',
+                            'There are ' + results_count +
+                            ' Replacements to be made',
+                            'center'),
+                        'header'),
+                    U.AttrMap(W.get_blank_flow(), 'header'),
+                    W.get_blank_flow()
+                ])
+            )
+            dry_run_rows.append(
+                W.get_col_row([
+                    W.get_blank_flow(),
                     U.AttrMap(
                         W.get_text(
                             'header', 'Table', 'center'),
@@ -879,6 +894,21 @@ class SearchReplace(BodyWidget):
         L.debug("After Replacement")
         replaced_rows = []
         if results:
+            replaced_rows.append(
+                W.get_col_row([
+                    W.get_blank_flow(),
+                    U.AttrMap(W.get_blank_flow(), 'header'),
+                    U.AttrMap(
+                        W.get_text(
+                            'header',
+                            'There were ' + results_count +
+                            ' Replacements made',
+                            'center'),
+                        'header'),
+                    U.AttrMap(W.get_blank_flow(), 'header'),
+                    W.get_blank_flow()
+                ])
+            )
             replaced_rows.append(
                 W.get_col_row([
                     W.get_blank_flow(),

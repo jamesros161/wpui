@@ -322,7 +322,10 @@ class DatabaseInformation(object):
                     if result not in results[0]:
                         if result in results[-1]:
                             x = result.split()
-                            results_count = x[1]
+                            if dry_run:
+                                results_count = x[1]
+                            else:
+                                results_count = x[2]
                         else:
                             x = result.split('\t')
                             results_dicts.append({
@@ -332,7 +335,7 @@ class DatabaseInformation(object):
                             })
                 L.debug('Search & Replace Result: %s', results_dicts)
                 L.debug('Search & Replace Count: %s', results_count)
-                return results_dicts
+                return results_dicts, results_count
             else:
                 return error
 
