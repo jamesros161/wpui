@@ -791,7 +791,7 @@ class SearchReplace(BodyWidget):
         self.pile = U.Pile(rows)
         return U.Filler(self.pile, 'middle')
 
-    def after_dry_run(self, results, db_export_message):
+    def after_dry_run(self, results, results_count, db_export_message):
         L.debug('results: %s', results)
         dry_run_rows = []
         if db_export_message:
@@ -819,6 +819,12 @@ class SearchReplace(BodyWidget):
             )
             dry_run_rows.append(W.get_div())
         if results:
+            header_string = ''
+            if results_count == '0':
+                header_string = 'There are not any replacements to be made'
+            else:
+                header_string = 'There are ' + results_count + \
+                    ' replacements to be made'
             dry_run_rows.append(
                 W.get_col_row([
                     W.get_blank_flow(),
@@ -826,71 +832,81 @@ class SearchReplace(BodyWidget):
                     U.AttrMap(
                         W.get_text(
                             'header',
-                            'There are ' + results_count +
-                            ' Replacements to be made',
+                            header_string,
                             'center'),
                         'header'),
                     U.AttrMap(W.get_blank_flow(), 'header'),
                     W.get_blank_flow()
                 ])
             )
-            dry_run_rows.append(
-                W.get_col_row([
-                    W.get_blank_flow(),
-                    U.AttrMap(
-                        W.get_text(
-                            'header', 'Table', 'center'),
-                        'header'),
-                    U.AttrMap(
-                        W.get_text(
-                            'header', 'Column', 'center'),
-                        'header'),
-                    U.AttrMap(
-                        W.get_text(
-                            'header', 'Count', 'center'),
-                        'header'),
-                    W.get_blank_flow()
-                ])
-            )
-            for result in results:
-                if not isinstance(result, basestring):
-                    if int(result['count']) > 0:
-                        dry_run_rows.append(
-                            W.get_col_row([
-                                W.get_blank_flow(),
-                                U.AttrMap(
-                                    W.get_text(
-                                        'default', result['table'], 'center'),
-                                    'default'),
-                                U.AttrMap(
-                                    W.get_text(
-                                        'default', result['column'], 'center'),
-                                    'default'),
-                                U.AttrMap(
-                                    W.get_text(
-                                        'default', result['count'], 'center'),
-                                    'default'),
-                                W.get_blank_flow()
-                            ])
-                        )
-            dry_run_rows.append(W.get_div())
-            dry_run_rows.append(
-                W.get_col_row([
-                    W.get_blank_flow(),
-                    BoxButton(
-                        'Replace',
-                        on_press=self.app.views.actions.sr_replace,
-                        user_data=[False]),
-                    W.get_blank_flow()
-                ])
-            )
+            if results_count != '0':
+                dry_run_rows.append(
+                    W.get_col_row([
+                        W.get_blank_flow(),
+                        U.AttrMap(
+                            W.get_text(
+                                'header', 'Table', 'center'),
+                            'header'),
+                        U.AttrMap(
+                            W.get_text(
+                                'header', 'Column', 'center'),
+                            'header'),
+                        U.AttrMap(
+                            W.get_text(
+                                'header', 'Count', 'center'),
+                            'header'),
+                        W.get_blank_flow()
+                    ])
+                )
+                for result in results:
+                    if not isinstance(result, basestring):
+                        if int(result['count']) > 0:
+                            dry_run_rows.append(
+                                W.get_col_row([
+                                    W.get_blank_flow(),
+                                    U.AttrMap(
+                                        W.get_text(
+                                            'default',
+                                            result['table'],
+                                            'center'),
+                                        'default'),
+                                    U.AttrMap(
+                                        W.get_text(
+                                            'default',
+                                            result['column'],
+                                            'center'),
+                                        'default'),
+                                    U.AttrMap(
+                                        W.get_text(
+                                            'default',
+                                            result['count'],
+                                            'center'),
+                                        'default'),
+                                    W.get_blank_flow()
+                                ])
+                            )
+                dry_run_rows.append(W.get_div())
+                dry_run_rows.append(
+                    W.get_col_row([
+                        W.get_blank_flow(),
+                        BoxButton(
+                            'Perform Replacement',
+                            on_press=self.app.views.actions.sr_replace,
+                            user_data=[False]),
+                        BoxButton(
+                            'New Search & Replace',
+                            on_press=self.app.views.activate,
+                            user_data='SearchReplace'),
+                        W.get_blank_flow()
+                    ])
+                )
         pile = U.Pile(dry_run_rows)
         filler = U.Filler(pile, 'middle')
         self.app.frame.contents.__setitem__('body', [filler, None])
         time.sleep(1)
         self.app.loop.draw_screen()
 
-    def after_replacement(self, results, db_export_message):
+    def after_replacement(self, results, results_count, db_export_message):
         L.debug("After Replacement")
         replaced_rows = []
         if results:

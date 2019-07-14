@@ -192,20 +192,20 @@ class Actions(object):
                     "WP-CLI Failed to Export this site's database.\n"
                     "Proceed with Search & Replace with caution\n")
         if dry_run:
-            results = self.database_information.sr_search_replace(
+            results, count = self.database_information.sr_search_replace(
                 path,
                 self.sr_search_term,
                 self.replace_term,
                 dry_run=True
             )
             self.app.views.SearchReplace.body.after_dry_run(
-                results, db_export_message)
+                results, count, db_export_message)
         else:
-            results = self.database_information.sr_search_replace(
+            results, count = self.database_information.sr_search_replace(
                 path,
                 self.sr_search_term,
                 self.replace_term,
                 dry_run=False
             )
             self.app.views.SearchReplace.body.after_replacement(
-                results, db_export_message)
+                results, count, db_export_message)
