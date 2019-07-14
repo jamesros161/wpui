@@ -877,8 +877,9 @@ class SearchReplace(BodyWidget):
 
     def after_replacement(self, results, db_export_message):
         L.debug("After Replacement")
+        replaced_rows = []
         if results:
-            dry_run_rows.append(
+            replaced_rows.append(
                 W.get_col_row([
                     W.get_blank_flow(),
                     U.AttrMap(
@@ -899,7 +900,7 @@ class SearchReplace(BodyWidget):
             for result in results:
                 if not isinstance(result, basestring):
                     if int(result['count']) > 0:
-                        dry_run_rows.append(
+                        replaced_rows.append(
                             W.get_col_row([
                                 W.get_blank_flow(),
                                 U.AttrMap(
@@ -917,18 +918,18 @@ class SearchReplace(BodyWidget):
                                 W.get_blank_flow()
                             ])
                         )
-            dry_run_rows.append(W.get_div())
-            dry_run_rows.append(
+            replaced_rows.append(W.get_div())
+            replaced_rows.append(
                 W.get_col_row([
                     W.get_blank_flow(),
                     BoxButton(
                         'Undo',
-                        on_press=self.app.views.actions.db_import,
+                        on_press=self.app.views.actions.import_db,
                         user_data=['Silent']),
                     W.get_blank_flow()
                 ])
             )
-        pile = U.Pile(dry_run_rows)
+        pile = U.Pile(replaced_rows)
         filler = U.Filler(pile, 'middle')
         self.app.frame.contents.__setitem__('body', [filler, None])
         time.sleep(1)

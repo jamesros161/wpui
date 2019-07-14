@@ -18,6 +18,7 @@ class Actions(object):
         self.database_information = None
         self.wp_config = WpConfig(self.app)
         self.db_exported = False
+        self.sr_search_term = ''
 
     def get_installations(self):
         """searches user's homedir for wp installations
