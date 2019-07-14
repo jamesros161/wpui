@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Contains wp-cli calling and parsing classes / methods"""
 import os
 import getpass
@@ -420,6 +421,31 @@ class WpConfig(object):
         L.debug(
             'Set_Wp_Config Return Data: %s, Return Error: %s',
             return_data, return_error)
+
+
+class Themes(object):
+    def __init__(self, app):
+        self.app = app
+        self.call = Call()
+        self.installation = self.app.state.active_installation
+
+    def get_list(self):
+        fields = ['name', 'status', 'update', 'version',
+                  'update_version', 'update_package', 'title', 'description']
+        args = '--fields=' + ','.join(fields)
+        results, error = self.call.wpcli(
+            self.installation['directory'],
+            [
+                'theme',
+                'list',
+                args,
+                '--format=json'
+            ])
+        result_json = json.loads(results)
+        L.debug('get_list results: %s', result_json)
+        L.debug('get_list errors: %s', error)
+        if result_json:
+            return result_json
 
 
 class Call(object):

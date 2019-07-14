@@ -218,17 +218,25 @@ class WpConfigValueMap(U.AttrMap):
             self,
             app,
             attr,
+            body_widget=None,
             directive_name='',
             edit_text='',
             align='',
-            caption=''):
+            cursor_drop=False,
+            caption='',
+            on_enter='',
+            user_args=''):
         self.original_widget = WpConfigValueEdit(
             app,
             self,
             directive_name=directive_name,
+            body_widget=body_widget,
             edit_text=edit_text,
             align=align,
-            caption=caption)
+            cursor_drop=cursor_drop,
+            caption=caption,
+            on_enter=on_enter,
+            user_args=user_args)
         super(WpConfigValueMap, self).__init__(self.original_widget, attr)
 
 
@@ -239,15 +247,23 @@ class WpConfigValueEdit(U.Edit):
             self,
             app,
             attr_map,
+            body_widget=None,
             directive_name='',
             edit_text='',
             align='',
-            caption=''):
+            cursor_drop=False,
+            caption='',
+            on_enter='',
+            user_args=''):
         super(WpConfigValueEdit, self).__init__(
             edit_text=edit_text,
             align=align,
             caption=caption)
         self.app = app
+        self.on_enter = on_enter
+        self.user_args = user_args
+        self.cursor_drop = cursor_drop
+        self.body_widget = body_widget
         self.attr_map = attr_map
         self.directive_name = directive_name
 
@@ -271,6 +287,15 @@ class WpConfigValueEdit(U.Edit):
         if remove:
             self.set_edit_text('REMOVED')
             self.edit_pos = len(self.get_edit_text()) + 1
+        if self.cursor_drop:
+            L.debug('Current Focus Position: %s',
+                    self.body_widget.pile.focus_position)
+            focus_position = self.body_widget.pile.focus_position
+            self.body_widget.pile.focus_position = focus_position + 1
+            L.debug('New Focus Position: %s',
+                    self.body_widget.pile.focus_position)
+        if self.on_enter:
+            self.on_enter(*self.user_args)
         return True
 
     def set_attr_map(self, from_attr, to_attr):

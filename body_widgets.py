@@ -304,7 +304,9 @@ class SetAddWpConfig(BodyWidget):
             'default',
             directive_name=self.directive_name,
             edit_text='',
-            align='left')
+            align='left',
+            on_enter=self.app.views.activate,
+            user_args=[self.app, 'GetWpConfig'])
         self.directive_name_edit = WpConfigNameMap(
             self,
             'default',
@@ -344,19 +346,26 @@ class SetDbCreds(BodyWidget):
             'default',
             directive_name='DB_NAME',
             edit_text='',
-            align='left')
+            body_widget=self,
+            align='left',
+            cursor_drop=True)
         db_user_edit = WpConfigValueMap(
             self.app,
             'default',
+            body_widget=self,
             directive_name='DB_USER',
             edit_text='',
-            align='left')
+            align='left',
+            cursor_drop=True)
         db_pass_edit = WpConfigValueMap(
             self.app,
             'default',
+            body_widget=self,
             directive_name='DB_PASSWORD',
             edit_text='',
-            align='left')
+            align='left',
+            on_enter=self.app.views.activate,
+            user_args=[self.app, 'GetWpConfig'])
         rows = [
             W.get_col_row([
                 W.get_text('default', 'Database Name: ', 'right'),
@@ -1018,11 +1027,82 @@ class Themes(BodyWidget):
 
     def define_widget(self, **kwargs):
         L.debug(' kwargs : %s', kwargs)
-        home_text = W.get_text(
+        main_text = W.get_text(
             'body',
-            'Installed Themes for selected WP Installation',
+            'Obtaining List of installed WordPress Themes',
             'center')
-        return U.Filler(home_text, 'middle')
+        progress_row = W.get_col_row([
+            ('weight', 2, W.get_blank_flow()),
+            self.progress_bar,
+            ('weight', 2, W.get_blank_flow())
+        ])
+        main_pile = U.Pile([main_text, progress_row])
+        self.app.action_pipe = self.app.loop.watch_pipe(
+            self.update_progress_bar)
+        return U.Filler(main_pile, 'middle')
+
+    def after_action(self, theme_list):
+        theme_rows = [
+            U.AttrMap(W.get_col_row([
+                W.get_blank_flow(),
+                W.get_text(
+                    'header', 'Theme Name', 'center'),
+                W.get_text(
+                    'header', 'Theme Title', 'center'),
+                W.get_text(
+                    'header', 'Theme Version', 'center'),
+                W.get_text(
+                    'header', 'Theme Status', 'center'),
+                W.get_text(
+                    'header', 'Update Status', 'center'),
+                W.get_text(
+                    'header', 'Update Version', 'center'),
+                ('weight', 4, W.get_text(
+                    'header', 'Options', 'center')),
+                W.get_blank_flow()
+            ]), 'header')
+        ]
+        for theme in theme_list:
+            theme_rows.append(
+                W.get_col_row([
+                    W.get_blank_flow(),
+                    W.get_text(
+                        'default', '\n' + theme['name'] + '\n', 'center'),
+                    W.get_text(
+                        'default', '\n' + theme['title'] + '\n', 'center'),
+                    W.get_text(
+                        'default', '\n' + theme['version'] + '\n', 'center'),
+                    W.get_text(
+                        'default', '\n' + theme['status'] + '\n', 'center'),
+                    W.get_text(
+                        'default', '\n' + theme['update'] + '\n', 'center'),
+                    W.get_text(
+                            'default', '\n' + theme['update_version'] + '\n',
+                            'center'),
+                    BoxButton(
+                        'Details',
+                        on_press=self.app.views.actions.theme_actions,
+                        user_data=[theme]),
+                    BoxButton(
+                        'Activate',
+                        on_press=self.app.views.actions.theme_actions,
+                        user_data=[theme]),
+                    BoxButton(
+                        'Uninstall',
+                        on_press=self.app.views.actions.theme_actions,
+                        user_data=[theme]),
+                    BoxButton(
+                        'Update',
+                        on_press=self.app.views.actions.theme_actions,
+                        user_data=[theme]),
+                    W.get_blank_flow()
+                    ])
+            )
+        theme_pile = U.Pile(theme_rows)
+        filler = U.Filler(theme_pile)
+        self.app.frame.contents.__setitem__('body', [filler, None])
+        time.sleep(1)
+        self.app.loop.draw_screen()
 
 
 class Users(BodyWidget):

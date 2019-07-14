@@ -94,7 +94,19 @@
         "view_type" : "body_input",
         "title" : "",
         "sub_title" : "",
-        "action_on_load" : ""
+        "action_on_load" : "get_theme_list"
+    },
+    "InstallThemes": {
+        "view_type": "body_input",
+        "title": "",
+        "sub_title": "",
+        "action_on_load": ""
+    },
+    "RevertChanges": {
+        "view_type": "body_input",
+        "title": "",
+        "sub_title": "",
+        "action_on_load": "revert_changes"
     },
     "Users" : {
         "view_type" : "body_input",

@@ -4,7 +4,7 @@ then the cooresponding method of Actions will be called.
 
 Any views that have to load a separate thread or process"""
 from logmod import Log
-from wpcli import Installations, DatabaseInformation, WpConfig
+from wpcli import Installations, DatabaseInformation, WpConfig, Themes
 L = Log()
 
 
@@ -16,9 +16,11 @@ class Actions(object):
         self.app = app
         self.installations = None
         self.database_information = None
+        self.themes = None
         self.wp_config = WpConfig(self.app)
         self.db_exported = False
         self.sr_search_term = ''
+        self.theme_list = []
 
     def get_installations(self):
         """searches user's homedir for wp installations
@@ -209,3 +211,14 @@ class Actions(object):
             )
             self.app.views.SearchReplace.body.after_replacement(
                 results, count, db_export_message)
+
+    def get_theme_list(self):
+        path = self.app.state.active_installation['directory']
+        if not self.themes:
+            self.themes = Themes(self.app)
+        theme_list = self.themes.get_list()
+        self.app.views.Themes.body.after_action(
+            theme_list)
+
+    def theme_actions(self, *args):
+        L.debug('Args: %s', args)

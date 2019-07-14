@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Constructs Application logger
 """
 import logging
@@ -23,7 +24,8 @@ class Log(object):
                             filename=logpath,
                             filemode='a',
                             level=logging_level,
-                            datefmt=S.logging['datefmt'])
+                            datefmt=S.logging['datefmt'],
+                            encoding='utf8')
         logging.addLevelName(10, "**DEBUG**")
         logging.addLevelName(20, "**INFO** ")
         logging.addLevelName(30, "*WARNING*")
@@ -31,7 +33,8 @@ class Log(object):
         logging.addLevelName(50, "**FATAL**")
 
         logger = logging.getLogger(__name__)
-        handler = logging.FileHandler(filename=logpath, mode='a')
+        handler = logging.FileHandler(
+            filename=logpath, mode='a', encoding='utf8',)
         handler.setLevel(logging.ERROR)
         logger.addHandler(handler)
 

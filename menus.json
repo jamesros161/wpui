@@ -128,12 +128,30 @@
         ["      Quit     ","Quit"]
     ],
     "Themes" : [
-        [" Installations ", "Installs"],
+        ["   List Themes  ", "Themes"],
+        [" Install Themes ", "InstallThemes"],
+        [" Revert Changes ","RevertChanges"],
         ["      Home     ", "Home"],
         ["   Databases   ","Database"],
         ["    Plugins    ","Plugins"],
-        ["     Users     ","Users"],
-        ["    WP Core    ", "Core"],
+        ["      Quit     ","Quit"]
+    ],
+    "InstallThemes" : [
+        ["   List Themes  ", "Themes"],
+        [" Install Themes ", "InstallThemes"],
+        [" Revert Changes ","RevertChanges"],
+        ["      Home     ", "Home"],
+        ["   Databases   ","Database"],
+        ["    Plugins    ","Plugins"],
+        ["      Quit     ","Quit"]
+    ],
+    "RevertChanges" : [
+        ["   List Themes  ", "Themes"],
+        [" Install Themes ", "InstallThemes"],
+        [" Revert Changes ","RevertChanges"],
+        ["      Home     ", "Home"],
+        ["   Databases   ","Database"],
+        ["    Plugins    ","Plugins"],
         ["      Quit     ","Quit"]
     ],
     "Plugins" : [
