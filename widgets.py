@@ -383,7 +383,7 @@ class BoxButton(U.WidgetWrap):
         ])
         self.widget = U.AttrMap(self.widget, 'body', 'highlight')
         self._hidden_btn = U.Button(
-            'hidden %s' % label, on_press, user_data)
+            '%s' % label, on_press, user_data)
 
         super(BoxButton, self).__init__(self.widget)
 
@@ -409,6 +409,9 @@ class BoxButton(U.WidgetWrap):
     def mouse_event(self, *args, **kw):
         """passes mouse events to button"""
         return self._hidden_btn.mouse_event(*args, **kw)
+
+    def set_label(self, new_label):
+        self._hidden_btn.set_label(new_label)
 
 
 class CustomWidgets(object):

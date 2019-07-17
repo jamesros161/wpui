@@ -4,9 +4,11 @@ import os
 import getpass
 import subprocess
 import json
+from threading import Thread
 from random import randint
 from logmod import Log
 from datetime import datetime
+
 L = Log()
 
 
@@ -203,7 +205,7 @@ class DatabaseInformation(object):
         if import_result[0]:
             L.debug('Import Result:  %s', import_result[0])
             return import_result[0]
-        return "Database Export Failed"
+        return "Database Import Failed"
 
     def get_import_list(self):
         """Return list of imports in user's directory"""
@@ -427,14 +429,20 @@ class Themes(object):
     def __init__(self, app):
         self.app = app
         self.call = Call()
-        self.installation = self.app.state.active_installation
+        # self.installation = self.app.state.active_installation
 
     def get_list(self):
+        path = self.app.state.active_installation['directory']
+        self.progress = 0
+        try:
+            os.write(self.app.action_pipe, str(self.progress))
+        except OSError:
+            L.warning('Action Pipe not opened')
         fields = ['name', 'status', 'update', 'version',
                   'update_version', 'update_package', 'title', 'description']
         args = '--fields=' + ','.join(fields)
         results, error = self.call.wpcli(
-            self.installation['directory'],
+            path,
             [
                 'theme',
                 'list',
@@ -444,8 +452,88 @@ class Themes(object):
         result_json = json.loads(results)
         L.debug('get_list results: %s', result_json)
         L.debug('get_list errors: %s', error)
+        try:
+            os.close(self.app.action_pipe)
+        except OSError:
+            L.warning('Action Pipe already closed')
         if result_json:
             return result_json
+
+    def get_details(self, theme_name):
+        path = self.app.state.active_installation['directory']
+        result, error = self.call.wpcli(
+            path,
+            [
+                'theme',
+                'get',
+                theme_name,
+                '--format=json'
+            ])
+        result_json = json.loads(result)
+        L.debug('get_list results: %s', result_json)
+        L.debug('get_list errors: %s', error)
+        if result_json:
+            return result_json
+
+    def activate(self, theme_name):
+        path = self.app.state.active_installation['directory']
+        self.app.wpcli_pipe = self.app.loop.watch_pipe(
+            self.app.views.Themes.body.update_view)
+        L.debug("self.app.wpcli_pipe: %s", self.app.wpcli_pipe)
+        self.wpcli_thread = Thread(
+            target=self.call.wpcli_live_response,
+            name='wpcli_thread',
+            args=[
+                self.app,
+                self.app.views.Themes.body.after_response,
+                path,
+                [
+                    'theme',
+                    'activate',
+                    theme_name
+                ]
+            ])
+        self.wpcli_thread.start()
+
+    def update(self, theme_name):
+        path = self.app.state.active_installation['directory']
+        self.app.wpcli_pipe = self.app.loop.watch_pipe(
+            self.app.views.Themes.body.update_view)
+        L.debug("self.app.wpcli_pipe: %s", self.app.wpcli_pipe)
+        self.wpcli_thread = Thread(
+            target=self.call.wpcli_live_response,
+            name='wpcli_thread',
+            args=[
+                self.app,
+                self.app.views.Themes.body.after_response,
+                path,
+                [
+                    'theme',
+                    'update',
+                    theme_name
+                ]
+            ])
+        self.wpcli_thread.start()
+
+    def uninstall(self, theme_name):
+        path = self.app.state.active_installation['directory']
+        self.app.wpcli_pipe = self.app.loop.watch_pipe(
+            self.app.views.Themes.body.update_view)
+        L.debug("self.app.wpcli_pipe: %s", self.app.wpcli_pipe)
+        self.wpcli_thread = Thread(
+            target=self.call.wpcli_live_response,
+            name='wpcli_thread',
+            args=[
+                self.app,
+                self.app.views.Themes.body.after_response,
+                path,
+                [
+                    'theme',
+                    'uninstall',
+                    theme_name
+                ]
+            ])
+        self.wpcli_thread.start()
 
 
 class Call(object):
@@ -468,3 +556,29 @@ class Call(object):
             stderr=subprocess.PIPE
         ).communicate()
         return data, error
+
+    def wpcli_live_response(self, app, callback, path,
+                            arguments, skip_themes=True, skip_plugins=True):
+        # L.debug('pipe: %s, path: %s, arguments: %s', pipe, path, arguments)
+        """runs_wp-cli command"""
+        L.debug('Begin wp-cli command: %s', arguments)
+        popen_args = ['wp']
+        for argument in arguments:
+            popen_args.append(argument)
+        popen_args.append('--path='+path)
+        if skip_themes:
+            popen_args.append('--skip-themes')
+        if skip_plugins:
+            popen_args.append('--skip-plugins')
+        proc = subprocess.Popen(
+            popen_args,
+            stdout=subprocess.PIPE)
+        while True:
+            line = proc.stdout.readline().encode('utf8')
+            if proc.poll() or line == b'':
+                os.close(app.wpcli_pipe)
+                break
+            else:
+                L.debug('proc line: %s', line)
+                os.write(app.wpcli_pipe, line)
+        app.views.Themes.body.after_response()

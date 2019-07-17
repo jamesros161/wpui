@@ -3,6 +3,8 @@ if it has an "action_on_load" attribute set,
 then the cooresponding method of Actions will be called.
 
 Any views that have to load a separate thread or process"""
+import os
+import time
 from logmod import Log
 from wpcli import Installations, DatabaseInformation, WpConfig, Themes
 L = Log()
@@ -216,9 +218,30 @@ class Actions(object):
         path = self.app.state.active_installation['directory']
         if not self.themes:
             self.themes = Themes(self.app)
-        theme_list = self.themes.get_list()
+        self.theme_list = self.themes.get_list()
         self.app.views.Themes.body.after_action(
-            theme_list)
+            self.theme_list)
 
     def theme_actions(self, *args):
-        L.debug('Args: %s', args)
+        # L.debug('Args: %s', args)
+        action_type = args[0].label
+        theme = args[1][0]
+        L.debug('button: %s, action_type: %s, theme: %s',
+                args[0], action_type, theme)
+        if action_type == 'Details':
+            theme_details = self.themes.get_details(theme['name'])
+            L.debug('Theme Details: %s', theme_details)
+            self.app.views.Themes.body.show_theme_details(
+                theme_details
+            )
+        if 'Activate' in action_type:
+            self.themes.activate(theme['name'])
+            self.app.views.Themes.body.show_theme_action_response()
+        if 'Update' in action_type:
+            self.app.views.Themes.body.show_theme_action_response()
+            self.themes.update(theme['name'])
+            L.debug('wpcli_pipe fstat: %s', os.fstat(self.app.wpcli_pipe))
+        if 'Uninstall' in action_type:
+            self.app.views.Themes.body.show_theme_action_response()
+            self.themes.uninstall(theme['name'])
+            L.debug('wpcli_pipe fstat: %s', os.fstat(self.app.wpcli_pipe))

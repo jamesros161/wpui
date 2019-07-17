@@ -68,7 +68,7 @@ class App(object):
                     if S.display['menu_enabled']:
                         self.frame.focus_position = 'footer'
             if 'end' in key:
-                self.state.go_back()
+                self.state.go_forward()
             if 'home' in key:
                 self.state.go_back()
 

@@ -1,7 +1,9 @@
 """Collection of classes each used for a view"""
+import os
 import time
 import getpass
 import urwid as U
+from HTMLParser import HTMLParser
 from logmod import Log
 from settings import Settings
 from widgets import CustomWidgets, BoxButton, WpConfigValueMap
@@ -594,9 +596,10 @@ class DbImport(BodyWidget):
             W.get_blank_flow()
         ])
         import_rows.append(import_edit_row)
-        pile = U.Pile(import_rows)
-        filler = U.Filler(pile, 'middle')
-        self.app.frame.contents.__setitem__('body', [filler, None])
+        import_list_box = W.get_list_box(import_rows)[0]
+        # pile = U.Pile(import_rows)
+        # filler = U.Filler(pile, 'middle')
+        self.app.frame.contents.__setitem__('body', [import_list_box, None])
         time.sleep(1)
         self.app.loop.draw_screen()
 
@@ -1024,6 +1027,19 @@ class Themes(BodyWidget):
     def __init__(self, app, user_args=None, calling_view=None):
         super(Themes, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
+        self.parser = HTMLParser()
+
+    def update_progress_bar(self, progress):
+        self.progress = 0
+        while self.progress < 100:
+            L.debug('Progress: %s', int(self.progress))
+            self.progress = self.progress + 10
+            self.progress_bar.set_completion(int(self.progress))
+            self.app.loop.draw_screen()
+            time.sleep(.250)
+        self.progress_bar.set_completion(100)
+        self.app.loop.remove_watch_pipe(self.app.action_pipe)
+        self.app.loop.draw_screen()
 
     def define_widget(self, **kwargs):
         L.debug(' kwargs : %s', kwargs)
@@ -1063,46 +1079,149 @@ class Themes(BodyWidget):
             ]), 'header')
         ]
         for theme in theme_list:
-            theme_rows.append(
-                W.get_col_row([
-                    W.get_blank_flow(),
+            theme_row = [
+                W.get_blank_flow(),
+                W.get_text(
+                    'default', '\n' + theme['name'] + '\n', 'center'),
+                W.get_text(
+                    'default', '\n' + theme['title'] + '\n', 'center'),
+                W.get_text(
+                    'default', '\n' + theme['version'] + '\n', 'center'),
+                W.get_text(
+                    'default', '\n' + theme['status'] + '\n', 'center'),
+                W.get_text(
+                    'default', '\n' + theme['update'] + '\n', 'center'),
+            ]
+            if theme['update'] == 'available':
+                theme_row.append(
                     W.get_text(
-                        'default', '\n' + theme['name'] + '\n', 'center'),
-                    W.get_text(
-                        'default', '\n' + theme['title'] + '\n', 'center'),
-                    W.get_text(
-                        'default', '\n' + theme['version'] + '\n', 'center'),
-                    W.get_text(
-                        'default', '\n' + theme['status'] + '\n', 'center'),
-                    W.get_text(
-                        'default', '\n' + theme['update'] + '\n', 'center'),
-                    W.get_text(
-                            'default', '\n' + theme['update_version'] + '\n',
-                            'center'),
-                    BoxButton(
-                        'Details',
-                        on_press=self.app.views.actions.theme_actions,
-                        user_data=[theme]),
-                    BoxButton(
-                        'Activate',
-                        on_press=self.app.views.actions.theme_actions,
-                        user_data=[theme]),
-                    BoxButton(
-                        'Uninstall',
-                        on_press=self.app.views.actions.theme_actions,
-                        user_data=[theme]),
-                    BoxButton(
-                        'Update',
-                        on_press=self.app.views.actions.theme_actions,
-                        user_data=[theme]),
+                        'default', '\n' + theme['update_version'] + '\n',
+                        'center'),
+                )
+            else:
+                theme_row.append(
                     W.get_blank_flow()
-                    ])
+                )
+            theme_row.extend([
+                BoxButton(
+                    'Details',
+                    on_press=self.app.views.actions.theme_actions,
+                    user_data=[theme]),
+                BoxButton(
+                    'Uninstall',
+                    on_press=self.app.views.actions.theme_actions,
+                    user_data=[theme])
+            ])
+            if theme['update'] == 'available':
+                theme_row.append(BoxButton(
+                    'Update',
+                    on_press=self.app.views.actions.theme_actions,
+                    user_data=[theme]))
+            else:
+                theme_row.append(
+                    W.get_blank_flow()
+                )
+
+            if theme['status'] == 'inactive':
+                theme_row.append(BoxButton(
+                    'Activate',
+                    on_press=self.app.views.actions.theme_actions,
+                    user_data=[theme]))
+            else:
+                theme_row.append(
+                    W.get_blank_flow()
+                )
+
+            theme_row.append(
+                W.get_blank_flow()
+            )
+            theme_rows.append(
+                W.get_col_row(theme_row)
             )
         theme_pile = U.Pile(theme_rows)
         filler = U.Filler(theme_pile)
         self.app.frame.contents.__setitem__('body', [filler, None])
         time.sleep(1)
         self.app.loop.draw_screen()
+
+    def show_theme_details(self, theme_details):
+        L.debug('Theme Details: %s', theme_details)
+        theme_name = ''
+        theme_title = ''
+        theme_version = ''
+        if 'name' in theme_details.keys():
+            theme_name = theme_details['name']
+            del theme_details['name']
+        if 'title' in theme_details.keys():
+            theme_title = theme_details['title']
+            del theme_details['title']
+        if 'version' in theme_details.keys():
+            theme_version = theme_details['version']
+            del theme_details['version']
+        theme_details_rows = [
+                W.get_col_row([
+                    W.get_blank_flow(),
+                    U.AttrMap(
+                        W.get_text('header', theme_name, 'center'), 'header'),
+                    U.AttrMap(
+                        W.get_text('header', theme_title, 'center'), 'header'),
+                    U.AttrMap(
+                        W.get_text(
+                            'header', theme_version, 'center'), 'header'),
+                    W.get_blank_flow()
+                ])
+        ]
+        theme_details_rows.append(W.get_div())
+        for key, value in theme_details.items():
+            if isinstance(value, list):
+                value = " | ".join(value)
+            if value:
+                theme_details_rows.append(
+                    W.get_col_row([
+                        W.get_blank_flow(),
+                        (15, W.get_text(
+                            'default', str(key).capitalize(), 'left')),
+                        (3, W.get_text('default', ' : ', 'center')),
+                        W.get_text(
+                            'default', self.parser.unescape(value), 'left'),
+                        W.get_blank_flow()
+                    ])
+                )
+        theme_details_pile = U.Pile(theme_details_rows)
+        filler = U.Filler(theme_details_pile)
+        self.app.frame.contents.__setitem__('body', [filler, None])
+        time.sleep(1)
+        self.app.loop.draw_screen()
+
+    def show_theme_action_response(self):
+        self.response_text = [
+            W.get_col_row([
+                W.get_blank_flow(),
+                U.AttrMap(W.get_text('header', 'Result', 'center'), 'header'),
+                W.get_blank_flow()
+                ]),
+            W.get_div()
+        ]
+        self.response_pile = U.Pile(self.response_text)
+        filler = U.Filler(self.response_pile)
+        self.app.frame.contents.__setitem__('body', [filler, None])
+        time.sleep(1)
+        self.app.loop.draw_screen()
+
+    def update_view(self, wpcli_output):
+        L.debug("Update: %s", wpcli_output)
+        if not wpcli_output:
+            self.app.loop.remove_watch_pipe(self.app.wpcli_pipe)
+        self.response_pile.contents.append((
+            W.get_col_row([
+                W.get_blank_flow(),
+                W.get_text('default', wpcli_output, 'left'),
+                W.get_blank_flow()
+            ]), ('weight', 1)))
+
+    def after_response(self):
+        time.sleep(2)
+        self.app.views.actions.get_theme_list()
 
 
 class Users(BodyWidget):
