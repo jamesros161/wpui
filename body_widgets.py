@@ -1,20 +1,17 @@
 """Collection of classes each used for a view"""
-import os
+import datetime
 import time
 import getpass
-import urwid as U
 from HTMLParser import HTMLParser
+import urwid as U
 from logmod import Log
 from settings import Settings
 from widgets import CustomWidgets, BoxButton, WpConfigValueMap
 from widgets import WpConfigNameMap, DbImportEditMap, DbSearchEditMap
 from widgets import SRSearchEditMap
-import widgets as W
 S = Settings()
 L = Log()
 W = CustomWidgets()
-# PRIMARY BodyWidget
-# Class#
 
 
 class BodyWidget(object):
@@ -24,25 +21,40 @@ class BodyWidget(object):
         obj -- Returns a widget to be used as the 'body' portion of the frame
     """
 
-    def __init__(self, app):
+    def __init__(self, app, initial_text='', progress_bar=False):
         self.progress_bar = U.ProgressBar(
             'body',
             'progressbar',
             current=0,
             done=100)
         self.app = app
-        self.widget = self.define_widget()
+        self.widget = self.define_widget(
+            initial_text,
+            progress_bar
+        )
+        self.pile = None
+        self.progress = 0
 
-    def define_widget(self, **kwargs):
+    def define_widget(self, initial_text, progress_bar=False):
         """Page displayed as Home Page for the application
         """
-        L.debug(' kwargs : %s', kwargs)
-        home_text = W.get_text(
+        L.debug(' Initial_Text : %s', initial_text)
+        initial_text = W.get_text(
             'body',
-            'WP-CLI Like you have never WP-CLI\'d before!!!.\n \
-            Select an option below to begin.',
+            str(initial_text),
             'center')
-        return U.Filler(home_text, 'middle')
+        if progress_bar:
+            progress_row = W.get_col_row([
+                ('weight', 2, W.get_blank_flow()),
+                self.progress_bar,
+                ('weight', 2, W.get_blank_flow())
+            ])
+            main_pile = U.Pile([initial_text, progress_row])
+            self.app.action_pipe = self.app.loop.watch_pipe(
+                self.update_progress_bar)
+        else:
+            main_pile = U.Pile([initial_text])
+        return U.Filler(main_pile, 'middle')
 
     def update_progress_bar(self, progress):
         """Updates the progress bar on body widgets that
@@ -70,14 +82,6 @@ class Home(BodyWidget):
         super(Home, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
 
-    def define_widget(self, **kwargs):
-        L.debug(' kwargs : %s', kwargs)
-        home_text = W.get_text(
-            'body',
-            'WP-CLI Like you have never WP-CLI\'d before!!!.\
-            \nSelect an option below to begin.', 'center')
-        return U.Filler(home_text, 'middle')
-
 
 class Invalid(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
@@ -86,14 +90,6 @@ class Invalid(BodyWidget):
         super(Invalid, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
 
-    def define_widget(self, **kwargs):
-        L.debug(' kwargs : %s', kwargs)
-        main_text = W.get_text(
-            'body',
-            'The View you selected is invalid or has not been created yet',
-            'center')
-        return U.Filler(home_text, 'middle')
-
 
 class Installs(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
@@ -101,22 +97,6 @@ class Installs(BodyWidget):
     def __init__(self, app, user_args=None, calling_view=None):
         super(Installs, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
-
-    def define_widget(self, **kwargs):
-        L.debug(' kwargs : %s', kwargs)
-        main_text = W.get_text(
-            'body',
-            'Obtaining List of available WordPress Installations',
-            'center')
-        progress_row = W.get_col_row([
-            ('weight', 2, W.get_blank_flow()),
-            self.progress_bar,
-            ('weight', 2, W.get_blank_flow())
-        ])
-        main_pile = U.Pile([main_text, progress_row])
-        self.app.action_pipe = self.app.loop.watch_pipe(
-            self.update_progress_bar)
-        return U.Filler(main_pile, 'middle')
 
     def after_action(self, installations):
         """Updates the view's body in response to
@@ -132,6 +112,7 @@ class Installs(BodyWidget):
             location_list.sort(reverse=True)
             location_width = location_list[0] + 4
             installation_columns = [W.get_col_row([
+                W.get_blank_flow(),
                 (10, U.AttrMap(W.get_div(), 'header')),
                 (
                     location_width,
@@ -162,10 +143,12 @@ class Installs(BodyWidget):
                         'wp_db_check passed',
                         'center'
                     ),
-                    'header'))
+                    'header')),
+                W.get_blank_flow()
             ])]
             for installation in installations:
                 installation_rows = [
+                    W.get_blank_flow(),
                     (10, BoxButton(
                         ' + ',
                         on_press=self.app.state.set_installation,
@@ -203,6 +186,9 @@ class Installs(BodyWidget):
                                 str(installation['wp_db_error']),
                                 'center'))
                     )
+                installation_rows.append(
+                    W.get_blank_flow()
+                )
                 installation_columns.append(
                     W.get_col_row(installation_rows)
                 )
@@ -234,22 +220,6 @@ class GetWpConfig(BodyWidget):
         super(GetWpConfig, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
 
-    def define_widget(self, **kwargs):
-        L.debug(' kwargs : %s', kwargs)
-        main_text = W.get_text(
-            'body',
-            'Obtaining WP-Config  directives',
-            'center')
-        progress_row = W.get_col_row([
-            ('weight', 2, W.get_blank_flow()),
-            self.progress_bar,
-            ('weight', 2, W.get_blank_flow())
-        ])
-        main_pile = U.Pile([main_text, progress_row])
-        self.app.action_pipe = self.app.loop.watch_pipe(
-            self.update_progress_bar)
-        return U.Filler(main_pile, 'middle')
-
     def after_action(self, wp_config):
         """Updates the view's body in response to
         the views action_on_load function
@@ -258,18 +228,23 @@ class GetWpConfig(BodyWidget):
         L.debug(' wp_config : %s', wp_config)
         directives_list = [
             W.get_col_row([
+                W.get_blank_flow(),
                 (10, U.AttrMap(W.get_text(
                     'header',
                     'Type',
-                    'center'),
-                    'header')),
+                    'center'), 'header')),
                 U.AttrMap(W.get_text('header', 'Name', 'center'), 'header'),
                 ('weight', 2, U.AttrMap(W.get_text(
                     'header',
                     'Value',
-                    'left'),
-                    'header'))])]
+                    'left'), 'header')),
+                W.get_blank_flow()
+                ])]
         for directive in wp_config.wp_config_directive_list:
+            if 'DB_NAME' in str(directive['name']):
+                self.app.state.active_installation['db_name'] = str(
+                    directive['value']
+                )
             button = WpConfigValueMap(
                 self.app,
                 'default',
@@ -277,14 +252,65 @@ class GetWpConfig(BodyWidget):
                 edit_text=str(directive['value']),
                 align='left')
             row_items = [
+                W.get_blank_flow(),
                 (10, W.get_text('default', str(directive['type']), 'center')),
                 W.get_text('default', str(directive['name']), 'center'),
-                ('weight', 2, button)
+                ('weight', 2, button),
+                W.get_blank_flow()
             ]
             row = W.get_col_row(row_items)
             directives_list.append(row)
-        wp_config_pile = U.Pile(directives_list)
-        filler = U.Filler(wp_config_pile)
+        add_option_value_button = WpConfigValueMap(
+            self.app,
+            'underline',
+            body_widget=self,
+            align="left",
+            on_enter=self.app.views.GetWpConfig.start)
+        add_option_name_button = WpConfigNameMap(
+            self,
+            'underline',
+            add_option_value_button,
+            align='left')
+        directives_list.extend([
+            W.get_div(),
+            W.get_div()
+        ])
+        directives_list.extend([
+            W.get_col_row([
+                W.get_blank_flow(),
+                ('weight', 3, U.AttrMap(
+                    W.get_text('header', 'Add Option', 'center'),
+                    'header')),
+                W.get_blank_flow()
+            ]),
+            W.get_div(),
+            W.get_col_row([
+                W.get_blank_flow(),
+                (13, W.get_text('default', 'Option Name:', 'right')),
+                add_option_name_button,
+                W.get_blank_flow()
+            ]),
+            W.get_col_row([
+                W.get_blank_flow(),
+                (13, W.get_text('default', 'Option Value:', 'right')),
+                add_option_value_button,
+                W.get_blank_flow()
+            ]),
+            W.get_div(),
+            W.get_div()
+        ])
+        directives_list.append(
+            W.get_col_row([
+                W.get_blank_flow(),
+                BoxButton(
+                    'Re-Salt Config',
+                    on_press=self.app.views.actions.re_salt
+                ),
+                W.get_blank_flow()
+            ])
+        )
+        self.pile = U.Pile(directives_list)
+        filler = U.Filler(self.pile)
         self.app.frame.contents.__setitem__('body', [filler, None])
         time.sleep(1)
         self.app.loop.draw_screen()
@@ -428,19 +454,19 @@ class Database(BodyWidget):
         ]
         if db_info['size_error']:
             db_info_rows.append(
-                    W.get_text('default',
-                               "Database Error:\n\n" +
-                               db_info['size_error'] + "\n" +
-                               "Troubleshoot Database Connection",
-                               'center')
+                W.get_text('default',
+                           "Database Error:\n\n" +
+                           db_info['size_error'] + "\n" +
+                           "Troubleshoot Database Connection",
+                           'center')
             )
         elif db_info['check_error']:
             db_info_rows.append(
-                    W.get_text('default',
-                               "Database Error:\n\n" +
-                               db_info['check_error'] + "\n" +
-                               "Troubleshoot Database Connection",
-                               'center')
+                W.get_text('default',
+                           "Database Error:\n\n" +
+                           db_info['check_error'] + "\n" +
+                           "Troubleshoot Database Connection",
+                           'center')
             )
         else:
             db_info_rows.append(
@@ -478,13 +504,11 @@ class Database(BodyWidget):
                     U.AttrMap(W.get_text(
                         'header',
                         'Table Name',
-                        'left'),
-                        'header'),
+                        'left'), 'header'),
                     (18, U.AttrMap(W.get_text(
                         'header',
                         'Check Status',
-                        'center'),
-                        'header')),
+                        'center'), 'header')),
                     (5, U.AttrMap(W.get_blank_flow(), 'header'))
                 ])
             )
@@ -513,7 +537,7 @@ class Database(BodyWidget):
         ])
         filler = U.Filler(outer_pile, 'middle')
         self.app.frame.contents.__setitem__('body', [filler, None])
-        time.sleep(1)
+        time.sleep(2)
         self.app.loop.draw_screen()
 
 
@@ -583,12 +607,12 @@ class DbImport(BodyWidget):
                     ])
                 )
         import_edit = DbImportEditMap(
-                    self.app,
-                    'body',
-                    edit_text=self.app.state.homedir,
-                    align='left',
-                    on_enter=self.app.views.actions.import_db,
-                    caption='Other Import Path: ')
+            self.app,
+            'body',
+            edit_text=self.app.state.homedir,
+            align='left',
+            on_enter=self.app.views.actions.import_db,
+            caption='Other Import Path: ')
         import_edit_linebox = W.get_line_box(import_edit, '')
         import_edit_row = W.get_col_row([
             W.get_blank_flow(),
@@ -709,6 +733,7 @@ class DbSearch(BodyWidget):
                 3,
                 DbSearchEditMap(
                     self.app,
+                    self,
                     'body',
                     caption='Database Search Query: ',
                     on_enter=self.app.views.actions.db_search,
@@ -718,29 +743,30 @@ class DbSearch(BodyWidget):
         return U.Filler(db_search_row, 'middle')
 
     def after_action(self, db_search_results, query):
+        """Displays after_action contents"""
         L.debug('Search Results: %s', db_search_results)
         search_result_rows = [
             W.get_col_row([
                 W.get_blank_flow(),
-                ('weight', 4,  U.AttrMap(W.get_text(
+                ('weight', 4, U.AttrMap(W.get_text(
                     'header', 'DB Search Results for: ', 'right'), 'header')),
-                ('weight', 4,  U.AttrMap(W.get_text(
+                ('weight', 4, U.AttrMap(W.get_text(
                     'header', query, 'left'), 'header')),
                 W.get_blank_flow()]),
             W.get_col_row([
                 W.get_blank_flow(),
-                ('weight', 4,  U.AttrMap(W.get_blank_flow(), 'header')),
-                ('weight', 4,  U.AttrMap(W.get_blank_flow(), 'header')),
+                ('weight', 4, U.AttrMap(W.get_blank_flow(), 'header')),
+                ('weight', 4, U.AttrMap(W.get_blank_flow(), 'header')),
                 W.get_blank_flow()]),
             W.get_col_row([
                 W.get_blank_flow(),
                 ('weight', 1, U.AttrMap(W.get_text(
                     'header', 'Row', 'center'), 'header')),
-                ('weight', 1,  U.AttrMap(W.get_text(
+                ('weight', 1, U.AttrMap(W.get_text(
                     'header', 'Table', 'center'), 'header')),
-                ('weight', 2,  U.AttrMap(W.get_text(
+                ('weight', 2, U.AttrMap(W.get_text(
                     'header', 'Column', 'center'), 'header')),
-                ('weight', 4,  U.AttrMap(W.get_text(
+                ('weight', 4, U.AttrMap(W.get_text(
                     'header', 'Value', 'center'), 'header')),
                 W.get_blank_flow()
             ]),
@@ -804,6 +830,8 @@ class SearchReplace(BodyWidget):
         return U.Filler(self.pile, 'middle')
 
     def after_dry_run(self, results, results_count, db_export_message):
+        """Displays the Search-replace dry-run results"""
+
         L.debug('results: %s', results)
         dry_run_rows = []
         if db_export_message:
@@ -930,7 +958,9 @@ class SearchReplace(BodyWidget):
         self.app.loop.draw_screen()
 
     def after_replacement(self, results, results_count, db_export_message):
-        L.debug("After Replacement")
+        """Displays search-replace results after replacement"""
+
+        L.debug("After Replacement: %s", db_export_message)
         replaced_rows = []
         if results:
             replaced_rows.append(
@@ -1005,22 +1035,6 @@ class SearchReplace(BodyWidget):
         self.app.loop.draw_screen()
 
 
-class Plugins(BodyWidget):
-    """Creates the specific body widget for the view of the same name"""
-
-    def __init__(self, app, user_args=None, calling_view=None):
-        super(Plugins, self).__init__(app)
-        L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
-
-    def define_widget(self, **kwargs):
-        L.debug(' kwargs : %s', kwargs)
-        home_text = W.get_text(
-            'body',
-            'Installed Plugins for selected WP Installation',
-            'center')
-        return U.Filler(home_text, 'middle')
-
-
 class Themes(BodyWidget):
     """Creates the specific body widget for the view of the same name"""
 
@@ -1028,6 +1042,7 @@ class Themes(BodyWidget):
         super(Themes, self).__init__(app)
         L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
         self.parser = HTMLParser()
+        self.response_pile = None
 
     def update_progress_bar(self, progress):
         self.progress = 0
@@ -1058,6 +1073,7 @@ class Themes(BodyWidget):
         return U.Filler(main_pile, 'middle')
 
     def after_action(self, theme_list):
+        """Displays after_action contents"""
         theme_rows = [
             U.AttrMap(W.get_col_row([
                 W.get_blank_flow(),
@@ -1138,6 +1154,33 @@ class Themes(BodyWidget):
             theme_rows.append(
                 W.get_col_row(theme_row)
             )
+        theme_rows.append(
+            W.get_div()
+        )
+        theme_rows.append(
+            W.get_col_row([
+                W.get_blank_flow(),
+                BoxButton(
+                    'Update All',
+                    on_press=self.app.views.actions.theme_actions,
+                    user_data='--all'),
+                W.get_blank_flow()
+            ])
+        )
+        theme_rows.append(
+            W.get_col_row([
+                W.get_blank_flow(),
+                W.get_text(
+                    'body', 'Install Theme:', 'right'
+                ),
+                DbSearchEditMap(
+                    self.app,
+                    self,
+                    'underline',
+                    on_enter=self.app.views.actions.install_theme,
+                    align='left'),
+                W.get_blank_flow()
+            ]))
         theme_pile = U.Pile(theme_rows)
         filler = U.Filler(theme_pile)
         self.app.frame.contents.__setitem__('body', [filler, None])
@@ -1145,6 +1188,7 @@ class Themes(BodyWidget):
         self.app.loop.draw_screen()
 
     def show_theme_details(self, theme_details):
+        """Shows Theme Details"""
         L.debug('Theme Details: %s', theme_details)
         theme_name = ''
         theme_title = ''
@@ -1159,17 +1203,17 @@ class Themes(BodyWidget):
             theme_version = theme_details['version']
             del theme_details['version']
         theme_details_rows = [
-                W.get_col_row([
-                    W.get_blank_flow(),
-                    U.AttrMap(
-                        W.get_text('header', theme_name, 'center'), 'header'),
-                    U.AttrMap(
-                        W.get_text('header', theme_title, 'center'), 'header'),
-                    U.AttrMap(
-                        W.get_text(
-                            'header', theme_version, 'center'), 'header'),
-                    W.get_blank_flow()
-                ])
+            W.get_col_row([
+                W.get_blank_flow(),
+                U.AttrMap(
+                    W.get_text('header', theme_name, 'center'), 'header'),
+                U.AttrMap(
+                    W.get_text('header', theme_title, 'center'), 'header'),
+                U.AttrMap(
+                    W.get_text(
+                        'header', theme_version, 'center'), 'header'),
+                W.get_blank_flow()
+            ])
         ]
         theme_details_rows.append(W.get_div())
         for key, value in theme_details.items():
@@ -1194,7 +1238,9 @@ class Themes(BodyWidget):
         self.app.loop.draw_screen()
 
     def show_theme_action_response(self):
-        self.response_text = [
+        """Shows theme-action Response"""
+
+        response_text = [
             W.get_col_row([
                 W.get_blank_flow(),
                 U.AttrMap(W.get_text('header', 'Result', 'center'), 'header'),
@@ -1202,13 +1248,15 @@ class Themes(BodyWidget):
                 ]),
             W.get_div()
         ]
-        self.response_pile = U.Pile(self.response_text)
+        self.response_pile = U.Pile(response_text)
         filler = U.Filler(self.response_pile)
         self.app.frame.contents.__setitem__('body', [filler, None])
         time.sleep(1)
         self.app.loop.draw_screen()
 
     def update_view(self, wpcli_output):
+        """Updates the view from pipe"""
+
         L.debug("Update: %s", wpcli_output)
         if not wpcli_output:
             self.app.loop.remove_watch_pipe(self.app.wpcli_pipe)
@@ -1220,8 +1268,412 @@ class Themes(BodyWidget):
             ]), ('weight', 1)))
 
     def after_response(self):
+        """After response is displayed, redirect to theme list"""
+
         time.sleep(2)
         self.app.views.actions.get_theme_list()
+
+
+class InstallThemes(BodyWidget):
+    """Creates the specific body widget for the view of the same name"""
+
+    def __init__(self, app, user_args=None, calling_view=None):
+        super(InstallThemes, self).__init__(app)
+        L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
+
+    def define_widget(self, **kwargs):
+        """shows initial widget"""
+
+        L.debug(' kwargs : %s', kwargs)
+        theme_install_edit = DbSearchEditMap(
+            self.app,
+            self,
+            'body',
+            caption='Enter Theme Name to Install: ',
+            on_enter=self.app.views.actions.install_theme,
+            align='center')
+
+        return U.Filler(theme_install_edit, 'middle')
+
+
+class Plugins(BodyWidget):
+    """Creates the specific body widget for the view of the same name"""
+
+    def __init__(self, app, user_args=None, calling_view=None):
+        super(Plugins, self).__init__(app)
+        L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
+        self.parser = HTMLParser()
+        self.deactivated_plugins = ''
+        self.response_pile = None
+
+    def update_progress_bar(self, progress):
+        """Updates the display of Progress Bar"""
+
+        self.progress = 0
+        while self.progress < 100:
+            L.debug('Progress: %s', int(self.progress))
+            self.progress = self.progress + 10
+            self.progress_bar.set_completion(int(self.progress))
+            self.app.loop.draw_screen()
+            time.sleep(.250)
+        self.progress_bar.set_completion(100)
+        self.app.loop.remove_watch_pipe(self.app.action_pipe)
+        self.app.loop.draw_screen()
+
+    def define_widget(self, **kwargs):
+        """shows initial widget"""
+        L.debug(' kwargs : %s', kwargs)
+        main_text = W.get_text(
+            'body',
+            'Obtaining List of Plugins',
+            'center')
+        progress_row = W.get_col_row([
+            ('weight', 2, W.get_blank_flow()),
+            self.progress_bar,
+            ('weight', 2, W.get_blank_flow())
+        ])
+        main_pile = U.Pile([main_text, progress_row])
+        self.app.action_pipe = self.app.loop.watch_pipe(
+            self.update_progress_bar)
+        return U.Filler(main_pile, 'middle')
+
+    def after_action(self, plugin_list):
+        """Displays after_action contents"""
+        plugin_rows = [
+            U.AttrMap(W.get_col_row([
+                W.get_blank_flow(),
+                ('weight', 2, W.get_text(
+                    'header', 'Plugin Name', 'center')),
+                W.get_text(
+                    'header', 'Status', 'center'),
+                W.get_text(
+                    'header', 'Version', 'center'),
+                W.get_text(
+                    'header', 'Update Status', 'center'),
+                W.get_text(
+                    'header', 'Update Version', 'center'),
+                ('weight', 4, W.get_text(
+                    'header', 'Options', 'center')),
+                W.get_blank_flow()
+            ]), 'header')
+        ]
+        for plugin in plugin_list:
+            plugin_row = [
+                W.get_blank_flow(),
+                ('weight', 2, W.get_text(
+                    'default', '\n' + plugin['name'] + '\n', 'center')),
+                W.get_text(
+                    'default', '\n' + plugin['status'] + '\n', 'center'),
+                W.get_text(
+                    'default', '\n' + plugin['version'] + '\n', 'center'),
+                W.get_text(
+                    'default', '\n' + plugin['update'] + '\n', 'center'),
+            ]
+            if plugin['update'] == 'available':
+                plugin_row.append(
+                    W.get_text(
+                        'default', '\n' + plugin['update_version'] + '\n',
+                        'center'),
+                )
+            else:
+                plugin_row.append(
+                    W.get_blank_flow()
+                )
+            plugin_row.extend([
+                BoxButton(
+                    'Details',
+                    on_press=self.app.views.actions.plugin_actions.details,
+                    user_data=[plugin]),
+                BoxButton(
+                    'Uninstall',
+                    on_press=self.app.views.actions.plugin_actions.uninstall,
+                    user_data=[plugin])
+            ])
+            if plugin['update'] == 'available':
+                plugin_row.append(BoxButton(
+                    'Update',
+                    on_press=self.app.views.actions.plugin_actions.update,
+                    user_data=[plugin]))
+            else:
+                plugin_row.append(
+                    W.get_blank_flow()
+                )
+
+            if plugin['status'] == 'inactive':
+                plugin_row.append(BoxButton(
+                    'Activate',
+                    on_press=self.app.views.actions.plugin_actions.activate,
+                    user_data=[plugin]))
+            else:
+                plugin_row.append(BoxButton(
+                    'Deactivate',
+                    on_press=self.app.views.actions.plugin_actions.deactivate,
+                    user_data=[plugin]))
+
+            plugin_row.append(
+                W.get_blank_flow()
+            )
+            plugin_rows.append(
+                W.get_col_row(plugin_row)
+            )
+        plugin_rows.append(
+            W.get_div()
+        )
+        if self.deactivated_plugins:
+            act_deact_all_plugins = BoxButton(
+                'Re-Activate All',
+                on_press=self.app.views.actions.plugin_actions.reactivate,
+                user_data=self.deactivated_plugins)
+        else:
+            act_deact_all_plugins = BoxButton(
+                'Deactivate All',
+                on_press=self.app.views.actions.plugin_actions.deactivate_all,
+                user_data='--all')
+        plugin_rows.append(
+            W.get_col_row([
+                W.get_blank_flow(),
+                act_deact_all_plugins,
+                BoxButton(
+                    'Update All',
+                    on_press=self.app.views.actions.plugin_actions.update_all,
+                    user_data='--all'),
+                W.get_blank_flow()
+            ])
+        )
+        plugin_rows.append(
+            W.get_col_row([
+                W.get_blank_flow(),
+                W.get_text(
+                    'body', 'Install Plugin:', 'right'
+                ),
+                DbSearchEditMap(
+                    self.app,
+                    self,
+                    'underline',
+                    on_enter=self.app.views.actions.install_plugin,
+                    align='left'),
+                W.get_blank_flow()
+            ]))
+        self.pile = U.Pile(plugin_rows)
+        filler = U.Filler(self.pile)
+        self.app.frame.contents.__setitem__('body', [filler, None])
+        time.sleep(1)
+        self.app.loop.draw_screen()
+
+    def show_plugin_details(self, plugin_details):
+        """Show Plugin Details"""
+        L.debug('Plugin Details: %s', plugin_details)
+        plugin_name = ''
+        plugin_title = ''
+        plugin_version = ''
+        if 'name' in plugin_details.keys():
+            plugin_name = plugin_details['name']
+            del plugin_details['name']
+        if 'title' in plugin_details.keys():
+            plugin_title = plugin_details['title']
+            del plugin_details['title']
+        if 'version' in plugin_details.keys():
+            plugin_version = plugin_details['version']
+            del plugin_details['version']
+        plugin_details_rows = [
+            W.get_col_row([
+                W.get_blank_flow(),
+                U.AttrMap(
+                    W.get_text('header', plugin_name, 'center'), 'header'),
+                U.AttrMap(
+                    W.get_text('header', plugin_title, 'center'), 'header'),
+                U.AttrMap(
+                    W.get_text(
+                        'header', plugin_version, 'center'), 'header'),
+                W.get_blank_flow()
+            ])
+        ]
+        plugin_details_rows.append(W.get_div())
+        for key, value in plugin_details.items():
+            if isinstance(value, list):
+                value = " | ".join(value)
+            if value:
+                plugin_details_rows.append(
+                    W.get_col_row([
+                        W.get_blank_flow(),
+                        (15, W.get_text(
+                            'default', str(key).capitalize(), 'left')),
+                        (3, W.get_text('default', ' : ', 'center')),
+                        W.get_text(
+                            'default', self.parser.unescape(value), 'left'),
+                        W.get_blank_flow()
+                    ])
+                )
+        theme_details_pile = U.Pile(plugin_details_rows)
+        filler = U.Filler(theme_details_pile)
+        self.app.frame.contents.__setitem__('body', [filler, None])
+        time.sleep(1)
+        self.app.loop.draw_screen()
+
+    def show_plugin_action_response(self, response_text=None):
+        """Displays response from plugin-actions"""
+        response_text = [
+            W.get_col_row([
+                W.get_blank_flow(),
+                U.AttrMap(W.get_text('header', 'Result', 'center'), 'header'),
+                W.get_blank_flow()
+            ]),
+            W.get_div()
+        ]
+        if response_text:
+            result = response_text
+            response_text.append(
+                W.get_col_row([
+                    W.get_blank_flow(),
+                    W.get_text('default', result, 'left'),
+                    W.get_blank_flow()
+                ]))
+        self.response_pile = U.Pile(response_text)
+        filler = U.Filler(self.response_pile)
+        self.app.frame.contents.__setitem__('body', [filler, None])
+        time.sleep(1)
+        self.app.loop.draw_screen()
+
+    def update_view(self, wpcli_output):
+        """Update's view from pipe"""
+        L.debug("Update: %s", wpcli_output)
+        if not wpcli_output:
+            self.app.loop.remove_watch_pipe(self.app.wpcli_pipe)
+        self.response_pile.contents.append((
+            W.get_col_row([
+                W.get_blank_flow(),
+                W.get_text('default', wpcli_output, 'left'),
+                W.get_blank_flow()
+            ]), ('weight', 1)))
+
+    def after_response(self):
+        """Redirects to plugin_list after response"""
+        time.sleep(2)
+        self.app.views.actions.get_plugin_list()
+
+
+class RevertChanges(BodyWidget):
+    """Creates the specific body widget for the view of the same name"""
+
+    def __init__(self, app, user_args=None, calling_view=None):
+        super(RevertChanges, self).__init__(app)
+        L.debug("user_args: %s, calling_view: %s", user_args, calling_view)
+
+    def define_widget(self, **kwargs):
+        L.debug(' kwargs : %s', kwargs)
+        home_text = W.get_text(
+            'body',
+            'Obtaining List of Revisions...',
+            'center')
+        return U.Filler(home_text, 'middle')
+
+    def after_action(self, revisions):
+        """Displays after_action contents"""
+        L.debug('list_of_revisions: %s', revisions)
+        revisions_rows = [
+            W.get_col_row([
+                W.get_blank_flow(),
+                U.AttrMap(W.get_text(
+                    'header', 'Revision Time', 'center'), 'header'),
+                U.AttrMap(W.get_text(
+                    'header', 'Theme(s)', 'center'), 'header'),
+                U.AttrMap(W.get_text(
+                    'header', 'Plugin(s)', 'center'), 'header'),
+                U.AttrMap(W.get_text(
+                    'header', 'Database', 'center'), 'header'),
+                U.AttrMap(W.get_blank_flow(), 'header'),
+                W.get_blank_flow()
+            ])
+        ]
+        for revision_time, revision_data in revisions.items():
+            revision_datetime = datetime.datetime.strptime(
+                revision_time,
+                self.app.settings.datetime['date_string'])
+            revision_time_str = revision_datetime.strftime(
+                self.app.settings.datetime['string_date'])
+            if 'themes' in revision_data.keys():
+                themes = W.get_text(
+                    'default',
+                    '\n' + revision_data['themes'] + '\n', 'center')
+            else:
+                themes = W.get_blank_flow()
+            if 'plugins' in revision_data.keys():
+                plugins = W.get_text(
+                    'default',
+                    '\n' + revision_data['plugins'] + '\n', 'center')
+            else:
+                plugins = W.get_blank_flow()
+            if 'databases' in revision_data.keys():
+                databases = W.get_text(
+                    'default',
+                    '\n' + revision_data['databases'] + '\n', 'center')
+            else:
+                databases = W.get_blank_flow()
+            restore_button = BoxButton(
+                'Restore',
+                on_press=self.app.views.actions.restore_revision,
+                user_data=[revisions, revision_time]
+            )
+            revisions_rows.append(
+                W.get_col_row([
+                    W.get_blank_flow(),
+                    W.get_text(
+                        'default', '\n' + revision_time_str + '\n', 'center'),
+                    themes, plugins, databases,
+                    restore_button, W.get_blank_flow()
+                ])
+            )
+        if not revisions:
+            revisions_rows.append(
+                W.get_col_row([
+                    W.get_blank_flow(),
+                    W.get_text(
+                        'default',
+                        'No Revisions available for restoration',
+                        'center'),
+                    W.get_blank_flow()
+                ])
+            )
+        revisions_pile = U.Pile(revisions_rows)
+        filler = U.Filler(revisions_pile)
+        self.app.frame.contents.__setitem__('body', [filler, None])
+        time.sleep(1)
+        self.app.loop.draw_screen()
+
+    def after_revert(self, result):
+        """Displays results after reverting changes"""
+        revision_time = datetime.datetime.strptime(
+            result['revision'],
+            self.app.settings.datetime['date_string']
+        )
+        revision_time_str = revision_time.strftime(
+            self.app.settings.datetime['string_date']
+        )
+        result_rows = []
+        result_rows.append(W.get_col_row([
+            W.get_blank_flow(),
+            U.AttrMap(
+                W.get_text(
+                    'header',
+                    'Revision ' + revision_time_str + ' Results', 'center'),
+                'header'),
+            W.get_blank_flow()
+        ]))
+        for reversion_type, result in result.items():
+            if 'revision' not in reversion_type:
+                result_rows.append(
+                    W.get_col_row([
+                        W.get_blank_flow(),
+                        W.get_text('default', reversion_type, 'center'),
+                        W.get_text('default', result, 'center'),
+                        W.get_blank_flow()
+                    ])
+                )
+        self.pile = U.Pile(result_rows)
+        filler = U.Filler(self.pile)
+        self.app.frame.contents.__setitem__('body', [filler, None])
+        time.sleep(1)
+        self.app.loop.draw_screen()
 
 
 class Users(BodyWidget):

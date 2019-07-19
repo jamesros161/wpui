@@ -4,8 +4,6 @@ the overall flow and state of the application
 Raises:
     U.ExitMainLoop: Exits the application
 """
-import os
-import json
 import urwid as U
 from settings import Settings
 from logmod import Log

@@ -6,6 +6,7 @@
         ["    Plugins    ","Plugins"],
         ["     Users     ","Users"],
         ["    WP Core    ", "Core"],
+        [" Revert Changes", "RevertChanges"],
         ["      Quit     ","Quit"]
     ],
     "Invalid" : [
@@ -17,152 +18,68 @@
         ["    WP Core    ", "Core"],
         ["      Quit     ","Quit"]
     ],
-    "Installs" : [
-        ["      Home     ", "Home"],
-        [" Get WP Config ","GetWpConfig"],
-        ["   Add Option  ","SetAddWpConfig"],
-        [" Set DB Creds  ","SetDbCreds"],
-        ["    Re-Salt    ","ReSalt"],
-        ["      Quit     ","Quit"]
-    ],
-    "GetWpConfig" : [
-        ["      Home     ", "Home"],
-        [" Get WP Config ","GetWpConfig"],
-        ["   Add Option  ","SetAddWpConfig"],
-        [" Set DB Creds  ","SetDbCreds"],
-        ["    Re-Salt    ","ReSalt"],
-        ["      Quit     ","Quit"]
-    ],
-    "SetAddWpConfig" : [
-        ["      Home     ", "Home"],
-        [" Get WP Config ","GetWpConfig"],
-        ["   Add Option  ","SetAddWpConfig"],
-        [" Set DB Creds  ","SetDbCreds"],
-        ["    Re-Salt    ","ReSalt"],
-        ["      Quit     ","Quit"]
-    ],
-    "SetDbCreds" : [
-        ["      Home     ", "Home"],
-        [" Get WP Config ","GetWpConfig"],
-        ["   Add Option  ","SetAddWpConfig"],
-        [" Set DB Creds  ","SetDbCreds"],
-        ["    Re-Salt    ","ReSalt"],
-        ["      Quit     ","Quit"]
-    ],
-    "ReSalt" : [
-        ["      Home     ", "Home"],
-        [" Get WP Config ","GetWpConfig"],
-        ["   Add Option  ","SetAddWpConfig"],
-        [" Set DB Creds  ","SetDbCreds"],
-        ["    Re-Salt    ","ReSalt"],
-        ["      Quit     ","Quit"]
-    ],
+    "Installs" : [],
+    "GetWpConfig" : [],
     "Database" : [
-        ["      Home     ","Home"],
-        ["     Export    ","DbExport"],
         ["     Import    ","DbImport"],
+        ["     Export    ","DbExport"],
         ["   Optimize    ","DbOptimize"],
         ["     Repair    ","DbRepair"],
         ["     Search    ","DbSearch"],
-        ["Search/Replace ","SearchReplace"],
-        ["      Quit     ","Quit"]
+        ["Search/Replace ","SearchReplace"]
     ],
     "DbExport" : [
-        ["      Home     ","Home"],
-        ["   Databases   ","Database"],
         ["     Import    ","DbImport"],
+        ["     Export    ","DbExport"],
         ["   Optimize    ","DbOptimize"],
         ["     Repair    ","DbRepair"],
         ["     Search    ","DbSearch"],
-        ["Search/Replace ","SearchReplace"],
-        ["      Quit     ","Quit"]
+        ["Search/Replace ","SearchReplace"]
     ],
     "DbImport" : [
-        ["      Home     ","Home"],
-        ["     Export    ","DbExport"],
         ["     Import    ","DbImport"],
+        ["     Export    ","DbExport"],
         ["   Optimize    ","DbOptimize"],
         ["     Repair    ","DbRepair"],
         ["     Search    ","DbSearch"],
-        ["Search/Replace ","SearchReplace"],
-        ["      Quit     ","Quit"]
+        ["Search/Replace ","SearchReplace"]
     ],
     "DbOptimize" : [
-        ["      Home     ","Home"],
-        ["     Export    ","DbExport"],
         ["     Import    ","DbImport"],
+        ["     Export    ","DbExport"],
         ["   Optimize    ","DbOptimize"],
         ["     Repair    ","DbRepair"],
         ["     Search    ","DbSearch"],
-        ["Search/Replace ","SearchReplace"],
-        ["      Quit     ","Quit"]
+        ["Search/Replace ","SearchReplace"]
     ],
     "DbRepair" : [
-        ["      Home     ","Home"],
-        ["     Export    ","DbExport"],
         ["     Import    ","DbImport"],
+        ["     Export    ","DbExport"],
         ["   Optimize    ","DbOptimize"],
         ["     Repair    ","DbRepair"],
         ["     Search    ","DbSearch"],
-        ["Search/Replace ","SearchReplace"],
-        ["      Quit     ","Quit"]
+        ["Search/Replace ","SearchReplace"]
     ],
     "DbSearch" : [
-        ["      Home     ","Home"],
-        ["     Export    ","DbExport"],
         ["     Import    ","DbImport"],
+        ["     Export    ","DbExport"],
         ["   Optimize    ","DbOptimize"],
         ["     Repair    ","DbRepair"],
         ["     Search    ","DbSearch"],
-        ["Search/Replace ","SearchReplace"],
-        ["      Quit     ","Quit"]
+        ["Search/Replace ","SearchReplace"]
     ],
     "SearchReplace" : [
-        ["      Home     ","Home"],
-        ["     Export    ","DbExport"],
         ["     Import    ","DbImport"],
+        ["     Export    ","DbExport"],
         ["   Optimize    ","DbOptimize"],
         ["     Repair    ","DbRepair"],
         ["     Search    ","DbSearch"],
-        ["Search/Replace ","SearchReplace"],
-        ["      Quit     ","Quit"]
+        ["Search/Replace ","SearchReplace"]
     ],
-    "Themes" : [
-        ["   List Themes  ", "Themes"],
-        [" Install Themes ", "InstallThemes"],
-        [" Revert Changes ","RevertChanges"],
-        ["      Home     ", "Home"],
-        ["   Databases   ","Database"],
-        ["    Plugins    ","Plugins"],
-        ["      Quit     ","Quit"]
-    ],
-    "InstallThemes" : [
-        ["   List Themes  ", "Themes"],
-        [" Install Themes ", "InstallThemes"],
-        [" Revert Changes ","RevertChanges"],
-        ["      Home     ", "Home"],
-        ["   Databases   ","Database"],
-        ["    Plugins    ","Plugins"],
-        ["      Quit     ","Quit"]
-    ],
-    "RevertChanges" : [
-        ["   List Themes  ", "Themes"],
-        [" Install Themes ", "InstallThemes"],
-        [" Revert Changes ","RevertChanges"],
-        ["      Home     ", "Home"],
-        ["   Databases   ","Database"],
-        ["    Plugins    ","Plugins"],
-        ["      Quit     ","Quit"]
-    ],
-    "Plugins" : [
-        [" Installations ", "Installs"],
-        ["     Themes    ","Themes"],
-        ["   Databases   ","Database"],
-        ["      Home     ", "Home"],
-        ["     Users     ","Users"],
-        ["    WP Core    ", "Core"],
-        ["      Quit     ","Quit"]
-    ],
+    "Themes" : [],
+    "InstallThemes" : [],
+    "RevertChanges" : [],
+    "Plugins" : [],
     "Users" : [
         [" Installations ", "Installs"],
         ["     Themes    ","Themes"],
@@ -181,13 +98,5 @@
         ["      Home     ", "Home"],
         ["      Quit     ","Quit"]
     ],
-    "Quit" : [
-        [" Installations ", "Installs"],
-        ["     Themes    ","Themes"],
-        ["   Databases   ","Database"],
-        ["    Plugins    ","Plugins"],
-        ["     Users     ","Users"],
-        ["    WP Core    ", "Core"],
-        ["      Home     ", "Home"]
-    ]
+    "Quit" : []
 }

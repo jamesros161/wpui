@@ -3,25 +3,31 @@
         "view_type" : "no_input",
         "title" : "",
         "sub_title" : "",
+        "initial_text" : "WP-CLI Like you have never WP-CLI'd before!!!.\nSelect an option below to begin.",
         "action_on_load" : ""
     },
     "Invalid": {
         "view_type": "no_input",
         "title": "",
         "sub_title": "",
+        "initial_text": "The View you selected is invalid or has not been created yet",
         "action_on_load": ""
     },
     "Installs" : {
         "view_type" : "body_input",
         "title" : "",
         "sub_title" : "",
-        "action_on_load" : "get_installations"
+        "initial_text": "Obtaining list of Installations...",
+        "action_on_load" : "get_installations",
+        "progress_bar": "True"
     },
     "GetWpConfig" : {
         "view_type" : "body_input",
         "title" : "",
         "sub_title" : "",
-        "action_on_load" : "get_wp_config"
+        "initial_text": "Obtaining WP-Config  directives",
+        "action_on_load" : "get_wp_config",
+        "progress_bar": "True"
     },
     "SetAddWpConfig" : {
         "view_type" : "body_input",
@@ -87,7 +93,7 @@
         "view_type" : "body_input",
         "title" : "",
         "sub_title" : "",
-        "action_on_load" : ""
+        "action_on_load" : "get_plugin_list"
 
     },
     "Themes" : {
@@ -106,7 +112,7 @@
         "view_type": "body_input",
         "title": "",
         "sub_title": "",
-        "action_on_load": "revert_changes"
+        "action_on_load": "get_revisions"
     },
     "Users" : {
         "view_type" : "body_input",

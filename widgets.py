@@ -17,6 +17,7 @@ class DbSearchEditMap(U.AttrMap):
     def __init__(
             self,
             app,
+            body_widget,
             attr,
             edit_text='',
             align='',
@@ -27,7 +28,7 @@ class DbSearchEditMap(U.AttrMap):
         self.original_widget = DbSearchEdit(
             app,
             self,
-            body_widget,
+            body_widget=body_widget,
             on_enter=on_enter,
             edit_text=edit_text,
             align=align,
@@ -44,6 +45,7 @@ class DbSearchEdit(U.Edit):
             self,
             app,
             attr_map,
+            body_widget='',
             on_enter='',
             edit_text='',
             align='',
@@ -55,6 +57,7 @@ class DbSearchEdit(U.Edit):
             align=align,
             caption=caption,
             edit_pos=edit_pos)
+        self.body_widget = body_widget
         self.app = app
         self.attr_map = attr_map
         self.on_enter = on_enter
@@ -135,9 +138,9 @@ class SRSearchEdit(U.Edit):
         if key != 'enter':
             return super(SRSearchEdit, self).keypress(size, key)
         if not self.user_args:
-            self.user_args = [self, self.get_edit_text()]
+            self.user_args = [self, 'dry_run', self.get_edit_text()]
         else:
-            self.user_args = [self,  self.user_args]
+            self.user_args = [self,  'dry_run', self.user_args]
         L.debug(
             'on_enter action: %s, user_args: %s',
             self.on_enter,
@@ -351,7 +354,8 @@ class WpConfigNameEdit(U.Edit):
         self.value_map_instance.original_widget.set_directive_name(
             super(WpConfigNameEdit, self).get_edit_text())
         self.set_attr_map(None, 'body')
-        self.body_widget.pile.focus_position = 1
+        self.body_widget.pile.focus_position = \
+            self.body_widget.pile.focus_position + 1
         self.edit_pos = len(self.get_edit_text()) + 1
         return True
 
@@ -495,6 +499,33 @@ class CustomWidgets(object):
                 menu_grid_items, item_widths[-1], 0, 0, 'center')
         else:
             menu_grid = self.get_div()
+
+        main_menu = app.menus.get_menu('Home')
+        main_menu_items = main_menu.items
+        main_menu_grid_items = []
+        for item in main_menu_items:
+            if len(item) == 3:
+                main_menu_grid_items.append(
+                    BoxButton(
+                        item[0],
+                        on_press=app.views.activate,
+                        user_data=(item[1], item[2])))
+            else:
+                main_menu_grid_items.append(
+                    BoxButton(
+                        item[0],
+                        on_press=app.views.activate,
+                        user_data=(item[1])))
+        item_widths = []
+        for item in main_menu_grid_items:
+            item_widths.append(item.cursor_position)
+        item_widths.sort()
+        if item_widths:
+            main_menu_grid = U.GridFlow(
+                main_menu_grid_items, item_widths[-1], 0, 0, 'center')
+        else:
+            main_menu_grid = self.get_div()
+
         legend_items = []
         for legend in S.display['legend']:
             legend_items.append(self.get_text('bold', legend[0], 'center'))
@@ -506,7 +537,14 @@ class CustomWidgets(object):
                 self.get_text('highlight', legend[1], 'center'))
         legend_items_grid = U.GridFlow(legend_items, 21, 0, 0, 'center')
         legend_items_map = U.AttrMap(legend_items_grid, 'highlight')
-        return U.Pile([menu_grid, legend_grid_map, legend_items_map])
+        if main_menu_items == menu_items:
+            return U.Pile([main_menu_grid, legend_grid_map, legend_items_map])
+        else:
+            return U.Pile([
+                menu_grid,
+                main_menu_grid,
+                legend_grid_map,
+                legend_items_map])
 
     def get_col_row(self, items, dividechars=None):
         """Creates a single row of columns

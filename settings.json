@@ -9,6 +9,7 @@
         "palette": [
             ["header","black","dark cyan"],
             ["default","default","default"],
+            ["underline","default, underline","default"],
             ["footer",  "dark cyan",    "light gray"],
             ["body",    "dark cyan",    "default"],
             ["bold",    "light cyan, bold" , "black"],
@@ -33,5 +34,12 @@
         "menu_enabled" : "True",
         "col_div_chars" : 0,
         "mycophagists" : "A wise man once said, \"There are two kinds of mycophagists...Brave ones, and live ones....\""
+    },
+    "datetime" : {
+        "date_string" : "%Y%m%d%H%M%S",
+        "string_date" : "%m/%d/%Y %H:%M:%S"
+    },
+    "messages" : {
+        "db_not_exist" : "No Database exists for this WP Installation \n Or no WP Installation selected"
     }
 }
