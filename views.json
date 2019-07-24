@@ -18,6 +18,7 @@
         "title" : "",
         "sub_title" : "",
         "initial_text": "Obtaining list of Installations...",
+        "class": "wp_config",
         "action_on_load" : "get_installations",
         "progress_bar": "True"
     },
@@ -26,6 +27,7 @@
         "title" : "",
         "sub_title" : "",
         "initial_text": "Obtaining WP-Config  directives",
+        "class": "wp_config",
         "action_on_load" : "get_wp_config",
         "progress_bar": "True"
     },
@@ -33,97 +35,125 @@
         "view_type" : "body_input",
         "title" : "",
         "sub_title" : "",
+        "class": "wp_config",
         "action_on_load" : ""
     },
     "SetDbCreds" : {
         "view_type" : "body_input",
         "title" : "",
         "sub_title" : "",
+        "class": "wp_config",
         "action_on_load" : ""
     },
     "ReSalt" : {
         "view_type" : "no_display",
         "title" : "",
         "sub_title" : "",
+        "class": "wp_config",
         "action_on_load" : "re_salt"
     },
     "Database" : {
-        "view_type" : "no_input",
+        "view_type" : "body_input",
         "title" : "",
         "sub_title" : "",
-        "action_on_load" : "get_database_information"
+        "initial_text": "Polling for Database Information",
+        "class": "database",
+        "action_on_load" : "get_database_information",
+        "progress_bar": "True"
     },
     "DbExport" : {
         "view_type" : "no_input",
         "title" : "",
         "sub_title" : "",
+        "class": "database",
+        "initial_text": "Exporting Database....",
         "action_on_load" : "db_export"
     },
     "DbImport" : {
         "view_type" : "body_input",
         "title" : "",
         "sub_title" : "",
+        "class": "database",
+        "initial_text": "Searching for database dumps to import...",
         "action_on_load" : "get_db_imports"
     },
     "DbOptimize" : {
         "view_type" : "no_input",
         "title" : "",
         "sub_title" : "",
+        "class": "database",
+        "initial_text": "Optimizing Database....0",
         "action_on_load" : "db_optimize"
     },
     "DbRepair" : {
         "view_type" : "no_input",
         "title" : "",
         "sub_title" : "",
+        "class": "database",
+        "initial_text": "Repairing Database....",
         "action_on_load" : "db_repair"
     },
     "DbSearch" : {
         "view_type" : "body_input",
         "title" : "",
         "sub_title" : "",
+        "class": "database",
         "action_on_load" : ""
     },
     "SearchReplace": {
         "view_type": "body_input",
         "title": "",
         "sub_title": "",
+        "class": "database",
         "action_on_load": ""
     },
     "Plugins" : {
         "view_type" : "body_input",
         "title" : "",
         "sub_title" : "",
-        "action_on_load" : "get_plugin_list"
-
+        "initial_text": "Obtaining List of Plugins",
+        "class": "plugins",
+        "action_on_load" : "get_plugin_list",
+        "progress_bar": "True"
     },
     "Themes" : {
         "view_type" : "body_input",
         "title" : "",
         "sub_title" : "",
-        "action_on_load" : "get_theme_list"
+        "initial_text": "Obtaining List of installed WordPress Themes",
+        "class": "themes",
+        "action_on_load" : "get_theme_list",
+        "progress_bar": "True"
     },
     "InstallThemes": {
         "view_type": "body_input",
         "title": "",
         "sub_title": "",
+        "class": "themes",
         "action_on_load": ""
     },
     "RevertChanges": {
         "view_type": "body_input",
         "title": "",
         "sub_title": "",
+        "class": "revisions",
+        "initial_text": "Obtaining List of Revisions...",
         "action_on_load": "get_revisions"
     },
     "Users" : {
         "view_type" : "body_input",
         "title" : "",
         "sub_title" : "",
+        "class": "users",
+        "initial_text": "Registered Users for selected WP Installation",
         "action_on_load" : ""
     },
     "Core" : {
         "view_type" : "body_input",
         "title" : "",
         "sub_title" : "",
+        "class": "core",
+        "initial_text": "WordPress Core Information for selected WP Installation",
         "action_on_load" : ""
     },
     "Quit" : {

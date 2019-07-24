@@ -1,6 +1,7 @@
 """Class for importing Json config files"""
 import os
 import json
+import sys
 
 
 class Config(object):
@@ -20,7 +21,7 @@ class Config(object):
                 with open(path, 'r') as menus:
                     file_object = json.load(menus)
             except IOError:
-                print('JSON FILES MISSING. CHECK INSTALLATION PATH')
+                sys.exit('JSON FILES MISSING. CHECK INSTALLATION PATH')
             else:
                 file_dir = os.path.dirname('/etc/wpui/')
                 path = os.path.join(file_dir, filename)

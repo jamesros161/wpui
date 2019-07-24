@@ -29,6 +29,19 @@ class Menus(object):
         else:
             return getattr(self, menu_name)
 
+    def get_view_menu_items(self, menu_name):
+        """Returns menu item list"""
+        try:
+            getattr(self, menu_name)
+        except AttributeError:
+            L.debug(
+                "No Menu Exists by the name %s!!! Menu Retrieval Failed!",
+                menu_name)
+            return []
+        else:
+            menu = getattr(self, menu_name)
+            return menu.items
+
 
 class Menu(object):
     """Individual menu object for each view"""

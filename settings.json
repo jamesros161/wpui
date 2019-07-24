@@ -1,4 +1,8 @@
 {
+    "app" : {
+        "extra" : 1,
+        "temp_dir" : ""
+    },
     "logging" : {
             "level" : "DEBUG",
             "name" : "wpui.log",
@@ -15,8 +19,8 @@
             ["bold",    "light cyan, bold" , "black"],
             ["blue", "bold", "dark blue"],
             ["highlight", "light blue", "default"],
-            ["alert", "dark red, bold", "default"],
-            ["flashing", "dark red, blink, bold", "default"],
+            ["alert", "black", "dark red"],
+            ["flashing", "black, blink", "dark red"],
             ["boxborder", "light cyan", "default"],
             ["progressbar", "black", "dark cyan"]
         ],
@@ -40,6 +44,8 @@
         "string_date" : "%m/%d/%Y %H:%M:%S"
     },
     "messages" : {
-        "db_not_exist" : "No Database exists for this WP Installation \n Or no WP Installation selected"
+        "db_not_exist" : "No Database exists for this WP Installation \n Or no WP Installation selected",
+        "mycophagists": "  A wise man once said, \"There are two kinds of mycophagists...Brave ones, and live ones....\"  \n",
+        "db_export_warning": "\nWARNING!!!\n  WP-CLI Was unable to export the database!  \n  Carefully consider if it is wise to make this replacement  \n"
     }
 }

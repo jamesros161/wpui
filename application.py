@@ -5,13 +5,11 @@ Raises:
     U.ExitMainLoop: Exits the application
 """
 import urwid as U
-from settings import Settings
 from logmod import Log
 from widgets import CustomWidgets
 from menus import Menus
 from views import Views
 
-S = Settings()
 L = Log()
 W = CustomWidgets()
 
@@ -20,9 +18,9 @@ class App(object):
     """App Class is a container for the
     state, views, menu, loop, and frame classes"""
 
-    def __init__(self):
+    def __init__(self, settings):
         L.debug("App Class Initializing")
-        self.settings = S
+        self.settings = settings
         self.frame = U.Frame(
             U.Filler(
                 W.get_text(
@@ -30,7 +28,7 @@ class App(object):
                     'Loading...Please Wait',
                     'center')))
         self.loop = U.MainLoop(self.frame,
-                               S.display['palette'],
+                               self.settings.display['palette'],
                                unhandled_input=self.unhandled_input,
                                handle_mouse=False)
         self.state = State(self)
@@ -54,7 +52,7 @@ class App(object):
             key {str} -- the str/char representation of the
                          key pressed
         """
-        if isinstance(key, basestring):
+        if isinstance(key, str):
             # raw = loop.screen.get_input(raw_keys=True)
             # debug('raw: %s', raw)
             if key in 'ctrl e':
@@ -63,7 +61,7 @@ class App(object):
                 if self.frame.focus_position == 'footer':
                     self.frame.focus_position = 'body'
                 else:
-                    if S.display['menu_enabled']:
+                    if self.settings.display['menu_enabled']:
                         self.frame.focus_position = 'footer'
             if 'end' in key:
                 self.state.go_forward()
@@ -83,12 +81,16 @@ class State(object):
         self.active_view_name = None
         self.previous_view = None
         self.previous_view_name = None
+        self.next_view = None
+        self.next_view_name = None
         self.view_count = -1
         self.view_chain = []
         self.view_chain_pos = -1
         self.active_installation = None
         self.db_exports = []
         self.homedir = ''
+        self.sr_search_term = None
+        self.sr_replace_term = None
 
     def update_state(self, state_prop, value):
         """Update's a specified property of the application state
@@ -117,7 +119,7 @@ class State(object):
             obj {obj} -- the object / method that called this method
             installation {dict} -- dictionary of the active installation
         """
-        L.debug("Obj Arg: %s", obj)
+        L.debug("Obj %s, Installation: %s", obj, installation)
         self.active_installation = installation
         if self.active_installation['home_url']:
             sub_title = self.active_installation['directory'] + \
@@ -128,9 +130,21 @@ class State(object):
         L.debug(
             'self.app.settings.display["subtitle"]: %s',
             self.app.settings.display['sub_title'])
-        self.app.views.activate(self.app, 'GetWpConfig')
-        _x = W.get_header('set_installation', S.display['title'], sub_title)
+        self.app.views.activate(self, {"view": 'GetWpConfig'})
+        _x = W.get_header(
+            self.app,
+            'set_installation',
+            self.app.settings.display['title'],
+            sub_title)
         self.app.frame.contents.__setitem__('header', [_x, None])
+
+    def set_sr_search_term(self, value):
+        """Sets DB SearchReplace search term"""
+        self.sr_search_term = value
+
+    def set_sr_replace_term(self, value):
+        """Sets DB SearchReplace replace term"""
+        self.sr_replace_term = value
 
     def get_state(self, state_prop):
         """class getter for state properties
@@ -235,14 +249,19 @@ class State(object):
         """
         L.debug("Args: %s", args)
         L.debug('View Chain Pos: %s', self.get_view_chain_pos())
+        self.next_view = self.get_view_from_chain(self.get_view_chain_pos())
+        self.next_view_name = self.next_view.name
         if self.set_view_chain_pos(-1):
             _x = self.get_view_from_chain(self.get_view_chain_pos())
             L.debug('Going back to view: %s', _x.name)
-            _x.reload()
+            _x.start()
 
     def go_forward(self):
         """Moves user forward one position in view chain
         """
         if self.set_view_chain_pos(1):
             _x = self.get_view_from_chain(self.get_view_chain_pos())
-            _x.reload()
+            _x.start()
+        else:
+            self.next_view = None
+            self.next_view_name = None

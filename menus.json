@@ -1,102 +1,20 @@
 {
-    "Home" : [
-        [" Installations ","Installs"],
-        ["     Themes    ","Themes"],
-        ["   Databases   ","Database"],
-        ["    Plugins    ","Plugins"],
-        ["     Users     ","Users"],
-        ["    WP Core    ", "Core"],
-        [" Revert Changes", "RevertChanges"],
-        ["      Quit     ","Quit"]
+    "Main" : [
+        [" Installations ", {"view": "Installs"}],
+        ["   Databases   ", {"view": "Database"}],
+        ["     Themes    ", {"view": "Themes"}],
+        ["    Plugins    ", {"view": "Plugins"}],
+        ["     Users     ", {"view": "Users"}],
+        ["    WP Core    ", {"view": "Core"}],
+        [" Revert Changes", {"view": "RevertChanges"}],
+        ["      Quit     ", {"view": "Quit"}]
     ],
-    "Invalid" : [
-        [" Installations ","Installs"],
-        ["     Themes    ","Themes"],
-        ["   Databases   ","Database"],
-        ["    Plugins    ","Plugins"],
-        ["     Users     ","Users"],
-        ["    WP Core    ", "Core"],
-        ["      Quit     ","Quit"]
-    ],
-    "Installs" : [],
-    "GetWpConfig" : [],
-    "Database" : [
-        ["     Import    ","DbImport"],
-        ["     Export    ","DbExport"],
-        ["   Optimize    ","DbOptimize"],
-        ["     Repair    ","DbRepair"],
-        ["     Search    ","DbSearch"],
-        ["Search/Replace ","SearchReplace"]
-    ],
-    "DbExport" : [
-        ["     Import    ","DbImport"],
-        ["     Export    ","DbExport"],
-        ["   Optimize    ","DbOptimize"],
-        ["     Repair    ","DbRepair"],
-        ["     Search    ","DbSearch"],
-        ["Search/Replace ","SearchReplace"]
-    ],
-    "DbImport" : [
-        ["     Import    ","DbImport"],
-        ["     Export    ","DbExport"],
-        ["   Optimize    ","DbOptimize"],
-        ["     Repair    ","DbRepair"],
-        ["     Search    ","DbSearch"],
-        ["Search/Replace ","SearchReplace"]
-    ],
-    "DbOptimize" : [
-        ["     Import    ","DbImport"],
-        ["     Export    ","DbExport"],
-        ["   Optimize    ","DbOptimize"],
-        ["     Repair    ","DbRepair"],
-        ["     Search    ","DbSearch"],
-        ["Search/Replace ","SearchReplace"]
-    ],
-    "DbRepair" : [
-        ["     Import    ","DbImport"],
-        ["     Export    ","DbExport"],
-        ["   Optimize    ","DbOptimize"],
-        ["     Repair    ","DbRepair"],
-        ["     Search    ","DbSearch"],
-        ["Search/Replace ","SearchReplace"]
-    ],
-    "DbSearch" : [
-        ["     Import    ","DbImport"],
-        ["     Export    ","DbExport"],
-        ["   Optimize    ","DbOptimize"],
-        ["     Repair    ","DbRepair"],
-        ["     Search    ","DbSearch"],
-        ["Search/Replace ","SearchReplace"]
-    ],
-    "SearchReplace" : [
-        ["     Import    ","DbImport"],
-        ["     Export    ","DbExport"],
-        ["   Optimize    ","DbOptimize"],
-        ["     Repair    ","DbRepair"],
-        ["     Search    ","DbSearch"],
-        ["Search/Replace ","SearchReplace"]
-    ],
-    "Themes" : [],
-    "InstallThemes" : [],
-    "RevertChanges" : [],
-    "Plugins" : [],
-    "Users" : [
-        [" Installations ", "Installs"],
-        ["     Themes    ","Themes"],
-        ["   Databases   ","Database"],
-        ["    Plugins    ","Plugins"],
-        ["      Home     ", "Home"],
-        ["    WP Core    ", "Core"],
-        ["      Quit     ","Quit"]
-    ],
-    "Core" : [
-        [" Installations ", "Installs"],
-        ["     Themes    ","Themes"],
-        ["   Databases   ","Database"],
-        ["    Plugins    ","Plugins"],
-        ["     Users     ","Users"],
-        ["      Home     ", "Home"],
-        ["      Quit     ","Quit"]
-    ],
-    "Quit" : []
+    "DbSubMenu" : [
+        ["Import", {"view": "DbImport"}],
+        ["Export", {"action": "db_export", "action_class": "database"}],
+        ["Search/Replace", {"view": "SearchReplace"}],
+        ["Optimize", {"action": "db_optimize", "action_class": "database"}],
+        ["Repair", {"action": "db_repair", "action_class": "database"}],
+        ["Search", {"view": "DbSearch"}]
+    ]
 }

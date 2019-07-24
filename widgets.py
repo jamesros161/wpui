@@ -69,7 +69,7 @@ class DbSearchEdit(U.Edit):
         if not self.user_args:
             self.user_args = [self, self.get_edit_text()]
         else:
-            self.user_args = [self,  self.user_args]
+            self.user_args = [self, self.user_args]
         L.debug(
             'on_enter action: %s, user_args: %s',
             self.on_enter,
@@ -83,28 +83,30 @@ class SRSearchEditMap(U.AttrMap):
 
     def __init__(
             self,
-            app,
-            body_widget,
-            attr,
-            edit_text='',
-            align='',
-            on_enter='',
-            user_args='',
-            edit_pos=None,
-            caption='',
-            drop_cursor=False):
-        self.original_widget = SRSearchEdit(
-            app,
-            body_widget,
-            self,
-            on_enter=on_enter,
-            edit_text=edit_text,
-            align=align,
-            user_args=user_args,
-            edit_pos=edit_pos,
-            caption=caption,
-            drop_cursor=drop_cursor)
-        super(SRSearchEditMap, self).__init__(self.original_widget, attr)
+            app):
+        # pylint: disable=invalid-name
+        W = CustomWidgets()
+        self.original_widget = U.Pile([
+            W.get_col_row([
+                W.get_text('default', 'Search Term: ', 'right'),
+                SRSearchEdit(
+                    app,
+                    self,
+                    align='left',
+                    get_edit=app.state.set_sr_search_term,
+                    drop_cursor=True),
+            ]),
+            W.get_col_row([
+                W.get_text('default', 'Replacement Term: ', 'right'),
+                SRSearchEdit(
+                    app,
+                    self,
+                    on_enter=app.views.actions.database.sr_dry_run,
+                    align='left',
+                    get_edit=app.state.set_sr_replace_term)
+            ])])
+
+        super(SRSearchEditMap, self).__init__(self.original_widget, 'default')
 
 
 class SRSearchEdit(U.Edit):
@@ -113,7 +115,6 @@ class SRSearchEdit(U.Edit):
     def __init__(
             self,
             app,
-            body_widget,
             attr_map,
             on_enter='',
             edit_text='',
@@ -121,15 +122,16 @@ class SRSearchEdit(U.Edit):
             caption='',
             edit_pos=None,
             user_args='',
-            drop_cursor=False):
+            drop_cursor=False,
+            get_edit=None):
         super(SRSearchEdit, self).__init__(
             edit_text=edit_text,
             align=align,
             caption=caption,
             edit_pos=edit_pos)
+        self.get_edit = get_edit
         self.app = app
         self.drop_cursor = drop_cursor
-        self.body_widget = body_widget
         self.attr_map = attr_map
         self.on_enter = on_enter
         self.user_args = user_args
@@ -137,18 +139,20 @@ class SRSearchEdit(U.Edit):
     def keypress(self, size, key):
         if key != 'enter':
             return super(SRSearchEdit, self).keypress(size, key)
-        if not self.user_args:
-            self.user_args = [self, 'dry_run', self.get_edit_text()]
-        else:
-            self.user_args = [self,  'dry_run', self.user_args]
         L.debug(
             'on_enter action: %s, user_args: %s',
             self.on_enter,
             self.user_args)
-        self.on_enter(*self.user_args)
+        self.get_edit(self.get_edit_text())
+        self.attr_map.set_attr_map({None: 'body'})
+        if self.on_enter:
+            self.on_enter(*self.user_args)
         if self.drop_cursor:
-            self.body_widget.pile.focus_position = 1
-        self.edit_pos = len(self.user_args) + 1
+            focus_pos = self.attr_map.original_widget.focus_position
+            L.debug("Focus_position: %s", focus_pos)
+            self.attr_map.original_widget.focus_position = focus_pos + 1
+            L.debug("New Focus_position: %s", focus_pos)
+        self.edit_pos = len(self.get_edit_text()) + 1
 
 
 class DbImportEditMap(U.AttrMap):
@@ -205,7 +209,7 @@ class DbImportEdit(U.Edit):
         if not self.user_args:
             self.user_args = [self, self.get_edit_text()]
         else:
-            self.user_args = [self,  self.user_args]
+            self.user_args = [self, self.user_args]
         L.debug(
             'on_enter action: %s, user_args: %s',
             self.on_enter,
@@ -222,24 +226,22 @@ class WpConfigValueMap(U.AttrMap):
             app,
             attr,
             body_widget=None,
-            directive_name='',
             edit_text='',
             align='',
             cursor_drop=False,
             caption='',
             on_enter='',
-            user_args=''):
+            user_data=''):
         self.original_widget = WpConfigValueEdit(
             app,
             self,
-            directive_name=directive_name,
             body_widget=body_widget,
             edit_text=edit_text,
             align=align,
             cursor_drop=cursor_drop,
             caption=caption,
             on_enter=on_enter,
-            user_args=user_args)
+            user_data=user_data)
         super(WpConfigValueMap, self).__init__(self.original_widget, attr)
 
 
@@ -251,64 +253,57 @@ class WpConfigValueEdit(U.Edit):
             app,
             attr_map,
             body_widget=None,
-            directive_name='',
             edit_text='',
             align='',
             cursor_drop=False,
             caption='',
             on_enter='',
-            user_args=''):
+            user_data=''):
         super(WpConfigValueEdit, self).__init__(
             edit_text=edit_text,
             align=align,
             caption=caption)
         self.app = app
-        self.on_enter = on_enter
-        self.user_args = user_args
-        self.cursor_drop = cursor_drop
-        self.body_widget = body_widget
-        self.attr_map = attr_map
-        self.directive_name = directive_name
+        self.options = {
+            'on_enter': on_enter,
+            'user_data': user_data,
+            'cursor_drop': cursor_drop,
+            'body_widget': body_widget,
+            'attr_map': attr_map,
+            'edit_text': edit_text}
 
     def keypress(self, size, key):
         if key != 'enter':
             return super(WpConfigValueEdit, self).keypress(size, key)
-        L.debug(
-            'Directive: %s, Value: %s',
-            self.directive_name,
-            self.get_edit_text())
-        if self.get_edit_text():
-            remove = False
+        # get edit text on enter
+        self.options['edit_text'] = self.get_edit_text()
+        # if edit text is not blank, remove = False
+        # This is for the WpConfig editting page
+        if self.options['edit_text']:
+            self.options['user_data']['remove'] = False
         else:
-            remove = True
-        self.app.views.GetWpConfig.actions.set_wp_config(
-            self.attr_map,
-            self.directive_name,
-            self.get_edit_text(),
-            remove=remove)
+            self.options['user_data']['remove'] = True
+
         self.edit_pos = len(self.get_edit_text()) + 1
-        if remove:
+        if self.options['user_data']['remove']:
             self.set_edit_text('REMOVED')
             self.edit_pos = len(self.get_edit_text()) + 1
-        if self.cursor_drop:
+        if self.options['cursor_drop']:
             L.debug('Current Focus Position: %s',
-                    self.body_widget.pile.focus_position)
-            focus_position = self.body_widget.pile.focus_position
-            self.body_widget.pile.focus_position = focus_position + 1
+                    self.options['body_widget'].pile.focus_position)
+            focus_position = self.options['body_widget'].pile.focus_position
+            focus_position = focus_position + 1
+            self.options['body_widget'].pile.focus_position = focus_position
             L.debug('New Focus Position: %s',
-                    self.body_widget.pile.focus_position)
-        if self.on_enter:
-            self.on_enter(*self.user_args)
+                    self.options['body_widget'].pile.focus_position)
+        if self.options['on_enter']:
+            self.options['on_enter'](self.options)
         return True
 
     def set_attr_map(self, from_attr, to_attr):
         """Sets the attribute mapping for the
         edit text in response to wp-cli result"""
-        self.attr_map.set_attr_map({from_attr: to_attr})
-
-    def set_directive_name(self, directive_name):
-        """Dynamically set directive_name"""
-        self.directive_name = directive_name
+        self.options['attr_map'].set_attr_map({from_attr: to_attr})
 
 
 class WpConfigNameMap(U.AttrMap):
@@ -370,7 +365,10 @@ class BoxButton(U.WidgetWrap):
     _border_char = u'─'
 
     def __init__(self, label, on_press=None,
-                 user_data=None, enabled=True):
+                 user_data=None, enabled=True, no_border=False,
+                 strip_padding=False):
+        if strip_padding:
+            label = label.lstrip().rstrip()
         padding_size = 2
         border = self._border_char * (len(label) + padding_size * 2)
         self.cursor_position = len(border) + padding_size
@@ -385,6 +383,9 @@ class BoxButton(U.WidgetWrap):
             U.Text(self.middle[:-1], align='center'),
             U.Text(self.bottom, align='center'),
         ])
+        if no_border:
+            self.middle = u'[ ' + label + u' ]'
+            self.widget = U.Text(self.middle, align='center')
         self.widget = U.AttrMap(self.widget, 'body', 'highlight')
         self._hidden_btn = U.Button(
             '%s' % label, on_press, user_data)
@@ -415,6 +416,7 @@ class BoxButton(U.WidgetWrap):
         return self._hidden_btn.mouse_event(*args, **kw)
 
     def set_label(self, new_label):
+        """Sets button label"""
         self._hidden_btn.set_label(new_label)
 
 
@@ -449,7 +451,39 @@ class CustomWidgets(object):
         """returns a divider flow type widget"""
         return U.Divider(div_char=div_char, top=0, bottom=0)
 
-    def get_header(self, name, title, sub_title):
+    def get_grid_flow(self, app, items):
+        """Creates grid_flow item"""
+        L.debug('AppInstance: %s, items: %s', app, items)
+        if items:
+            menu_grid_items = []
+            for item in items:
+                if 'action' in item[1].keys():
+                    action_class = getattr(
+                        app.views.actions, item[1]['action_class'])
+                    action = getattr(
+                        action_class, item[1]['action']
+                    )
+                else:
+                    action = app.views.activate
+                menu_grid_items.append(
+                    BoxButton(
+                        item[0],
+                        on_press=action,
+                        user_data=item[1]))
+            item_widths = []
+            for item in menu_grid_items:
+                item_widths.append(item.cursor_position)
+            item_widths.sort()
+            if item_widths:
+                menu_grid = U.GridFlow(
+                    menu_grid_items, item_widths[-1], 0, 0, 'center')
+            else:
+                menu_grid = self.get_div()
+            return menu_grid
+        else:
+            return False
+
+    def get_header(self, app, name, title, sub_title):
         """returns a frame header widget"""
         L.debug("Title: %s,  Name:, %s, sub_title: %s", title, name, sub_title)
         if title:
@@ -466,85 +500,61 @@ class CustomWidgets(object):
                 'bold', S.display['sub_title'], 'center')
         title_map = U.AttrMap(title, 'bold')
         div_map = U.AttrMap(self.get_div(), 'body')
+        if app.state.get_state('previous_view'):
+            previous_page = '<<  [  ' + \
+                app.state.get_state('previous_view_name') + '  ]'
+        else:
+            previous_page = ' '
+        if app.state.get_state('next_view'):
+            next_page = '[  ' + app.state.get_state('next_view_name') + \
+                '  ]  >>'
+        else:
+            next_page = ' '
         if self.sub_title:
-            sub_title_map = U.AttrMap(self.sub_title, 'bold')
+            sub_title_map = U.AttrMap(
+                self.get_col_row([
+                    self.get_text('bold', previous_page, 'center'),
+                    self.sub_title,
+                    self.get_text('bold', next_page, 'center')
+                    ]), 'bold')
             return U.Pile((title_map, sub_title_map, div_map), focus_item=None)
         else:
             return U.Pile((title_map, div_map), focus_item=None)
 
     def get_footer(self, name, app):
         """returns a frame footer widget"""
-        menu = app.menus.get_menu(name)
-        menu_items = menu.items
-        menu_grid_items = []
-        for item in menu_items:
-            if len(item) == 3:
-                menu_grid_items.append(
-                    BoxButton(
-                        item[0],
-                        on_press=app.views.activate,
-                        user_data=(item[1], item[2])))
-            else:
-                menu_grid_items.append(
-                    BoxButton(
-                        item[0],
-                        on_press=app.views.activate,
-                        user_data=(item[1])))
-        item_widths = []
-        for item in menu_grid_items:
-            item_widths.append(item.cursor_position)
-        item_widths.sort()
-        if item_widths:
-            menu_grid = U.GridFlow(
-                menu_grid_items, item_widths[-1], 0, 0, 'center')
-        else:
-            menu_grid = self.get_div()
 
-        main_menu = app.menus.get_menu('Home')
-        main_menu_items = main_menu.items
-        main_menu_grid_items = []
-        for item in main_menu_items:
-            if len(item) == 3:
-                main_menu_grid_items.append(
-                    BoxButton(
-                        item[0],
-                        on_press=app.views.activate,
-                        user_data=(item[1], item[2])))
-            else:
-                main_menu_grid_items.append(
-                    BoxButton(
-                        item[0],
-                        on_press=app.views.activate,
-                        user_data=(item[1])))
-        item_widths = []
-        for item in main_menu_grid_items:
-            item_widths.append(item.cursor_position)
-        item_widths.sort()
-        if item_widths:
-            main_menu_grid = U.GridFlow(
-                main_menu_grid_items, item_widths[-1], 0, 0, 'center')
-        else:
-            main_menu_grid = self.get_div()
+        main_menu_items = app.menus.get_view_menu_items('Main')
+        view_menu_items = app.menus.get_view_menu_items(name)
+
+        main_menu_grid = self.get_grid_flow(app, main_menu_items)
+        view_menu_items = self.get_grid_flow(app, view_menu_items)
 
         legend_items = []
         for legend in S.display['legend']:
             legend_items.append(self.get_text('bold', legend[0], 'center'))
         legend_grid = U.GridFlow(legend_items, 21, 0, 0, 'center')
         legend_grid_map = U.AttrMap(legend_grid, 'bold')
+
         legend_items = []
         for legend in S.display['legend']:
             legend_items.append(
                 self.get_text('highlight', legend[1], 'center'))
         legend_items_grid = U.GridFlow(legend_items, 21, 0, 0, 'center')
         legend_items_map = U.AttrMap(legend_items_grid, 'highlight')
-        if main_menu_items == menu_items:
-            return U.Pile([main_menu_grid, legend_grid_map, legend_items_map])
-        else:
-            return U.Pile([
-                menu_grid,
+
+        if view_menu_items:
+            pile = U.Pile([
+                view_menu_items,
                 main_menu_grid,
                 legend_grid_map,
                 legend_items_map])
+        else:
+            pile = U.Pile([
+                main_menu_grid,
+                legend_grid_map,
+                legend_items_map])
+        return pile
 
     def get_col_row(self, items, dividechars=None):
         """Creates a single row of columns

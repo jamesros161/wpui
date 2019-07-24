@@ -4,10 +4,11 @@ import os
 import getpass
 import subprocess
 import json
+from datetime import datetime
 from threading import Thread
 from random import randint
 from logmod import Log
-from datetime import datetime
+
 
 L = Log()
 
@@ -61,12 +62,14 @@ class Installations(object):
             progress_sections = 100
         progress_increments = progress_sections / 2
         for installation in self.installations:
+            L.debug('installation: %s', installation)
             self.progress = self.progress + progress_increments
             # L.debug('Progress: %s', self.progress)
-            os.write(self.app.action_pipe, str(self.progress))
+            os.write(self.app.action_pipe, str.encode(str(self.progress)))
             db_check_data, db_check_error = Call.wpcli(
-                installation['directory'],
-                ['db', 'check'])
+                self.app,
+                ['db', 'check'],
+                install_path=installation['directory'])
             if db_check_data:
                 data = db_check_data.splitlines()
                 for line in data:
@@ -75,13 +78,17 @@ class Installations(object):
                         installation['valid_wp_options'] = True
                         self.progress = self.progress + progress_increments
                         # L.debug('Progress: %s', self.progress)
-                        os.write(self.app.action_pipe, str(self.progress))
+                        progress = str(self.progress)
+                        os.write(
+                            self.app.action_pipe,
+                            progress.encode(encoding='UTF-8'))
                         homedata, _ = Call.wpcli(
-                            installation['directory'],
+                            self.app,
                             [
                                 'option',
                                 'get',
-                                'home'])
+                                'home'],
+                            install_path=installation['directory'])
                         if homedata:
                             installation['home_url'] = homedata.rstrip()
                     if 'Success: Database checked' in line:
@@ -96,7 +103,7 @@ class DatabaseInformation(object):
 
     def __init__(self, app):
         self.app = app
-        L.debug('Installations Initialized')
+        L.debug('Installations Initialized. AppInstance: %s', self.app)
         self.installation = self.app.state.active_installation
         self.db_info = {
             'name': None,
@@ -105,20 +112,28 @@ class DatabaseInformation(object):
             'check_tables': None,
             'check_error': None
         }
-        self.get_db_size()
 
     def get_db_size(self):
         """Get database size and name list"""
-        path = self.installation['directory']
-        self.progress = 0
+        progress = 0
         progress_increments = 100 / 2
 
         # GET DATABASE NAME AND SIZE
-        self.progress = self.progress + progress_increments
-        L.debug('Progress: %s', self.progress)
-        os.write(self.app.action_pipe, str(self.progress))
+        progress = progress + progress_increments
+        L.debug('Progress: %s', progress)
+        db_info = {
+            'name': None,
+            'size': None,
+            'size_error': None,
+            'check_tables': None,
+            'check_error': None
+        }
+        try:
+            os.write(self.app.action_pipe, str.encode(str(progress)))
+        except OSError as error:
+            L.warning('self.app.action_pipe Not Open Yet: %s', error)
         dbsize_result, dbsize_error = Call.wpcli(
-            path, [
+            self.app, [
                 'db', 'size',
                 '--human-readable',
                 '--format=json', '--no-color'])
@@ -128,25 +143,16 @@ class DatabaseInformation(object):
                 'wp_db_name: %s, wp_db_size:%s',
                 result_json[0]['Name'],
                 result_json[0]['Size'])
-            self.db_info['name'] = result_json[0]['Name']
-            self.db_info['size'] = result_json[0]['Size']
-        if dbsize_error:
-            L.warning(
-                'wp_db_size error:%s',
-                dbsize_error.decode(encoding='UTF-8'))
-            self.db_info['size_error'] = dbsize_error.decode(encoding='UTF-8')
-        # RUN CHECK DB
-        self.progress = self.progress + progress_increments
-        L.debug('Progress: %s', self.progress)
-        os.write(self.app.action_pipe, str(self.progress))
-        if dbsize_result:
+            db_info['name'] = result_json[0]['Name']
+            db_info['size'] = result_json[0]['Size']
+
             dbcheck_result, dbcheck_error = Call.wpcli(
-                path,
+                self.app,
                 ['db', 'check'])
             dbcheck_result_list = []
             if dbcheck_result:
                 for line in dbcheck_result.splitlines():
-                    if self.db_info['name'] in line:
+                    if db_info['name'] in line:
                         _x = line.split()
                         dbcheck_result_list.append(
                             {
@@ -154,16 +160,32 @@ class DatabaseInformation(object):
                                 'check_status': _x[1]
                             }
                         )
-                self.db_info['check_tables'] = dbcheck_result_list
+                db_info['check_tables'] = dbcheck_result_list
             if dbcheck_error:
                 db_check_decoded = dbcheck_error.decode(encoding='UTF-8')
-                self.db_info['check_error'] = db_check_decoded
+                db_info['check_error'] = db_check_decoded
+        db_info['size_error'] = dbsize_error.decode(encoding='UTF-8')
+        # RUN CHECK DB
+        progress = progress + progress_increments
+        L.debug('Progress: %s', progress)
+        try:
+            os.write(self.app.action_pipe, str.encode(str(progress)))
+        except OSError:
+            L.warning('self.app.action_pipe Not Open Yet')
         # L.debug('db_info: %s',self.db_info)
-        os.close(self.app.action_pipe)
+        try:
+            os.close(self.app.action_pipe)
+        except OSError:
+            L.warning('self.app.action_pipe Not Open')
+        self.db_info = db_info
+        return db_info
 
     def export(self, file_path=None):
-        """Exports wp database"""
-        install_path = self.installation['directory']
+        """installs theme from wordpress.org repo"""
+
+        self.app.wpcli_pipe = self.app.loop.watch_pipe(
+            self.app.views.Database.body.update_view)
+        L.debug("self.app.wpcli_pipe: %s", self.app.wpcli_pipe)
         if not file_path:
             export_path = self.app.state.homedir
             n_length = 6
@@ -182,24 +204,28 @@ class DatabaseInformation(object):
                 file_name)
         else:
             file_path = file_path
-        export = Call.wpcli(
-            install_path,
-            [
-                'db',
-                'export',
-                file_path
+
+        wpcli_thread = Thread(
+            target=Call.wpcli_live_response,
+            name='wpcli_thread',
+            args=[
+                self.app,
+                self.app.views.Database.body.after_response,
+                [
+                    'db',
+                    'export',
+                    file_path
+                ]
             ])
-        if export[0]:
-            L.debug('Export Result:  %s', export[0])
-            return export[0]
-        return "Database Export Failed"
+        wpcli_thread.start()
 
     @staticmethod
     def export_db(app, file_path=None):
-        install_path = app.state.active_installation['directory']
+        """Exports Database"""
+
         file_path = file_path
         export = Call.wpcli(
-            install_path,
+            app,
             [
                 'db',
                 'export',
@@ -210,12 +236,12 @@ class DatabaseInformation(object):
         else:
             return False
 
-    def import_db(self, path):
+    @staticmethod
+    def import_db(app, path):
         """Exports wp database"""
-        install_path = self.installation['directory']
         file_path = path
         import_result = Call.wpcli(
-            install_path,
+            app,
             [
                 'db',
                 'import',
@@ -244,48 +270,57 @@ class DatabaseInformation(object):
                         imports.append(_x)
         return imports
 
-    def optimize_db(self, path):
+    def optimize_db(self):
         """Optimize Database"""
         L.debug("Begin Optimize DB")
         # Export Database before optimizing
-        self.export()
+        self.app.views.actions.revisions.auto_bk(backup_db=True)
 
-        result, error = Call.wpcli(
-            path,
-            [
-                'db',
-                'optimize'
+        self.app.wpcli_pipe = self.app.loop.watch_pipe(
+            self.app.views.Database.body.update_view)
+        L.debug("self.app.wpcli_pipe: %s", self.app.wpcli_pipe)
+
+        wpcli_thread = Thread(
+            target=Call.wpcli_live_response,
+            name='wpcli_thread',
+            args=[
+                self.app,
+                self.app.views.Database.body.after_response,
+                [
+                    'db',
+                    'optimize',
+                ]
             ])
-        if result:
-            return result
-        else:
-            return "Database Optimize Failed: " + str(error)
+        wpcli_thread.start()
 
-    def db_repair(self, path):
-        """Repair Database"""
+    def db_repair(self):
+        """Repairs Database"""
         L.debug("Begin Repair DB")
-        # Export Database before repairing
-        self.export()
+        # Export Database before optimizing
+        self.app.views.actions.revisions.auto_bk(backup_db=True)
 
-        result, error = Call.wpcli(
-            path,
-            [
-                'db',
-                'repair'
+        self.app.wpcli_pipe = self.app.loop.watch_pipe(
+            self.app.views.Database.body.update_view)
+        L.debug("self.app.wpcli_pipe: %s", self.app.wpcli_pipe)
+
+        wpcli_thread = Thread(
+            target=Call.wpcli_live_response,
+            name='wpcli_thread',
+            args=[
+                self.app,
+                self.app.views.Database.body.after_response,
+                [
+                    'db',
+                    'repair',
+                ]
             ])
-        if result:
-            # result = result.splitlines()
-            return result
-        elif error:
-            return ["Database Repair Failed"]
-        else:
-            return ["No Results Found"]
+        wpcli_thread.start()
 
-    def db_search(self, path, query):
+    def db_search(self, query):
         """Searches database"""
         L.debug("Begin DB Search WP Cli")
         result, error = Call.wpcli(
-            path,
+            self.app,
             [
                 'db',
                 'search',
@@ -299,17 +334,18 @@ class DatabaseInformation(object):
             while i < len(result):
                 # L.debug('i % 2 %s', i % 2)
                 if i % 2 == 0 or i == 0:
-                    a = result[i].split(':')
+                    split_result = result[i].split(':')
                     result_dicts.append({
-                        'table': a[0],
-                        'column': a[1]
+                        'table': split_result[0],
+                        'column': split_result[1]
                     })
                 else:
-                    a = result[i].split(':', 1)
-                    L.debug('a : %s', a)
+                    split_result = result[i].split(':', 1)
+                    L.debug('a : %s', split_result)
                     L.debug('result_dicts: %s', result_dicts)
-                    result_dicts[i / 2]['row'] = a[0]
-                    result_dicts[i / 2]['value'] = a[1]
+                    # pylint: disable=invalid-sequence-index
+                    result_dicts[int(i / 2)]['row'] = split_result[0]
+                    result_dicts[int(i / 2)]['value'] = split_result[1]
                 i += 1
             return result_dicts
         elif not error:
@@ -319,8 +355,7 @@ class DatabaseInformation(object):
             L.warning('Database Search error: %s', error)
             return "Database Search Error"
 
-    def sr_search_replace(self, path,
-                          sr_search_term, sr_replace_term, dry_run=True):
+    def search_replace(self, sr_search_term, sr_replace_term, dry_run=True):
         """Search and replace database"""
         L.debug("Begin wp search-replace")
         call_args = [
@@ -333,7 +368,7 @@ class DatabaseInformation(object):
         if dry_run:
             call_args.append('--dry-run')
         results, error = Call.wpcli(
-            path,
+            self.app,
             call_args)
         L.debug('Search & Replace Result: %s', results)
         L.debug('Search & Replace Error: %s', error)
@@ -344,21 +379,21 @@ class DatabaseInformation(object):
             for result in results:
                 if result not in results[0]:
                     if result in results[-1]:
-                        x = result.split()
+                        split_result = result.split()
                         if dry_run:
-                            results_count = x[1]
+                            results_count = split_result[1]
                         else:
-                            results_count = x[2]
+                            results_count = split_result[2]
                     else:
-                        x = result.split('\t')
+                        split_result = result.split('\t')
                         results_dicts.append({
-                            "table": x[0],
-                            "column": x[1],
-                            "count": x[2]
+                            "table": split_result[0],
+                            "column": split_result[1],
+                            "count": split_result[2]
                         })
             L.debug('Search & Replace Result: %s', results_dicts)
             L.debug('Search & Replace Count: %s', results_count)
-            return results_dicts, results_count
+            return {'results': results_dicts, 'count': results_count}
         else:
             return error
 
@@ -377,14 +412,14 @@ class WpConfig(object):
 
     def get_wp_config(self):
         """getter for wp_config data"""
-        path = self.app.state.active_installation['directory']
         self.progress = 0
         progress_increments = 100
         self.progress = self.progress + progress_increments
         L.debug('Progress: %s', self.progress)
-        os.write(self.app.action_pipe, str(self.progress))
+        L.debug('self.app.action_pipe: %s', self.app.action_pipe)
+        os.write(self.app.action_pipe, str.encode(str(self.progress)))
         wp_config_result, wp_config_error = Call.wpcli(
-            path, [
+            self.app, [
                 'config', 'list',
                 '--format=json',
                 '--no-color'])
@@ -394,14 +429,16 @@ class WpConfig(object):
         if wp_config_error:
             L.debug('wp_config_error: %s', wp_config_result)
             self.wp_config_error = wp_config_error
-        os.close(self.app.action_pipe)
+        try:
+            os.close(self.app.action_pipe)
+        except OSError:
+            L.warning('self.app.action_pipe already closed')
 
     def set_wp_config(self, directive_name, directive_value):
         """Sets a single wp_config directive.
         This is used by the wp_config display screen edit widgets"""
-        path = self.app.state.active_installation['directory']
         return_data, return_error = Call.wpcli(
-            path, [
+            self.app, [
                 'config',
                 'set',
                 directive_name,
@@ -417,9 +454,8 @@ class WpConfig(object):
     def del_wp_config(self, directive_name):
         """Sets a single wp_config directive.
         This is used by the wp_config display screen edit widgets"""
-        path = self.app.state.active_installation['directory']
         return_data, return_error = Call.wpcli(
-            path, [
+            self.app, [
                 'config',
                 'delete',
                 directive_name
@@ -434,9 +470,8 @@ class WpConfig(object):
 
     def re_salt(self):
         "Refreshes the stalts defined in the wp-config.php file"
-        path = self.app.state.active_installation['directory']
         return_data, return_error = Call.wpcli(
-            path, [
+            self.app, [
                 'config',
                 'shuffle-salts'
             ])
@@ -446,15 +481,18 @@ class WpConfig(object):
 
 
 class Themes(object):
+    """Candles 'wp theme' wp-cli calls"""
+
     def __init__(self, app):
         self.app = app
         self.call = Call()
         # self.installation = self.app.state.active_installation
 
     def get_theme_root(self):
-        path = self.app.state.active_installation['directory']
+        """Obtain the site's theme root"""
+
         result, error = Call.wpcli(
-            path,
+            self.app,
             [
                 'theme',
                 'path',
@@ -462,20 +500,22 @@ class Themes(object):
         if result:
             return result
         else:
+            L.warning("Error obtaining theme_root: %s", error)
             return False
 
     def get_list(self):
-        path = self.app.state.active_installation['directory']
-        self.progress = 0
+        """get's theme list"""
+
+        progress = 0
         try:
-            os.write(self.app.action_pipe, str(self.progress))
+            os.write(self.app.action_pipe, str.encode(str(progress)))
         except OSError:
             L.warning('Action Pipe not opened')
         fields = ['name', 'status', 'update', 'version',
                   'update_version', 'update_package', 'title', 'description']
         args = '--fields=' + ','.join(fields)
         results, error = Call.wpcli(
-            path,
+            self.app,
             [
                 'theme',
                 'list',
@@ -493,9 +533,10 @@ class Themes(object):
             return result_json
 
     def get_details(self, theme_name):
-        path = self.app.state.active_installation['directory']
+        """Gets theme details"""
+
         result, error = Call.wpcli(
-            path,
+            self.app,
             [
                 'theme',
                 'get',
@@ -512,102 +553,105 @@ class Themes(object):
             return False
 
     def activate(self, theme_name):
-        path = self.app.state.active_installation['directory']
+        """Activates theme"""
+
         self.app.wpcli_pipe = self.app.loop.watch_pipe(
             self.app.views.Themes.body.update_view)
         L.debug("self.app.wpcli_pipe: %s", self.app.wpcli_pipe)
-        self.wpcli_thread = Thread(
+        wpcli_thread = Thread(
             target=Call.wpcli_live_response,
             name='wpcli_thread',
             args=[
                 self.app,
                 self.app.views.Themes.body.after_response,
-                path,
                 [
                     'theme',
                     'activate',
                     theme_name
                 ]
             ])
-        self.wpcli_thread.start()
+        wpcli_thread.start()
 
     def update(self, theme_name):
-        path = self.app.state.active_installation['directory']
+        """Updates theme"""
+
         self.app.wpcli_pipe = self.app.loop.watch_pipe(
             self.app.views.Themes.body.update_view)
         L.debug("self.app.wpcli_pipe: %s", self.app.wpcli_pipe)
-        self.wpcli_thread = Thread(
+        wpcli_thread = Thread(
             target=Call.wpcli_live_response,
             name='wpcli_thread',
             args=[
                 self.app,
                 self.app.views.Themes.body.after_response,
-                path,
                 [
                     'theme',
                     'update',
                     theme_name
                 ]
             ])
-        self.wpcli_thread.start()
+        wpcli_thread.start()
 
     def uninstall(self, theme_name):
-        path = self.app.state.active_installation['directory']
+        """uninstalls theme"""
+
         self.app.wpcli_pipe = self.app.loop.watch_pipe(
             self.app.views.Themes.body.update_view)
         L.debug("self.app.wpcli_pipe: %s", self.app.wpcli_pipe)
-        self.wpcli_thread = Thread(
+        wpcli_thread = Thread(
             target=Call.wpcli_live_response,
             name='wpcli_thread',
             args=[
                 self.app,
                 self.app.views.Themes.body.after_response,
-                path,
                 [
                     'theme',
                     'uninstall',
                     theme_name
                 ]
             ])
-        self.wpcli_thread.start()
+        wpcli_thread.start()
 
     def install(self, theme_name):
-        path = self.app.state.active_installation['directory']
+        """installs theme from wordpress.org repo"""
+
         self.app.wpcli_pipe = self.app.loop.watch_pipe(
             self.app.views.Themes.body.update_view)
         L.debug("self.app.wpcli_pipe: %s", self.app.wpcli_pipe)
-        self.wpcli_thread = Thread(
+        wpcli_thread = Thread(
             target=Call.wpcli_live_response,
             name='wpcli_thread',
             args=[
                 self.app,
                 self.app.views.Themes.body.after_response,
-                path,
                 [
                     'theme',
                     'install',
                     theme_name
                 ]
             ])
-        self.wpcli_thread.start()
+        wpcli_thread.start()
 
 
 class Plugins(object):
+    """ Handles 'wp plugin' wpcli functions"""
+
     def __init__(self, app):
         self.app = app
 
     def get_plugin_list(self):
-        path = self.app.state.active_installation['directory']
+        """Obtain list of plugins"""
+
         fields = ['name', 'status', 'update', 'version',
                   'update_version']
         args = '--fields=' + ','.join(fields)
-        self.progress = 0
+        progress = 0
         try:
-            os.write(self.app.action_pipe, str(self.progress))
+            os.write(self.app.action_pipe, str.encode(str(progress)))
         except OSError:
             L.warning('Action Pipe not opened')
         result, error = Call.wpcli(
-            path,
+            self.app,
             [
                 'plugin',
                 'list',
@@ -631,9 +675,10 @@ class Plugins(object):
             return False
 
     def get_details(self, plugin_name):
-        path = self.app.state.active_installation['directory']
+        """Get plugin details"""
+
         result, error = Call.wpcli(
-            path,
+            self.app,
             [
                 'plugin',
                 'get',
@@ -650,7 +695,8 @@ class Plugins(object):
             return False
 
     def get_plugin_path(self, plugin_name=None):
-        path = self.app.state.active_installation['directory']
+        """Get path to plugin dir, or path to plugin_root """
+
         if not plugin_name:
             args = [
                 'plugin',
@@ -665,118 +711,120 @@ class Plugins(object):
                 '--dir'
             ]
         result, error = Call.wpcli(
-            path,
+            self.app,
             args)
         if result:
             return result.rstrip()
         else:
+            L.warning('Error obtaining plugin_path: %s', error)
             return False
 
     def install(self, plugin_name):
-        path = self.app.state.active_installation['directory']
+        """Installs plugin from wordpress repo"""
+
         self.app.wpcli_pipe = self.app.loop.watch_pipe(
             self.app.views.Plugins.body.update_view)
         L.debug("self.app.wpcli_pipe: %s", self.app.wpcli_pipe)
-        self.wpcli_thread = Thread(
+        wpcli_thread = Thread(
             target=Call.wpcli_live_response,
             name='wpcli_thread',
             args=[
                 self.app,
                 self.app.views.Plugins.body.after_response,
-                path,
                 [
                     'plugin',
                     'install',
                     plugin_name
                 ]
             ])
-        self.wpcli_thread.start()
+        wpcli_thread.start()
 
     def update(self, plugin_name,):
+        """Updates a plugin """
+
         L.debug('plugin_name: %s', plugin_name)
-        path = self.app.state.active_installation['directory']
         self.app.wpcli_pipe = self.app.loop.watch_pipe(
             self.app.views.Plugins.body.update_view)
         L.debug("self.app.wpcli_pipe: %s", self.app.wpcli_pipe)
-        self.wpcli_thread = Thread(
+        wpcli_thread = Thread(
             target=Call.wpcli_live_response,
             name='wpcli_thread',
             args=[
                 self.app,
                 self.app.views.Plugins.body.after_response,
-                path,
                 [
                     'plugin',
                     'update',
                     plugin_name
                 ]
             ])
-        self.wpcli_thread.start()
+        wpcli_thread.start()
 
     def activate(self, plugin_name):
-        path = self.app.state.active_installation['directory']
+        """Activates a plugin"""
+
         self.app.wpcli_pipe = self.app.loop.watch_pipe(
             self.app.views.Plugins.body.update_view)
         L.debug("self.app.wpcli_pipe: %s", self.app.wpcli_pipe)
-        self.wpcli_thread = Thread(
+        wpcli_thread = Thread(
             target=Call.wpcli_live_response,
             name='wpcli_thread',
             args=[
                 self.app,
                 self.app.views.Plugins.body.after_response,
-                path,
                 [
                     'plugin',
                     'activate',
                     plugin_name
                 ]
             ])
-        self.wpcli_thread.start()
+        wpcli_thread.start()
 
     def deactivate(self, plugin_name):
-        path = self.app.state.active_installation['directory']
+        """Deactivates a plugin"""
+
         self.app.wpcli_pipe = self.app.loop.watch_pipe(
             self.app.views.Plugins.body.update_view)
         L.debug("self.app.wpcli_pipe: %s", self.app.wpcli_pipe)
-        self.wpcli_thread = Thread(
+        wpcli_thread = Thread(
             target=Call.wpcli_live_response,
             name='wpcli_thread',
             args=[
                 self.app,
                 self.app.views.Plugins.body.after_response,
-                path,
                 [
                     'plugin',
                     'deactivate',
                     plugin_name
                 ]
             ])
-        self.wpcli_thread.start()
+        wpcli_thread.start()
 
     def uninstall(self, plugin_name):
-        path = self.app.state.active_installation['directory']
+        """Uninstalls a plugin"""
+
         self.app.wpcli_pipe = self.app.loop.watch_pipe(
             self.app.views.Plugins.body.update_view)
         L.debug("self.app.wpcli_pipe: %s", self.app.wpcli_pipe)
-        self.wpcli_thread = Thread(
+        wpcli_thread = Thread(
             target=Call.wpcli_live_response,
             name='wpcli_thread',
             args=[
                 self.app,
                 self.app.views.Plugins.body.after_response,
-                path,
                 [
                     'plugin',
                     'uninstall',
                     plugin_name
                 ]
             ])
-        self.wpcli_thread.start()
+        wpcli_thread.start()
 
     def get_active_plugins(self):
-        path = self.app.state.active_installation['directory']
+        """Gets list of all active plugins"""
+
         result, error = Call.wpcli(
-            path,
+            self.app,
             [
                 'option',
                 'get',
@@ -789,10 +837,11 @@ class Plugins(object):
             return error
 
     def set_active_plugins(self, plugins):
-        path = self.app.state.active_installation['directory']
+        """Sets active plugins to match exported list"""
+
         L.debug('Re-Activating Plugins: %s', plugins)
         result, error = Call.wpcli(
-            path,
+            self.app,
             [
                 'option',
                 'update',
@@ -809,8 +858,13 @@ class Plugins(object):
 class Call(object):
     """opens a subprocess to run wp-cli command"""
     @staticmethod
-    def wpcli(path, arguments, skip_themes=True, skip_plugins=True):
+    def wpcli(app, arguments, skip_themes=True, skip_plugins=True,
+              install_path=None):
         """runs_wp-cli command"""
+        if install_path:
+            path = install_path
+        else:
+            path = app.state.active_installation['directory']
         L.debug('Begin wp-cli command: %s', arguments)
         popen_args = ['wp']
         for argument in arguments:
@@ -825,14 +879,15 @@ class Call(object):
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE
         ).communicate()
-        return data, error
+        return data.decode('UTF-8'), error.decode('UTF-8')
 
     @staticmethod
-    def wpcli_live_response(app, callback, path,
+    def wpcli_live_response(app, callback,
                             arguments, skip_themes=True, skip_plugins=True):
         # L.debug('pipe: %s, path: %s, arguments: %s', pipe, path, arguments)
         """runs_wp-cli command"""
         L.debug('Begin wp-cli command: %s', arguments)
+        path = app.state.active_installation['directory']
         popen_args = ['wp']
         for argument in arguments:
             popen_args.append(argument)
@@ -845,7 +900,7 @@ class Call(object):
             popen_args,
             stdout=subprocess.PIPE)
         while True:
-            line = proc.stdout.readline().encode('utf8')
+            line = proc.stdout.readline()
             if proc.poll() or line == b'':
                 os.close(app.wpcli_pipe)
                 break

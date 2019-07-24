@@ -24,8 +24,7 @@ class Log(object):
                             filename=logpath,
                             filemode='a',
                             level=logging_level,
-                            datefmt=S.logging['datefmt'],
-                            encoding='utf8')
+                            datefmt=S.logging['datefmt'])
         logging.addLevelName(10, "**DEBUG**")
         logging.addLevelName(20, "**INFO** ")
         logging.addLevelName(30, "*WARNING*")
