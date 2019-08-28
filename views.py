@@ -88,12 +88,15 @@ class View(object):
         else:
             self.action_class_name = None
         self.header = None
+        self.return_view = self
 
     def start(self, user_data):
         """Starts the loading, and showing of the activated view
         Typically called by Views.activate, but sometimes called
         through other means"""
         L.debug('User Data: %s', user_data)
+        if "return_view" in user_data.keys():
+            self.return_view = user_data["return_view"]
         if self.view_type == 'no_display':
             if self.action_on_load:
                 L.debug('This View has an action to be run on load')

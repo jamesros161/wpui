@@ -164,7 +164,12 @@ class DatabaseInformation(object):
             if dbcheck_error:
                 db_check_decoded = dbcheck_error.decode(encoding='UTF-8')
                 db_info['check_error'] = db_check_decoded
-        db_info['size_error'] = dbsize_error.decode(encoding='UTF-8')
+        try:
+            dbsize_error.decode(encoding='UTF-8')
+        except AttributeError as error:
+            db_info['size_error'] = dbsize_error
+        else:
+            db_info['size_error'] = dbsize_error.decode(encoding='UTF-8')
         # RUN CHECK DB
         progress = progress + progress_increments
         L.debug('Progress: %s', progress)

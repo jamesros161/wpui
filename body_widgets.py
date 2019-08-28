@@ -71,7 +71,7 @@ class BodyWidget(object):
             progress {str} -- string representation of the current
                               progress
         """
-        L.debug('Progress: %s', progress)
+        L.debug('Pipe: %s :: Progress: %s', self.app.action_pipe, progress)
         if progress:
             self.progress_bar.set_completion(int(float(progress)))
         else:
@@ -943,17 +943,17 @@ class Themes(BodyWidget):
         self.parser = HTMLParser()
         self.response_pile = None
 
-    def update_progress_bar(self, progress):
-        self.progress = 0
-        while self.progress < 100:
-            L.debug('Progress: %s', int(self.progress))
-            self.progress = self.progress + 10
-            self.progress_bar.set_completion(int(self.progress))
-            self.app.loop.draw_screen()
-            time.sleep(.250)
-        self.progress_bar.set_completion(100)
-        self.app.loop.remove_watch_pipe(self.app.action_pipe)
-        self.app.loop.draw_screen()
+    # def update_progress_bar(self, progress):
+    #     self.progress = 0
+    #     while self.progress < 100:
+    #         L.debug('Progress: %s', int(self.progress))
+    #         self.progress = self.progress + 10
+    #         self.progress_bar.set_completion(int(self.progress))
+    #         self.app.loop.draw_screen()
+    #         time.sleep(.250)
+    #     self.progress_bar.set_completion(100)
+    #     self.app.loop.remove_watch_pipe(self.app.action_pipe)
+    #     self.app.loop.draw_screen()
 
     def after_action(self, theme_list):
         """Displays after_action contents"""
@@ -1005,17 +1005,17 @@ class Themes(BodyWidget):
                 BoxButton(
                     'Details',
                     on_press=self.app.views.actions.themes.details,
-                    user_data=[theme]),
+                    user_data=theme),
                 BoxButton(
                     'Uninstall',
                     on_press=self.app.views.actions.themes.uninstall,
-                    user_data=[theme])
+                    user_data=theme)
             ])
             if theme['update'] == 'available':
                 theme_row.append(BoxButton(
                     'Update',
                     on_press=self.app.views.actions.themes.update,
-                    user_data=[theme]))
+                    user_data=theme))
             else:
                 theme_row.append(
                     W.get_blank_flow()
@@ -1025,7 +1025,7 @@ class Themes(BodyWidget):
                 theme_row.append(BoxButton(
                     'Activate',
                     on_press=self.app.views.actions.themes.activate,
-                    user_data=[theme]))
+                    user_data=theme))
             else:
                 theme_row.append(
                     W.get_blank_flow()
@@ -1060,15 +1060,15 @@ class Themes(BodyWidget):
                     self.app,
                     self,
                     'underline',
-                    on_enter=self.app.views.actions.themes.install,
+                    on_enter=self.app.views.actions.themes.install_theme,
                     align='left'),
                 W.get_blank_flow()
             ]))
         theme_pile = U.Pile(theme_rows)
         filler = U.Filler(theme_pile)
         self.app.frame.contents.__setitem__('body', [filler, None])
-        time.sleep(1)
-        self.app.loop.draw_screen()
+        # time.sleep(1)
+        # self.app.loop.draw_screen()
 
     def show_theme_details(self, theme_details):
         """Shows Theme Details"""
@@ -1122,14 +1122,15 @@ class Themes(BodyWidget):
 
     def show_theme_action_response(self):
         """Shows theme-action Response"""
-
+        processing = W.get_text('body', 'Processing request...', 'center')
         response_text = [
             W.get_col_row([
                 W.get_blank_flow(),
                 U.AttrMap(W.get_text('header', 'Result', 'center'), 'header'),
                 W.get_blank_flow()
                 ]),
-            W.get_div()
+            W.get_div(),
+            processing
         ]
         self.response_pile = U.Pile(response_text)
         filler = U.Filler(self.response_pile)
@@ -1152,8 +1153,6 @@ class Themes(BodyWidget):
 
     def after_response(self):
         """After response is displayed, redirect to theme list"""
-
-        time.sleep(2)
         self.app.views.actions.themes.get_theme_list()
 
 
@@ -1545,9 +1544,11 @@ class RevertChanges(BodyWidget):
 
     def after_response(self):
         """After response is displayed, redirect to theme list"""
-
-        time.sleep(2)
-        self.app.views.actions.themes.get_theme_list()
+        active_view = self.app.state.get_state("active_view")
+        if not active_view.return_view == active_view:
+            active_view.return_view.start({"view": active_view.return_view})
+        else:
+            self.app.views.activate(self, {"view": "Home"})
 
 
 class Users(BodyWidget):

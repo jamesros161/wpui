@@ -518,7 +518,7 @@ class ThemeActions(object):
         L.debug('button: %s, action_type: %s, theme: %s',
                 args[0], action_type, theme)
 
-    def details(self, theme):
+    def details(self, button, theme):
         """Obtain Theme Details"""
 
         theme_details = self.wpcli.get_details(theme['name'])
@@ -527,13 +527,13 @@ class ThemeActions(object):
             theme_details
         )
 
-    def activate(self, theme):
+    def activate(self, button, theme):
         """activate theme"""
 
         self.wpcli.activate(theme['name'])
         self.app.views.Themes.body.show_theme_action_response()
 
-    def update(self, theme):
+    def update(self, button, theme):
         """Updates theme"""
 
         theme_dir = self.wpcli.get_details(theme['name'])['template_dir']
@@ -547,7 +547,7 @@ class ThemeActions(object):
         self.wpcli.update(theme['name'])
         L.debug('wpcli_pipe fstat: %s', os.fstat(self.app.wpcli_pipe))
 
-    def update_all(self):
+    def update_all(self, button):
         """Updates All Themes"""
         theme_dir = self.wpcli.get_theme_root()
         if not self.revisions.auto_bk(
@@ -560,7 +560,7 @@ class ThemeActions(object):
         self.wpcli.update('--all')
         L.debug('wpcli_pipe fstat: %s', os.fstat(self.app.wpcli_pipe))
 
-    def uninstall(self, theme):
+    def uninstall(self, button, theme):
         """Uninstalls theme"""
 
         theme_dir = self.wpcli.get_details(theme['name'])['template_dir']
